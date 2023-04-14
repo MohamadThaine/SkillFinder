@@ -1,0 +1,27 @@
+@font-face {
+    font-family: 'Poppins';
+    src: url(../Fonts/Poppins-Regular.ttf);
+}
+
+.logo{
+    width: 50%;
+    height: 50%;
+    margin-left: 10%;
+}
+
+.justify-content{
+    justify-content: flex-end;
+    margin-right: 2%;
+}
+
+.pages-buttons{
+    font-family: 'Poppins';
+    color: black;
+    margin-left: 20px;
+}
+
+.navbar-nav .nav-link.active, .pages-buttons.active{
+    color: white;
+    background-color: #36506C;
+    border-radius: 12px;
+}
