@@ -20,8 +20,9 @@
     margin-left: 20px;
 }
 
-.navbar-nav .nav-link.active, .pages-buttons.active{
-    color: white;
-    background-color: #36506C;
+.active{
+    color: white !important;
     border-radius: 12px;
+    background-color: #36506C;
+    transition: 300ms ease-in-out;
 }

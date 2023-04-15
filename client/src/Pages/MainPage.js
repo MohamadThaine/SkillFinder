@@ -1,9 +1,13 @@
 import React from 'react'
-import NavBar from '../Component/NavBar'
 function MainPage(){
     return(
-        <div>
-            <NavBar />
+        <div className='container'>
+            <div className='row'>
+                <div className='col'>
+                    <p>SkillFinder</p>
+                    <p>Where your journey begin anwe</p>
+                </div>
+            </div>
         </div>
     )
 }

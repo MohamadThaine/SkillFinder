@@ -1,11 +1,14 @@
-import logo from './logo.svg';
 import "bootstrap/dist/css/bootstrap.min.css";
 import './App.css';
 import MainPage from './Pages/MainPage';
+import NavBar from './Component/NavBar';
 
 function App() {
   return (
-    <MainPage/>
+    <>
+      <NavBar />
+      <MainPage/>
+    </>
   );
 }
 
