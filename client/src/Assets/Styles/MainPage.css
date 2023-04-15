@@ -1,0 +1,47 @@
+@font-face {
+    font-family: 'Shanti';
+    src: url(../Fonts/Shanti-Regular.ttf);
+}
+
+.main-intro{
+    background-color: #F4F4F4;
+    border-radius: 43px;
+    font-family: 'Shanti';
+}
+
+.teaching-logo{
+    background-color: #36506C;
+    border-radius: 43px;
+}
+
+
+.teaching-logo > img{
+    height: 25rem;
+    width: 100%;
+}
+
+.mt-6{
+    margin-top: 5rem !important;
+}
+
+.searchInput{
+    background-color: #FFFFFF;
+    border-radius: 6px;
+    border: #C0C0C0 1px solid;
+    width: 110%;
+    height: 130%;
+    font-family: 'Shanti';
+}
+
+.searchButton{
+    background-color: #36506C;
+    border: none;
+    border-radius: 10px;
+    width: 40%;
+    height: 130%;
+}
+
+.searchButton > img{
+    width: 32px;
+    height: 32px;
+}
