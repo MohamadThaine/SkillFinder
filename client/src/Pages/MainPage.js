@@ -30,39 +30,39 @@ function MainPage(){
                             </div>
                         </div>
                     </div>
-                    <div className='col-sm-3 teaching-logo p-3'>
+                    <div className='col-sm-4 teaching-logo p-3'>
                         <img src={logo}/>  
                     </div>
                 </div>
             </div>
             <div className='container mt-5'>  
                 <h2 className='text-center top'>Top Categories</h2>
-                <div className='row justify-content-between mt-4 categories-row'>
+                <div className='row justify-content-between mt-4'>
                     <div className='col-sm-3 d-flex justify-content-center category'>
-                        <img src={Carpentering}/>
-                        <h4 className='ms-2'>Carpentering</h4>
+                        <img className='col-md-5 ms-3' src={Carpentering}/>
+                        <h4 className='col-md-4 me-5'>Carpentering</h4>
                     </div>
                     <div className='col-sm-3 d-flex justify-content-center category'>
-                        <img src={GraphicDesign}/>
-                        <h4 className='ms-2'>Graphic Design</h4>
+                        <img className='col-md-5 ms-3' src={GraphicDesign}/>
+                        <h4 className='col-md-4 me-5'>Graphic Design</h4>
                     </div>
                     <div className='col-sm-3 d-flex justify-content-center category'>
-                        <img src={Agriculture}/>
-                        <h4 className='ms-2'>Agriculture</h4>
+                        <img className='col-md-5 ms-3' src={Agriculture}/>
+                        <h4 className='col-md-4 me-5'>Agriculture</h4>
                     </div>
                 </div>
-                <div className='row justify-content-between mt-4 categories-row'>
+                <div className='row justify-content-between mt-4'>
                     <div className='col-sm-3 d-flex justify-content-center category'>
-                        <img src={Networking}/>
-                        <h4 className='ms-2'>Networking</h4>
+                        <img className='col-md-5 ms-3' src={Networking}/>
+                        <h4 className='col-md-4 me-5'>Networking</h4>
                     </div>
                     <div className='col-sm-3 d-flex justify-content-center  category'>
-                        <img src={Electricity}/>
-                        <h4 className='ms-2'>Electricity</h4>
+                        <img className='col-md-5 ms-3' src={Electricity}/>
+                        <h4 className='col-md-4 me-5'>Electricity</h4>
                     </div>
                     <div className='col-sm-3 d-flex justify-content-center category'>
-                        <img src={Fashion}/>      
-                        <h4 className='ms-2'>Fashion Design</h4> 
+                        <img className='col-md-5 ms-3' src={Fashion}/>      
+                        <h4 className='col-md-4 me-5'>Fashion Design</h4> 
                     </div>
                 </div>
             </div>
