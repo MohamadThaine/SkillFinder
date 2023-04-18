@@ -15,6 +15,7 @@
 }
 
 .pages-buttons{
+    cursor: pointer;
     font-family: 'Poppins';
     color: black;
     margin-left: 20px;

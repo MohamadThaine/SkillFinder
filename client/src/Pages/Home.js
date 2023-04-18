@@ -7,19 +7,19 @@ import Agriculture from '../Assets/Images/Farming.png'
 import Networking from '../Assets/Images/Networking.png'
 import Electricity from '../Assets/Images/Electricity.png'
 import Fashion from '../Assets/Images/Fashion.png'
-import '../Assets/Styles/MainPage.css'
+import '../Assets/Styles/Home.css'
 
-function MainPage(){
+function Home(){
     return(
         <>
             <div className='container-fluid mt-5 intro'>
                 <div className='row main-intro'>
                     <div className='col ms-5'>
-                        <div className='row mt-5'>
+                        <div className='row mt-5 p-3'>
                             <h1 style={{color: '#36506C'}}>SkillFinder</h1>
                             <h3>Where your journey begins anew.</h3>
                         </div>
-                        <div className='row mt-6'>
+                        <div className='row mt-6 p-3'>
                             <div className='col'>
                                 <input type='text' placeholder='Search for apprenticeship...' className='searchInput' />
                             </div>
@@ -35,7 +35,7 @@ function MainPage(){
                     </div>
                 </div>
             </div>
-            <div className='container mt-5'>  
+            <div className='container'>  
                 <h2 className='text-center top'>Top Categories</h2>
                 <div className='row justify-content-between mt-4'>
                     <div className='col-sm-3 d-flex justify-content-center category'>
@@ -71,4 +71,4 @@ function MainPage(){
     )
 }
 
-export default MainPage
+export default Home

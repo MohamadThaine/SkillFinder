@@ -1,9 +1,15 @@
 import React, { useState } from 'react'
 import logo from '../Assets/Images/SkillFinderLogo.png'
 import '../Assets/Styles/NavBar.css'
+import { useNavigate } from 'react-router-dom';
 
 function NavBar(){
-  const [currentPage, setCurrentPage] = useState('Home');
+  const [currentPage, setCurrentPage] = useState('/');
+  const navigate = useNavigate();
+  const changePage = (page) => {
+    setCurrentPage(page);
+    navigate(page);
+  }
     return(
         <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom">
           <a className="navbar-brand" href="#">
@@ -11,16 +17,16 @@ function NavBar(){
           </a>
           <div className="collapse navbar-collapse justify-content">
             <div className="navbar-nav">
-              <a className={"nav-item nav-link pages-buttons " + (currentPage === 'Home'? 'active': '')} href="#"
-                  onClick={() => setCurrentPage('Home')}>Home</a>
-              <a className={"nav-item nav-link pages-buttons " + (currentPage === 'About'? 'active': '')} href="#"
-                  onClick={() => setCurrentPage('About')}>About Us</a>
-              <a className={"nav-item nav-link pages-buttons " + (currentPage === 'Contact'? 'active': '')} href="#"
-                 onClick={() => setCurrentPage('Contact')}>Contact Us</a>
-              <a className={"nav-item nav-link pages-buttons " + (currentPage === 'Login'? 'active': '')} href="#"
-                 onClick={() => setCurrentPage('Login')}>Login</a>
-              <a className={"nav-item nav-link pages-buttons " + (currentPage === 'Register'? 'active': '')} href="#"
-                 onClick={() => setCurrentPage('Register')}>Register</a>
+              <a className={"nav-item nav-link pages-buttons " + (currentPage === '/'? 'active': '')}
+                  onClick={() => changePage('/')}>Home</a>
+              <a className={"nav-item nav-link pages-buttons " + (currentPage === '/AboutUs'? 'active': '')}
+                  onClick={() => changePage('/AboutUs')}>About Us</a>
+              <a className={"nav-item nav-link pages-buttons " + (currentPage === '/ContactUs'? 'active': '')}
+                 onClick={() => changePage('/ContactUs')}>Contact Us</a>
+              <a className={"nav-item nav-link pages-buttons " + (currentPage === '/Login'? 'active': '')}
+                 onClick={() => changePage('/Login')}>Login</a>
+              <a className={"nav-item nav-link pages-buttons " + (currentPage === '/Register'? 'active': '')}
+                 onClick={() => changePage('/Register')}>Register</a>
             </div>
           </div>
       </nav>
