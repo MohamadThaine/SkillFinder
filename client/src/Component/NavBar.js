@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import logo from '../Assets/Images/SkillFinderLogo.png'
 import '../Assets/Styles/NavBar.css'
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -8,9 +8,13 @@ function NavBar(){
   const [currentPage, setCurrentPage] = useState(currentLocation.pathname);
   const navigate = useNavigate();
   const changePage = (page) => {
-    setCurrentPage(page);
     navigate(page);
   }
+
+  useEffect(() => {
+    setCurrentPage(currentLocation.pathname);
+  },[currentLocation.pathname])
+
     return(
         <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom">
           <a className="navbar-brand" href="#">

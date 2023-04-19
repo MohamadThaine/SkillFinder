@@ -51,7 +51,7 @@ function Home(){
                         <h4 className='col-md-4 me-5'>Agriculture</h4>
                     </div>
                 </div>
-                <div className='row justify-content-between mt-4'>
+                <div className='row justify-content-between mt-4 pb-3'>
                     <div className='col-sm-3 d-flex justify-content-center category'>
                         <img className='col-md-5 ms-3' src={Networking}/>
                         <h4 className='col-md-4 me-5'>Networking</h4>

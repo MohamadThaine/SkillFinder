@@ -1,12 +1,22 @@
+import { useNavigate } from 'react-router-dom'
 import '../Assets/Styles/AboutUs.css'
-
 function AboutUs(){
+    const navigate = useNavigate();
     return(
         <>
-         <div className="container about-us mt-5">
-            <h1 className="text-center mt-5">WHAT WE DO</h1>
-            <div className="row mt-3">
+         <div className="container-fluid about-us">
+            <div className='row header'>
+                <h1 className="text-center mt-5">WHAT WE DO</h1>
+            </div> 
+         </div>
+         <div className='container'>
+         <div className="row mt-3 desc">
                 <WhatWeDo />
+                <div className='text-center mt-2'>
+                    <button className='contact-us-btn'
+                     onClick={() => navigate('/ContactUs')}>Contact Us!</button>
+                </div>
+                
             </div>
          </div>
         </>

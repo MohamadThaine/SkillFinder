@@ -5,6 +5,29 @@
 
 .about-us{
     font-family: 'Shanti';
+    border-radius: 12px;
+    
+}
+
+.header{
+    background-color: #36506C;
+    color: white;
+    border-radius: 0px 0px 200px 200px;
+}
+
+.desc{
+    padding: 10px;
+    font-family: 'Shanti';
+    box-shadow: 0 0 50px #ccc;
+}
+
+.desc .contact-us-btn{
+    background-color: #36506C;
+    border: none;
+    width: 20%; 
+    height: 3rem;
+    color: white;
+    font-family: 'Shanti';
 }
 
 ul {
