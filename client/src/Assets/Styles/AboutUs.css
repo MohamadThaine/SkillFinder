@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'Shanti';
+    src: url(../Fonts/Shanti-Regular.ttf);
+}
+
+.about-us{
+    font-family: 'Shanti';
+}
+
+ul {
+    list-style-position: inside;
+ }

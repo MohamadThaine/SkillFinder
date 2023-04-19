@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import logo from '../Assets/Images/SkillFinderLogo.png'
 import '../Assets/Styles/NavBar.css'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function NavBar(){
-  const [currentPage, setCurrentPage] = useState('/');
+  const currentLocation = useLocation();
+  const [currentPage, setCurrentPage] = useState(currentLocation.pathname);
   const navigate = useNavigate();
   const changePage = (page) => {
     setCurrentPage(page);
