@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 function NavBar(){
   const currentLocation = useLocation();
-  const [currentPage, setCurrentPage] = useState(currentLocation.pathname);
+  const [currentPage, setCurrentPage] = useState('');
   const navigate = useNavigate();
   const changePage = (page) => {
     navigate(page);
@@ -17,8 +17,9 @@ function NavBar(){
 
     return(
         <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-          <a className="navbar-brand" href="#">
-              <img className='logo' src={logo} alt='SkillFinder Logo' />
+          <a className="navbar-brand">
+              <img className='logo' src={logo} alt='SkillFinder Logo'
+                   onClick={() => changePage('/')} />
           </a>
           <div className="collapse navbar-collapse justify-content">
             <div className="navbar-nav">

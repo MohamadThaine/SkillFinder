@@ -17,6 +17,8 @@
 
 .desc{
     padding: 10px;
+    margin-right: auto;
+    margin-left: auto;
     font-family: 'Shanti';
     box-shadow: 0 0 50px #ccc;
 }
@@ -24,10 +26,14 @@
 .desc .contact-us-btn{
     background-color: #36506C;
     border: none;
-    width: 20%; 
+    width: 20%;
     height: 3rem;
     color: white;
     font-family: 'Shanti';
+    display: flex;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
 }
 
 ul {

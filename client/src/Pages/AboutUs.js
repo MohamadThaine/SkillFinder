@@ -31,7 +31,6 @@ const WhatWeDo = () => {
         <p>At SkillFinder, we understand that each individual has unique career aspirations and goals. That's why we offer a range of apprenticeship programs across various industries, including:</p>
         <ul>
             <li>Information technology</li>
-            <li>Healthcare</li>
             <li>Construction</li>
             <li>Manufacturing</li>
             <li>Automotive</li>
@@ -42,7 +41,6 @@ const WhatWeDo = () => {
             <li>On-the-job training and experience</li>
             <li>Mentorship from experienced professionals in your field</li>
             <li>Classroom instruction to supplement your hands-on learning</li>
-            <li>Certification upon completion of the program</li>
             <li>Opportunities to network and connect with industry professionals</li>
         </ul>
         <p>We believe that apprenticeship is a valuable way for individuals to gain the skills and knowledge they need to succeed in their careers. If you're interested in learning more about our programs or applying to become a SkillFinder apprentice, please contact us today.</p>

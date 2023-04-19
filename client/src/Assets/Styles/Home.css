@@ -45,11 +45,14 @@
     border-radius: 10px;
     width: 30%;
     height: 130%;
+    display: flex;
+    justify-content: center;
 }
 
 .searchButton > img{
-    width: 32px;
-    height: 32px;
+    width: 2rem;
+    height: 2rem;
+    align-self: center;
 }
 
 .top{
