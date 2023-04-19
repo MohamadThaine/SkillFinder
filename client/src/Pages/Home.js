@@ -1,6 +1,6 @@
 import React from 'react'
 import logo from '../Assets/Images/homepage.svg'
-import searchIcon from '../Assets/Images/searchIcon.png'
+import searchIcon from '../Assets/Images/searchIcon.svg'
 import Carpentering from '../Assets/Images/CarpenteringIcon.png'
 import GraphicDesign from '../Assets/Images/Designer.png'
 import Agriculture from '../Assets/Images/Farming.png'

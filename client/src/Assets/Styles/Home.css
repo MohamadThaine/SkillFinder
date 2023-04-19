@@ -17,12 +17,13 @@
 .teaching-logo{
     background-color: #36506C;
     border-radius: 43px;
-    width: fit-content;
+    width: 35%;
 }
 
 
 .teaching-logo > img{
-    height: 42vh;
+    height: 100%;
+    width: 100%;
 }
 
 .mt-6{
