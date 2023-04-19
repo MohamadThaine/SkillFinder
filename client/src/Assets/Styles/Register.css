@@ -1,0 +1,17 @@
+@font-face {
+    font-family: 'Shanti';
+    src: url(../Fonts/Shanti-Regular.ttf);
+}
+
+.register-type-btn{
+    border: none;
+    background-color: #36506C;
+    width: 10rem;
+    height: 3rem;
+    font-family: 'Shanti';
+    color: white;
+}
+
+.register-type-btn:nth-child(2){
+    margin-left: 50px;
+}
