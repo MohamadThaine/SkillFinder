@@ -36,6 +36,10 @@
     align-items: center;
 }
 
+.desc > a{
+    text-decoration: none;
+}
+
 ul {
     list-style-position: inside;
  }

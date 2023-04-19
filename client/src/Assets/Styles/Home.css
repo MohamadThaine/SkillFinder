@@ -60,6 +60,7 @@
 }
 
 .category{
+    position: relative;
     cursor: pointer;
     color: black;
     font-family: 'Shanti';
@@ -70,8 +71,13 @@
     height: 4.5vw;
 }
 
+.category > :first-child{
+    position: absolute;
+    left: 2rem;
+}
+
 .category > :last-child{
-    margin-left: 2rem !important;
+    margin-left: 5rem !important;
 }
 
 .category > img{

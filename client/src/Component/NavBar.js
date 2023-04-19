@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import logo from '../Assets/Images/SkillFinderLogo.png'
 import '../Assets/Styles/NavBar.css'
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 
 function NavBar(){
   const currentLocation = useLocation();
   const [currentPage, setCurrentPage] = useState('');
-  const navigate = useNavigate();
-  const changePage = (page) => {
-    navigate(page);
-  }
 
   useEffect(() => {
     setCurrentPage(currentLocation.pathname);
@@ -17,22 +13,21 @@ function NavBar(){
 
     return(
         <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-          <a className="navbar-brand">
-              <img className='logo' src={logo} alt='SkillFinder Logo'
-                   onClick={() => changePage('/')} />
-          </a>
+          <Link to='/' className="navbar-brand">
+              <img className='logo' src={logo} alt='SkillFinder Logo' />
+          </Link>
           <div className="collapse navbar-collapse justify-content">
             <div className="navbar-nav">
-              <a className={"nav-item nav-link pages-buttons " + (currentPage === '/'? 'active': '')}
-                  onClick={() => changePage('/')}>Home</a>
-              <a className={"nav-item nav-link pages-buttons " + (currentPage === '/AboutUs'? 'active': '')}
-                  onClick={() => changePage('/AboutUs')}>About Us</a>
-              <a className={"nav-item nav-link pages-buttons " + (currentPage === '/ContactUs'? 'active': '')}
-                 onClick={() => changePage('/ContactUs')}>Contact Us</a>
-              <a className={"nav-item nav-link pages-buttons " + (currentPage === '/Login'? 'active': '')}
-                 onClick={() => changePage('/Login')}>Login</a>
-              <a className={"nav-item nav-link pages-buttons " + (currentPage === '/Register'? 'active': '')}
-                 onClick={() => changePage('/Register')}>Register</a>
+              <Link className={"nav-item nav-link pages-buttons " + (currentPage === '/'? 'active': '')}
+                    to='/'>Home</Link>
+              <Link className={"nav-item nav-link pages-buttons " + (currentPage === '/AboutUs'? 'active': '')}
+                    to='/AboutUs'>About Us</Link>
+              <Link className={"nav-item nav-link pages-buttons " + (currentPage === '/ContactUs'? 'active': '')}
+                    to='/ContactUs'>Contact Us</Link>
+              <Link className={"nav-item nav-link pages-buttons " + (currentPage === '/Login'? 'active': '')}
+                    to='/Login'>Login</Link>
+              <Link className={"nav-item nav-link pages-buttons " + (currentPage === '/Register'? 'active': '')}
+                    to='/Register'>Register</Link>
             </div>
           </div>
       </nav>
