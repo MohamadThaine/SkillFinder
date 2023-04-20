@@ -13,7 +13,7 @@ function NavBar(){
 
     return(
         <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-          <Link to='/' className="navbar-brand">
+          <Link to='/' className="navbar-brand brand-link">
               <img className='logo' src={logo} alt='SkillFinder Logo' />
           </Link>
           <button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 

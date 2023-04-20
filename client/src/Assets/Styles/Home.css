@@ -4,7 +4,7 @@
 }
 
 .intro{
-    width: 85%;
+    width: 85% !important;
     height: auto;
 }
 
@@ -74,13 +74,9 @@
     height: 4.5vw;
 }
 
-.category > :first-child{
-    position: absolute;
-    left: 2rem;
-}
 
 .category > :last-child{
-    margin-left: 5rem !important;
+    margin-left: 1rem !important;
 }
 
 .category > img{
@@ -99,7 +95,7 @@
 
     .intro{
         height: fit-content;
-        width: 95%;
+        width: 95% !important;
     }
 
     .mt-6{
@@ -112,7 +108,7 @@
 
     .category{
         margin-top: 10px;
-        width: 100%;
+        width: 32% !important;
         height: 10vh !important;
     }
 }
@@ -121,7 +117,7 @@
 
     .category{
         margin-top: 10px;
-        width: 80%;
+        width: 80% !important;
         margin-left: auto;
         margin-right: auto;
         height: 10vw !important;
