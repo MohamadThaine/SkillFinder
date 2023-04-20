@@ -1,5 +1,13 @@
+@keyframes horizontal-shaking {
+    0% { transform: translateX(0) }
+    25% { transform: translateX(5px) }
+    50% { transform: translateX(-5px) }
+    75% { transform: translateX(5px) }
+    100% { transform: translateX(0) }
+   }
+
 textarea {
-    resize: none;
+    resize: none !important;
 }
 
 .contact-us-input{
@@ -20,4 +28,16 @@ textarea {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.shaking{
+    animation: horizontal-shaking 0.5s;
+}
+
+.succesfullReport{
+    color: green;
+}
+
+.failedReport{
+    color: red;
 }
