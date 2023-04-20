@@ -16,7 +16,11 @@ function NavBar(){
           <Link to='/' className="navbar-brand">
               <img className='logo' src={logo} alt='SkillFinder Logo' />
           </Link>
-          <div className="collapse navbar-collapse justify-content">
+          <button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
+                  aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse justify-content" id="navbarSupportedContent">
             <div className="navbar-nav">
               <Link className={"nav-item nav-link pages-buttons " + (currentPage === '/'? 'active': '')}
                     to='/'>Home</Link>

@@ -12,6 +12,8 @@
     color: white;
 }
 
-.register-type-btn:nth-child(2){
-    margin-left: 50px;
+@media screen and (max-height: 768px){
+    .register-type-btn:nth-child(2){
+        margin-top: 5px;
+    }
 }

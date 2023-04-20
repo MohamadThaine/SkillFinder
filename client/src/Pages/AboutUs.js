@@ -10,7 +10,7 @@ function AboutUs(){
             </div> 
          </div>
          <div className='container'>
-         <div className="row mt-4 desc mb-2">
+            <div className="row mt-4 desc mb-2">
                 <WhatWeDo />
                 <Link to='/ContactUs' className='text-center mt-2'>
                     <button className='contact-us-btn'>Contact Us!</button>

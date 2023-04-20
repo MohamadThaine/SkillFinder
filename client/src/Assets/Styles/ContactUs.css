@@ -1,0 +1,23 @@
+textarea {
+    resize: none;
+}
+
+.contact-us-input{
+    height: 2.5rem;
+}
+
+.contact-us-desc{
+    height: 10rem;
+}
+
+.contact-us-submit{
+    border: none;
+    background-color: #36506C;
+    width: 10rem;
+    height: 3rem;
+    font-family: 'Shanti';
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

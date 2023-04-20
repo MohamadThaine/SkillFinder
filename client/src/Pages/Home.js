@@ -21,7 +21,7 @@ function Home(){
                         </div>
                         <div className='row mt-6 p-3'>
                             <div className='col'>
-                                <input type='text' placeholder='Search for apprenticeship...' className='searchInput' />
+                                <input type='text' placeholder='Search for apprenticeship...' className='defultInput searchInput' />
                             </div>
                             <div className='col'>
                                 <button className='searchButton'>

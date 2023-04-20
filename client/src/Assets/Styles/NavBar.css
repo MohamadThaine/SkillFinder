@@ -18,7 +18,7 @@
 .pages-buttons{
     cursor: pointer;
     font-family: 'Poppins';
-    color: black;
+    color: black !important;
     margin-left: 20px;
 }
 
@@ -28,3 +28,14 @@
     background-color: #36506C;
     transition: 300ms ease-in-out;
 }
+
+@media screen and (max-width: 1000px){
+    .pages-buttons{
+        margin-left: 1rem;
+        padding-left: 10px !important;
+    }
+
+    .active{
+        border-radius: 0px;
+    }
+ }

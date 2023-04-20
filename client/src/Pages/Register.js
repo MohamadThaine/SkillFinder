@@ -6,7 +6,7 @@ function Register(){
     return(
         <div className="container text-center mt-5">
             <h3>Would you like to Register as?</h3>
-            <div className="row mt-3 d-flex justify-content-center">
+            <div className="row mt-3 d-flex justify-content-around">
                 <button className="col-md-5 register-type-btn" onClick={() => setIsOwner('true')}>
                     Owner
                 </button>
@@ -15,8 +15,8 @@ function Register(){
                 </button>
             </div>
             <div className="row mt-5">
-                {isOwner == 'true' && <RegisterForOwner />}
-                {isOwner == 'false' && <RegisterForApprentice />}
+                {isOwner === 'true' && <RegisterForOwner />}
+                {isOwner === 'false' && <RegisterForApprentice />}
             </div>
         </div>
     )
