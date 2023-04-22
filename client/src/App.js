@@ -7,6 +7,7 @@ import AboutUs from "./Pages/AboutUs";
 import ContactUs from "./Pages/ContactUs";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
+import Search from './Pages/Search';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/ContactUs" element={<ContactUs />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Register" element={<Register />} />
+        <Route path='/Search/:keyWords' element={<Search />} />
         <Route path="*" element={<>Page Not Found</>} />
       </Routes>
       <Footer />

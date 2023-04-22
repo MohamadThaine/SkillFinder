@@ -29,13 +29,56 @@
     transition: 300ms ease-in-out;
 }
 
-@media screen and (max-width: 1000px){
+.nav-bar-search{
+    width: 26.5%;
+    font-family: 'Poppins';
+    outline: none;
+}
+
+.nav-bar-search-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #36506C;
+    font-family: 'Poppins';
+    border: none;
+    color: white;
+    border-radius: 0px 12px 12px 0px;
+    width: 5%;
+    margin-left: -10px;
+}
+
+.nav-bar-search-btn > img{
+    height: 2rem;
+}
+
+.hideSearch{
+    display: none;
+}
+
+@media screen and (max-width: 990px){
+
+    .nav-bar-search{
+        width: 80%;
+        margin-bottom: 10px;
+        height: 2.4rem;
+        margin-left: 1.5rem !important;
+    }
+
+    .nav-bar-search-btn{
+        display: none;
+        
+    }
+
+    .hideSearch{
+        display: flex;
+    }
+
     .pages-buttons{
-        margin-left: 1rem;
         padding-left: 10px !important;
     }
 
     .active{
-        border-radius: 0px;
+        border-radius: 0px !important;
     }
  }

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import useInput from '../Hooks/useInput'
 import { browserName, browserVersion } from "react-device-detect";
 import emailjs from '@emailjs/browser';
@@ -34,9 +34,6 @@ function ContactUs(){
         if(!email.match(validEmailRegex)){
             statusRef.current.innerText = 'Email is not valid!';
             statusRef.current.className = 'text-center mt-3 failedReport';
-            setTimeout(() => {
-                statusRef.current.className = 'text-center mt-3 failedReport';
-            },[500])
             return;
         }
 

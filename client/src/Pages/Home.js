@@ -7,9 +7,25 @@ import Agriculture from '../Assets/Images/Farming.png'
 import Networking from '../Assets/Images/Networking.png'
 import Electricity from '../Assets/Images/Electricity.png'
 import Fashion from '../Assets/Images/Fashion.png'
+import useInput from '../Hooks/useInput'
 import '../Assets/Styles/Home.css'
+import { useNavigate } from 'react-router-dom'
 
 function Home(){
+    const [searchKeyWords, searchInput] = useInput({type:'text', placeholder:'Search for apprenticeship...', className:'defultInput searchInput'})
+    const navigate = useNavigate();
+    const search = () => {
+        if(searchKeyWords === '') return;
+        const keyWords = searchKeyWords.replace(' ','%')
+        navigate('/Search/' + keyWords)
+    }
+
+    onkeyup = (e) => {
+        if(e.which === 13){
+            search();
+        }
+    }
+
     return(
         <>
             <div className='container-fluid mt-5 intro'>
@@ -21,10 +37,10 @@ function Home(){
                         </div>
                         <div className='row mt-6 p-3'>
                             <div className='col'>
-                                <input type='text' placeholder='Search for apprenticeship...' className='defultInput searchInput' />
+                                {searchInput}
                             </div>
                             <div className='col'>
-                                <button className='searchButton'>
+                                <button className='searchButton' onClick={search}>
                                     <img src={searchIcon} />
                                 </button>
                             </div>

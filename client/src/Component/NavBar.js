@@ -1,27 +1,57 @@
 import React, { useEffect, useState } from 'react'
 import logo from '../Assets/Images/SkillFinderLogo.png'
+import searchIcon from '../Assets/Images/searchIcon.svg'
 import '../Assets/Styles/NavBar.css'
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate, useParams } from 'react-router-dom';
 
 function NavBar(){
   const currentLocation = useLocation();
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState('');
+  const [searchKeyWords, setSearchKeyWords] = useState('');
 
   useEffect(() => {
     setCurrentPage(currentLocation.pathname);
+    if(!currentLocation.pathname.startsWith('/Search')){
+      setSearchKeyWords('');
+    }
   },[currentLocation.pathname])
 
+  const search = () => {
+    if(searchKeyWords === '') return;
+    const keyWords = searchKeyWords.replace(' ','%')
+    navigate('/Search/' + keyWords)
+}
+
+  onkeyup = (e) => {
+      if(e.which === 13){
+          search();
+      }
+  }
+
     return(
-        <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom">
           <Link to='/' className="navbar-brand brand-link">
               <img className='logo' src={logo} alt='SkillFinder Logo' />
           </Link>
-          <button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
-                  aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse justify-content" id="navbarSupportedContent">
-            <div className="navbar-nav">
+          <button className="navbar-toggler me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+            <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div className="offcanvas-header">
+          <h5 className="offcanvas-title ms-4" id="offcanvasNavbarLabel">SkillFinder Menu</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+
+        <div className="offcanvas-body">
+            <input className={"ms-3 defultInput nav-bar-search " + (currentPage=== '/'? 'hideSearch': '')}
+                   type="text" placeholder="Search..." aria-label="Search"
+                    value={searchKeyWords} onChange={e => setSearchKeyWords(e.target.value)}/>
+            <button className={'nav-bar-search-btn ' + (currentPage=== '/'? 'hideSearch': '')}>
+              <img src={searchIcon} />
+            </button>
+            <div className="navbar-nav ms-auto me-4 ">
+              
               <Link className={"nav-item nav-link pages-buttons " + (currentPage === '/'? 'active': '')}
                     to='/'>Home</Link>
               <Link className={"nav-item nav-link pages-buttons " + (currentPage === '/AboutUs'? 'active': '')}
@@ -34,6 +64,7 @@ function NavBar(){
                     to='/Register'>Register</Link>
             </div>
           </div>
+        </div>
       </nav>
     )
 }
