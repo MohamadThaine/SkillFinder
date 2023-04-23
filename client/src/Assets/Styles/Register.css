@@ -4,22 +4,53 @@
 }
 
 .register-type-btn{
+    margin: 10px !important;
+    width: 25% !important;
+    height: 2.5rem;   
+}
+
+.register-confirm-btn, .register-type-btn{
     border: none;
     background-color: #36506C;
-    width: 50% !important;
-    height: 3rem;
     font-family: 'Shanti';
     color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.type-active{
+    background-color: #456f9c;
+}
+
+.register-confirm-btn{
+    width: 50% !important;
+    height: 3rem;
     border-radius: 12px;
 }
 
-.register-input{
-    width: 30% !important;
+.register-row{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem !important;
 }
 
 .register-column{
-    width: 30% !important;
+    width:  fit-content !important;
+    display: flex;
+    align-items: baseline;
 }
+
+.gender-column{
+    width: 16.5rem !important
+}
+
+.register-input{
+    width: 15rem !important;
+}
+
+
 
 @media screen and (max-height: 768px){
     .register-type-btn:nth-child(2){

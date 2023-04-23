@@ -85,11 +85,11 @@ function Search(){
                         <h6>Learning Method</h6>
                         <div>
                             <input type="radio" className="form-check-input" id="OnlineLearn" value='OnlineLearn' name="LearnMethod"/>
-                            <label for="OnlineLearn" className="form-check-label ms-2">Yes</label>
+                            <label for="OnlineLearn" className="form-check-label ms-2">Online</label>
                         </div>
                         <div className="mt-3">
                             <input type="radio" className="form-check-input" id="OnSiteLearn" value='OnSiteLearn' name="LearnMethod"/>
-                            <label for="OnSiteLearn" className="form-check-label ms-2">No</label>
+                            <label for="OnSiteLearn" className="form-check-label ms-2">On-site</label>
                         </div>
                         <div className="mt-3">
                             <input type="radio" className="form-check-input" id="BothLearn" value='BothLearn' name="LearnMethod"/>

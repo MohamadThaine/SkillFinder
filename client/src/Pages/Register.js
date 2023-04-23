@@ -1,115 +1,105 @@
 import { useState } from "react"
+import useInput from '../Hooks/useInput'
 import '../Assets/Styles/Register.css'
 
 function Register(){
-    const [isOwner, setIsOwner] = useState('');
+    const [isOwner, setIsOwner] = useState(false);
+    const [firstName, firstNameInput] = useInput({type: 'text', className: 'defultInput register-input'});
+    const [lastName, lastNameInput] = useInput({type: 'text', className: 'defultInput register-input'});
+    const [phoneNumber, phoneNumberInput] = useInput({type: 'text', className: 'defultInput register-input'});
+    const [birthDate, birthDateInput] = useInput({type: 'date', className: 'defultInput register-input'});
+    const [otherInfo, otherInfoInput] = useInput({type: 'text', className: 'defultInput register-input'});
+    const [username, usernameInput] = useInput({type: 'text', className: 'defultInput register-input'});
+    const [email, emailInput] = useInput({type: 'email', className: 'defultInput register-input'});
+    const [password, passwordInput] = useInput({type: 'password', className: 'defultInput register-input'});
+    const [rePassword, rePasswordInput] = useInput({type: 'password', className: 'defultInput register-input'});
+
     return(
-        <div className="container text-center mt-5">
-            <h3>Would you like to Register as?</h3>
-            
-            <div className="row mt-5 d-flex justify-content-around">
-                <div className="row">
+    <>
+        <div className="container-fluid">
+            <div className="row header">
+                <h1 className="text-center mt-5">Register</h1>
+            </div>
+        </div>
+        <div className="container desc mt-2 text-center pb-4">
+            <h3 className="text-center mb-2">Would you like to register as?</h3>
+            <div className="d-flex justify-content-center">
+                <button className={"register-type-btn " + (isOwner? 'type-active': '')} onClick={() => setIsOwner(true)}>
+                    Owner
+                </button>
+                <button className={"register-type-btn " + (!isOwner? 'type-active': '')} onClick={() => setIsOwner(false)}>
+                    Apprentice
+                </button>  
+            </div>
+        </div>
+        <div className="container desc p-3 mt-5 text-center">
+            <h3 className="text-center mt-3">Please fill all inputs</h3>
+            <div className="row register-row mt-3">
                     <div className="d-flex flex-column register-column">
-                        <p className="me-auto">First Name</p>    
-                        <input className="defultInput register-input" type="text" />
-                    
+                        <span>First Name</span>    
+                        {firstNameInput}
                     </div>
-                    <div className="col d-flex flex-column">
-                        <p className="me-auto">Last Name</p>    
-                        <input  className="defultInput register-input" type="text" />
-                    
+                    <div className="d-flex flex-column register-column">
+                        <span>Last Name</span>    
+                        {lastNameInput}
                     </div>
-                    
+            </div>
+            <div className="row register-row">
+                <div className="register-column d-flex flex-column">
+                    <span>Phone Number</span>    
+                    {phoneNumberInput}
                 </div>
-
-                <div className="row">
-                    <div className="col d-flex flex-column">
-                        <p className="me-auto">Phone Number</p>    
-                        <input className="defultInput register-input"  type="text" />
-                    
-                    </div>
-                    <div className="col d-flex flex-column">
-                        <p className="me-auto">Birth Date</p>    
-                        <input  className="defultInput register-input" type="date" />
-                    
-                    </div>
-                    
+                <div className="register-column d-flex flex-column">
+                    <span>Birth Date</span>    
+                    {birthDateInput}
                 </div>
-
-                <div className="row">
-                    <div className="col d-flex flex-column">
-                        <p className="me-auto">Major</p>    
-                        <input className="defultInput register-input"  type="text" />
-                    
-                    </div>
-                    <div className="col d-flex flex-column">
-                        <p className="me-auto">Gender</p>    
-                        <div className="me-auto">
-                        <input  className="me-auto" type="radio" id="male-radio" name="Gender" />
+            </div>
+            <div className="row register-row">
+                <div className="register-column d-flex flex-column">
+                    <span>
+                        {isOwner ? "Major" : "Study level"}
+                    </span>    
+                    {otherInfoInput}
+                </div>
+                <div className="register-column d-flex flex-column gender-column">
+                    <span>Gender</span>    
+                    <div>
+                        <input type="radio" id="male-radio" name="Gender" />
                         <label for="male-radio" className="ms-1">Male</label>
-                     
-                        <input  className="me-auto ms-3" type="radio" id="female-radio" name="Gender" />
-                        <label for="female-radio" className="ms-1">Female</label></div>
+                        <input className="ms-3" type="radio" id="female-radio" name="Gender" />
+                        <label for="female-radio" className="ms-1">Female</label>
                     </div>
-                    
                 </div>
-                <div className="row">
-                    <div className="col d-flex flex-column">
-                        <p className="me-auto">Username</p>    
-                        <input className="defultInput register-input" type="text" />
-                    
-                    </div>
-                    <div className="col d-flex flex-column">
-                        <p className="me-auto">Email</p>    
-                        <input  className="defultInput register-input" type="email" />
-                    
-                    </div>
-                    
+            </div>
+            <div className="row register-row">
+                <div className="register-column d-flex flex-column">
+                    <span>Username</span>    
+                    {usernameInput}
                 </div>
-                <div className="row">
-                    <div className="col d-flex flex-column">
-                        <p className="me-auto">Password</p>    
-                        <input className="defultInput register-input" type="password" />
-                    
-                    </div>
-                    <div className="col d-flex flex-column">
-                        <p className="me-auto">Re-enter Password</p>    
-                        <input  className="defultInput register-input" type="password" />
-                    
-                    </div>
-                    
+                <div className="register-column d-flex flex-column">
+                    <span>Email</span>    
+                    {emailInput}
                 </div>
-                <div className="row">
-                    <div className="col d-flex">
+            </div>
+            <div className="row register-row">
+                <div className="register-column d-flex flex-column">
+                    <span>Password</span>    
+                    {passwordInput}
+                </div>
+                <div className="register-column d-flex flex-column">
+                    <span className="me-auto">Re-enter Password</span>    
+                    {rePasswordInput}
+                </div>
+            </div>
+            <div className="row register-row mt-3">
+                <div className="register-column d-flex">
                     <input type="checkbox" id="accept-check"/>
                     <label for="accept-check" className="ms-1">I agree to Terms of Use and Privacy Policy</label>
-                    </div>
                 </div>
-
-                
-                    <button className="row register-type-btn justify-content-center d-flex align-items-center ms-auto me-auto">Register</button>
-                
-
-
             </div>
-
+            <button className="mt-2 row register-confirm-btn ms-auto me-auto">Register</button>
         </div>
-    )
-}
-
-const RegisterForOwner = ({inputs}) => {
-    return(
-        <>
-         Register For Owner 
-        </>
-    )
-}
-
-const RegisterForApprentice = ({inputs}) => {
-    return(
-        <>
-         Register For Apprentice
-        </>
+    </>  
     )
 }
 
