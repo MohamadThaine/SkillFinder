@@ -48,7 +48,7 @@ function ContactUs(){
     }
 
     onkeyup = (key) => {
-        if(key.which == 13){
+        if(key.which === 13){
             sendReport();
         }
     }

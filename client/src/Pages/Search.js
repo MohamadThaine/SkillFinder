@@ -1,18 +1,44 @@
 import React, { useState } from "react";
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Networking from '../Assets/Images/NetworkingExample.png';
 import GrahpicDesign from '../Assets/Images/GraphicDesignExample.png';
 import Carpenters from '../Assets/Images/CarpentersExample.png';
 import RatingIcon from '../Assets/Images/RatingIcon.svg';
-
 import '../Assets/Styles/Search.css'
+
+const range = (start, end) => {
+    return [...Array(end).keys()].map((element) => element + start)
+};
+
+
 function Search(){
     const { keyWords } = useParams();
     const [searchKeyWords, setSearchKeyWords] = useState(keyWords.replace('%', ' '));
+    const [searchResults, setSearchResults] = useState([{title:'Networking', img:Networking, rating:"4.5 (100 Rating)",price: '60$'}
+                                                        ,{title:'Graphic Design', img:GrahpicDesign, rating:"4.5 (100 Rating)",price: '60$'}
+                                                        ,{title:'Carpenters', img:Carpenters, rating:"4.5 (100 Rating)",price: '60$'}
+                                                        ,{title:'Networking', img:Networking, rating:"4.5 (100 Rating)",price: '60$'}
+                                                        ,{title:'Graphic Design', img:GrahpicDesign, rating:"4.5 (100 Rating)",price: '60$'}
+                                                        ,{title:'Carpenters', img:Carpenters, rating:"4.5 (100 Rating)",price: '60$'}
+                                                        ,{title:'Networking', img:Networking, rating:"4.5 (100 Rating)",price: '60$'}
+                                                        ,{title:'Graphic Design', img:GrahpicDesign, rating:"4.5 (100 Rating)",price: '60$'}
+                                                        ,{title:'Carpenters', img:Carpenters, rating:"4.5 (100 Rating)",price: '60$'}]);
+    const navigate = useNavigate();
+    const search = () =>{
+        if(searchKeyWords === '') return;
+        navigate('/Search/' + searchKeyWords);
+    }
+
+    onkeyup = (e) => {
+        if(e.which === 13){
+            search();
+        }
+    }
+
     return(
         <div className='container-fluid searchPage'>
             <div className="searchHeader align-items-center">
-                <input className="defultInput searchPageInput ms-auto me-auto"/>
+                <input className="defultInput searchPageInput ms-auto me-auto" placeholder="Search..." value={searchKeyWords} onChange={e => setSearchKeyWords(e.target.value)}/>
             </div>
             <div className="row mt-3">
                 <div className="flex-column filter-section pb-3">
@@ -102,100 +128,8 @@ function Search(){
                     </div>   
                 </div>
                 <div className="col ms-3">
-                    <h3 className="text-center">6 Results Found for {searchKeyWords}</h3>
-                    <div className="row result-row">
-                        <div className="col result">
-                            <img className="result-img" src={Carpenters} />
-                            <div className="row result-info">
-                                <h5>Carpentering For experts</h5>
-                                <h6>Price: 60$</h6>
-                            </div>
-                            <div className="row me-auto rating-info">
-                                 <img className="rating-star" src={RatingIcon} />
-                                 <span>4.8 (100 Review)</span>
-                            </div>
-                        </div>
-                        <div className="col result">
-                            <img className="result-img" src={GrahpicDesign} />
-                            <div className="row result-info">
-                                <h5>Begginger Grahpic Design Course</h5>
-                                <h6>Price: Free</h6>
-                            </div>
-                            <div className="row me-auto rating-info">
-                                 <img className="rating-star" src={RatingIcon} />
-                                 <span>4.8 (100 Review)</span>
-                            </div>
-                        </div>
-                        <div className="col result">
-                            <img className="result-img" src={Networking} />
-                            <div className="row result-info">
-                                <h5>Advanced Networking Course</h5>
-                                <h6>Price: Free</h6>
-                            </div>
-                            <div className="row me-auto rating-info">
-                                 <img className="rating-star" src={RatingIcon} />
-                                 <span>4.8 (100 Review)</span>
-                            </div>
-                        </div>
-                        <div className="col result">
-                            <img className="result-img" src={Carpenters} />
-                            <div className="row result-info">
-                                <h5>Carpentering For experts</h5>
-                                <h6>Price: Free</h6>
-                            </div>
-                            <div className="row me-auto rating-info">
-                                 <img className="rating-star" src={RatingIcon} />
-                                 <span>4.8 (100 Review)</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row result-row">
-                        <div className="col result">
-                            <img className="result-img" src={Carpenters} />
-                            <div className="row result-info">
-                                <h5>Carpentering For experts</h5>
-                                <h6>Price: 60$</h6>
-                            </div>
-                            <div className="row me-auto rating-info">
-                                 <img className="rating-star" src={RatingIcon} />
-                                 <span>4.8 (100 Review)</span>
-                            </div>
-                        </div>
-                        <div className="col result">
-                            <img className="result-img" src={GrahpicDesign} />
-                            <div className="row result-info">
-                                <h5>Begginger Grahpic Design Course</h5>
-                                <h6>Price: Free</h6>
-                            </div>
-                            <div className="row me-auto rating-info">
-                                 <img className="rating-star" src={RatingIcon} />
-                                 <span>4.8 (100 Review)</span>
-                            </div>
-                        </div>
-                        <div className="col result">
-                            <img className="result-img" src={Networking} />
-                            <div className="row result-info">
-                                <h5>Advanced Networking Course</h5>
-                                <h6>Price: Free</h6>
-                            </div>
-                            <div className="row me-auto rating-info">
-                                 <img className="rating-star" src={RatingIcon} />
-                                 <span>4.8 (100 Review)</span>
-                            </div>
-                        </div>
-                        <div className="col result">
-                            <img className="result-img" src={Carpenters} />
-                            <div className="row result-info">
-                                <h5>Carpentering For experts</h5>
-                                <h6>Price: Free</h6>
-                            </div>
-                            <div className="row me-auto rating-info">
-                                 <img className="rating-star" src={RatingIcon} />
-                                 <span>4.8 (100 Review)</span>
-                            </div>
-                        </div>
-                    </div>
-                    
+                    <h3 className="text-center">{searchResults.length} Results Found for {keyWords}</h3>
+                    <SearchResult resultList={searchResults} />
                 </div>
             </div>
         </div>
@@ -203,16 +137,33 @@ function Search(){
     
 }
 
-const SearchResult = ({resultList}) =>{
+const SearchResult = ({resultList}) => {
+    const rowLength = range(1, Math.ceil(resultList.length/4));
     return(
-        resultList.map(result => {
-            return <Result key={result.id} result={result}/>
-        })
+        rowLength.map((row) => (
+            <div className="row result-row">
+                {resultList.slice((row - 1)*4, row*4).map((result) => (
+                    <Result result={result} />
+                ))}
+            </div>
+        ))
     )
 }
 
 const Result = ({result}) => {
-
+    return(
+        <div className="result">
+            <img className="result-img" src={result.img} />
+            <div className="row result-info">
+                <h5>{result.title}</h5>
+                <h6>Price: {result.price}</h6>
+            </div>
+            <div className="row me-auto rating-info">
+                <img className="rating-star" src={RatingIcon} />
+                <span>{result.rating}</span>
+            </div>
+        </div>
+    )
 }
 
 export default Search;

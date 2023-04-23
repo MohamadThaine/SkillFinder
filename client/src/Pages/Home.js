@@ -10,6 +10,7 @@ import Fashion from '../Assets/Images/Fashion.png'
 import useInput from '../Hooks/useInput'
 import '../Assets/Styles/Home.css'
 import { useNavigate } from 'react-router-dom'
+import ScrollToTop from '../Component/ScrollToTop'
 
 function Home(){
     const [searchKeyWords, searchInput] = useInput({type:'text', placeholder:'Search for apprenticeship...', className:'defultInput searchInput'})
@@ -72,18 +73,18 @@ function Home(){
                         <img className='ms-3' src={Networking}/>
                         <h4 className='col-md-4 me-5'>Networking</h4>
                     </div>
-                    <div className='col-sm-3 d-flex justify-content-center  category'>
+                    <div className='col-sm-3 d-flex justify-content-center category'>
                         <img className='ms-3' src={Electricity}/>
                         <h4 className='col-md-4 me-5'>Electricity</h4>
                     </div>
                     <div className='col-sm-3 d-flex justify-content-center category'>
-                        <img className='ms-3' src={Fashion}/>      
+                         <img className='ms-3' src={Fashion}/>
                         <h4 className='col-md-4 me-5'>Fashion Design</h4> 
                     </div>
                 </div>
             </div>
-        </>
-        
+            
+        </> 
     )
 }
 

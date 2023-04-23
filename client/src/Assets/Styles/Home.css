@@ -67,21 +67,27 @@
     cursor: pointer;
     color: black;
     font-family: 'Shanti';
-    background-color: #F4F4F4;
-    border-bottom: 1px solid black;
-    border-radius: 43px;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    box-shadow: 3px 3px 99px #0000002D;
+    border-radius: 83px;
     align-items: center;
     height: 4.5vw;
+    width: 100%;
+    white-space: nowrap;
 }
 
-
 .category > :last-child{
-    margin-left: 1rem !important;
+    position: absolute;
+    left: 35%;
+    margin-top: auto !important;
+    margin-bottom: auto !important;
 }
 
 .category > img{
-    width: 4rem;
-    height: 4rem;
+    position: absolute;
+    left: 10%;
+    width: 3rem;
+    height: 3rem;
 }
 
 @media screen and (max-height: 768px){
@@ -111,12 +117,21 @@
         width: 32% !important;
         height: 10vh !important;
     }
+
+    .category > :first-child{
+        left: 2%;
+    }
+
+    .category > :last-child{
+        left: 28%;
+    }
+
 }
 
 @media screen and (max-width: 768px){
 
     .category{
-        margin-top: 10px;
+        margin-top: 10px !important;
         width: 80% !important;
         margin-left: auto;
         margin-right: auto;
@@ -126,5 +141,11 @@
     .category > img{
         width: 2rem;
         height: 2rem;
+        left: 20% !important;
     }
+
+    .category > :last-child{
+        left: 35% !important;
+    }
+
 }

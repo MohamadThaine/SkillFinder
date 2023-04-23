@@ -33,6 +33,7 @@
     width: 26.5%;
     font-family: 'Poppins';
     outline: none;
+    margin-left: 10px;
 }
 
 .nav-bar-search-btn{
@@ -49,7 +50,7 @@
 }
 
 .nav-bar-search-btn > img{
-    height: 2rem;
+    height: 1.5rem;
 }
 
 .hideSearch{
@@ -66,7 +67,7 @@
     }
 
     .nav-bar-search-btn{
-        display: none;
+        display: none !important;
         
     }
 

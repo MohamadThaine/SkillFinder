@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import logo from '../Assets/Images/SkillFinderLogo.png'
 import searchIcon from '../Assets/Images/searchIcon.svg'
 import '../Assets/Styles/NavBar.css'
-import { useLocation, Link, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
+import ScrollToTop from './ScrollToTop';
 
 function NavBar(){
   const currentLocation = useLocation();
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState('');
   const [searchKeyWords, setSearchKeyWords] = useState('');
-
+  const navRef = useRef();
   useEffect(() => {
     setCurrentPage(currentLocation.pathname);
     if(!currentLocation.pathname.startsWith('/Search')){
@@ -30,7 +31,8 @@ function NavBar(){
   }
 
     return(
-      <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+     <>
+      <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom" ref={navRef}>
           <Link to='/' className="navbar-brand brand-link">
               <img className='logo' src={logo} alt='SkillFinder Logo' />
           </Link>
@@ -44,7 +46,7 @@ function NavBar(){
         </div>
 
         <div className="offcanvas-body">
-            <input className={"ms-3 defultInput nav-bar-search " + (currentPage=== '/'? 'hideSearch': '')}
+            <input className={"defultInput nav-bar-search " + (currentPage=== '/'? 'hideSearch': '')}
                    type="text" placeholder="Search..." aria-label="Search"
                     value={searchKeyWords} onChange={e => setSearchKeyWords(e.target.value)}/>
             <button className={'nav-bar-search-btn ' + (currentPage=== '/'? 'hideSearch': '')}>
@@ -66,6 +68,8 @@ function NavBar(){
           </div>
         </div>
       </nav>
+      <ScrollToTop viewRef={navRef} />
+      </>
     )
 }
 
