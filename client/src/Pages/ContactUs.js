@@ -39,7 +39,7 @@ function ContactUs(){
 
         emailjs.send(process.env.React_APP_EmailJsServiceID , process.env.React_APP_EmailJsTemplateID , EmailJsTemplateParams ,  process.env.React_APP_EmailJs_API_KEY)
         .then(() => {
-            statusRef.current.innerText = 'Report has been sent we will content you by email within 48 hours';
+            statusRef.current.innerText = 'Report has been sent. We will contact you by email within 48 hours';
             statusRef.current.className = 'text-center mt-3 succesfullReport';
         }).catch((error) => {
             statusRef.current.innerText = 'Report has not been sent error code:' + error.code;

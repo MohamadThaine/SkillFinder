@@ -6,10 +6,19 @@
 .register-type-btn{
     border: none;
     background-color: #36506C;
-    width: 10rem;
+    width: 50% !important;
     height: 3rem;
     font-family: 'Shanti';
     color: white;
+    border-radius: 12px;
+}
+
+.register-input{
+    width: 30% !important;
+}
+
+.register-column{
+    width: 30% !important;
 }
 
 @media screen and (max-height: 768px){
