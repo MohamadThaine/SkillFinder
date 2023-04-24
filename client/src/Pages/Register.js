@@ -1,6 +1,7 @@
 import { useState } from "react"
 import useInput from '../Hooks/useInput'
 import '../Assets/Styles/Register.css'
+import { Link } from "react-router-dom";
 
 function Register(){
     const [isOwner, setIsOwner] = useState(false);
@@ -64,9 +65,9 @@ function Register(){
                 <div className="register-column d-flex flex-column gender-column">
                     <span>Gender</span>    
                     <div>
-                        <input type="radio" id="male-radio" name="Gender" />
+                        <input type="radio" className="form-check-input" id="male-radio" name="Gender" />
                         <label for="male-radio" className="ms-1">Male</label>
-                        <input className="ms-3" type="radio" id="female-radio" name="Gender" />
+                        <input className="ms-3 form-check-input" type="radio" id="female-radio" name="Gender" />
                         <label for="female-radio" className="ms-1">Female</label>
                     </div>
                 </div>
@@ -93,8 +94,8 @@ function Register(){
             </div>
             <div className="row register-row mt-3">
                 <div className="register-column d-flex">
-                    <input type="checkbox" id="accept-check"/>
-                    <label for="accept-check" className="ms-1">I agree to Terms of Use and Privacy Policy</label>
+                    <input type="checkbox" className="form-check-input" id="accept-check"/>
+                    <label for="accept-check" className="ms-1 mb-auto">I agree to <Link>Terms of Use and Privacy Policy</Link></label>
                 </div>
             </div>
             <button className="mt-2 row register-confirm-btn ms-auto me-auto">Register</button>

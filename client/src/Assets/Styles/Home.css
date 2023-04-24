@@ -37,6 +37,16 @@
     font-family: 'Shanti';
 }
 
+.defultButton{
+    border: none;
+    background-color: #36506C;
+    font-family: 'Shanti';
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .searchInput{
     width: 100%;
     height: 130%;

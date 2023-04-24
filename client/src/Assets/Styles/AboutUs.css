@@ -21,6 +21,7 @@
     margin-left: auto;
     font-family: 'Shanti';
     box-shadow: 0 0 50px #ccc;
+    border-radius: 8px;
 }
 
 .desc .contact-us-btn{
