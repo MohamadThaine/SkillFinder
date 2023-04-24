@@ -2,6 +2,9 @@ import { useState, useRef } from "react"
 import useInput from '../Hooks/useInput'
 import '../Assets/Styles/Register.css'
 import { Link, useNavigate } from "react-router-dom";
+import randomstring from 'randomstring';
+
+export var Verify_Token = "";
 
 function Register(){
     const [isOwner, setIsOwner] = useState(false);
@@ -15,13 +18,15 @@ function Register(){
     const [password, passwordInput] = useInput({type: 'password', className: 'defultInput register-input'});
     const [rePassword, rePasswordInput] = useInput({type: 'password', className: 'defultInput register-input'});
     const [fillInputClass, setFillInputClass] = useState('mt-2');
+    const [gender, setGender] = useState('');
+    const [acceptedTerms, setAcceptedTerms] = useState(false);
     const navigate = useNavigate();
     const statusRef = useRef();
     const validate = () => {
         const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         const validPhone = /^[0-9]{10}$/.test(phoneNumber);
         const age = new Date().getFullYear() - new Date(birthDate).getFullYear();
-        if(firstName === '' || lastName === '' || phoneNumber === '' || birthDate === '' || otherInfo === '' || username === '' || email === '' || password === '' || rePassword === ''){
+        if(firstName === '' || lastName === '' || phoneNumber === '' || birthDate === '' || otherInfo === '' || username === '' || email === '' || password === '' || rePassword === '', gender === ''){
             setFillInputClass('mt-2 shaking');
             setTimeout(() => {
                 setFillInputClass('mt-2');
@@ -48,11 +53,17 @@ function Register(){
             statusRef.current.className = 'failed';
             return false;
         }
+        if(!acceptedTerms){
+            statusRef.current.innerHTML = 'You must accept the terms';
+            statusRef.current.className = 'failed';
+            return false;
+        }
         return true;
     }
 
     const register = async () => {
         if(!validate()) return;
+        Verify_Token = randomstring.generate(20);
         const data = {
             firstName,
             lastName,
@@ -62,7 +73,9 @@ function Register(){
             username,
             email,
             password,
-            isOwner
+            gender,
+            isOwner,
+            Verify_Token
         }
         const response = await fetch('http://localhost:5000/register', {
             method: 'POST',
@@ -78,7 +91,6 @@ function Register(){
         }else{
             statusRef.current.innerHTML = 'Register success';
             statusRef.current.className = 'succesfull';
-            navigate('/login');
         }
     }
 
@@ -132,9 +144,11 @@ function Register(){
                 <div className="register-column d-flex flex-column gender-column">
                     <span>Gender</span>    
                     <div>
-                        <input type="radio" className="form-check-input" id="male-radio" name="Gender" />
+                        <input type="radio" className="form-check-input" id="male-radio" name="Gender"
+                            onChange={() => setGender('Male')} />
                         <label for="male-radio" className="ms-1">Male</label>
-                        <input className="ms-3 form-check-input" type="radio" id="female-radio" name="Gender" />
+                        <input className="ms-3 form-check-input" type="radio" id="female-radio" name="Gender"
+                            onChange={() => setGender('Female')} />
                         <label for="female-radio" className="ms-1">Female</label>
                     </div>
                 </div>
@@ -161,11 +175,18 @@ function Register(){
             </div>
             <div className="row register-row mt-3">
                 <div className="register-column d-flex">
-                    <input type="checkbox" className="form-check-input" id="accept-check"/>
+                    <input type="checkbox" className="form-check-input" id="accept-check"
+                        onChange={e => {
+                            if(e.target.checked)
+                                setAcceptedTerms(true);
+                            else
+                                setAcceptedTerms(false);
+                        }}
+                        value={acceptedTerms}/>
                     <label for="accept-check" className="ms-1 mb-auto">I agree to <Link>Terms of Use and Privacy Policy</Link></label>
                 </div>
             </div>
-            <h5 ref={statusRef}></h5>
+            <h5 ref={statusRef}>    </h5>
             <button className="mt-2 row register-confirm-btn ms-auto me-auto" onClick={register}>Register</button>
         </div>
     </>  

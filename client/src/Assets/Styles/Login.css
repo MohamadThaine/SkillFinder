@@ -74,7 +74,8 @@ body{
 @media screen and (max-width:990px) {
 
     .login-page-boxes{
-        height: 75vh;
+        height: 120vw;
+        overflow: hidden;
     }
     .login-input, .login-button{
         width: 18rem !important;

@@ -128,7 +128,7 @@ function Search(){
                     </div>   
                 </div>
                 <div className="col ms-3">
-                    <h3 className="text-center">{searchResults.length} Results Found for {keyWords}</h3>
+                    <h3 className="text-center">{searchResults.length} Results Found for {keyWords.replace('%',' ')}</h3>
                     <SearchResult resultList={searchResults} />
                 </div>
             </div>
