@@ -35,6 +35,10 @@
     height: 3rem;
 }
 
+.always-hidden{
+    visibility: hidden !important;
+}
+
 @media screen and (max-width: 1000px){
     .scroll-to-top{
         width: 2rem;

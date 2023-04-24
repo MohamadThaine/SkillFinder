@@ -1,3 +1,14 @@
+body{
+    overflow-x: hidden !important;
+}
+
+.login-page-boxes{
+    width: 100vw;
+    position: relative;
+    display: flex;
+    height: 74vh;
+}
+
 .login-img{
     width: 6rem !important;
 }
@@ -13,9 +24,64 @@
     font-size: 1.5rem;
 }
 
+.transtion-boxes{
+    transition: 1s ease-in-out;
+}
+
+.login-box{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.reset-password-box{
+    position: absolute;
+    left: 150%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.login-box-to-left{
+    left: -150%;
+}
+
+.reset-password-box-to-left{
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.login-reset-password{
+    cursor: pointer;
+    color: #36506C;
+}
+
+.email-verify-row{
+    position: relative;
+}
+
+.verify-email{
+    position: absolute;
+    left: 77.5%;
+    bottom: 10%;
+    cursor: pointer;
+    z-index: 1;
+    background-color: white;
+    width: fit-content !important;
+}
+
 @media screen and (max-width:990px) {
+
+    .login-page-boxes{
+        height: 75vh;
+    }
     .login-input, .login-button{
         width: 18rem !important;
+    }
+
+    .verify-email{
+        left: 70%;
     }
     
 }

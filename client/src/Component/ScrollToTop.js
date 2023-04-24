@@ -28,9 +28,12 @@ function ScrollToTop({viewRef}){
         return () => window.removeEventListener('scroll', onScroll);
     })
 
-    return<button className="scroll-to-top d-flex" onClick={scrollToTop}>
+    return<>
+    {!isViewVisable && <button className="scroll-to-top d-flex" onClick={scrollToTop}>
             <img src={arrowUp} alt="arrow-up" />
-        </button>
+        </button>}
+    <div className='scroll-to-top always-hidden'></div>
+    </>
 }
 
 export default ScrollToTop;
