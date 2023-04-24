@@ -34,10 +34,10 @@ textarea {
     animation: horizontal-shaking 0.5s;
 }
 
-.succesfullReport{
+.succesfull{
     color: green;
 }
 
-.failedReport{
+.failed{
     color: red;
 }

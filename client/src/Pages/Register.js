@@ -1,19 +1,86 @@
-import { useState } from "react"
+import { useState, useRef } from "react"
 import useInput from '../Hooks/useInput'
 import '../Assets/Styles/Register.css'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Register(){
     const [isOwner, setIsOwner] = useState(false);
     const [firstName, firstNameInput] = useInput({type: 'text', className: 'defultInput register-input'});
     const [lastName, lastNameInput] = useInput({type: 'text', className: 'defultInput register-input'});
-    const [phoneNumber, phoneNumberInput] = useInput({type: 'text', className: 'defultInput register-input'});
+    const [phoneNumber, phoneNumberInput] = useInput({type: 'tel', className: 'defultInput register-input'});
     const [birthDate, birthDateInput] = useInput({type: 'date', className: 'defultInput register-input'});
     const [otherInfo, otherInfoInput] = useInput({type: 'text', className: 'defultInput register-input'});
     const [username, usernameInput] = useInput({type: 'text', className: 'defultInput register-input'});
     const [email, emailInput] = useInput({type: 'email', className: 'defultInput register-input'});
     const [password, passwordInput] = useInput({type: 'password', className: 'defultInput register-input'});
     const [rePassword, rePasswordInput] = useInput({type: 'password', className: 'defultInput register-input'});
+    const [fillInputClass, setFillInputClass] = useState('mt-2');
+    const navigate = useNavigate();
+    const statusRef = useRef();
+    const validate = () => {
+        const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        const validPhone = /^[0-9]{10}$/.test(phoneNumber);
+        const age = new Date().getFullYear() - new Date(birthDate).getFullYear();
+        if(firstName === '' || lastName === '' || phoneNumber === '' || birthDate === '' || otherInfo === '' || username === '' || email === '' || password === '' || rePassword === ''){
+            setFillInputClass('mt-2 shaking');
+            setTimeout(() => {
+                setFillInputClass('mt-2');
+            }, [500])
+            return false;
+        }
+        if(!validEmail){
+            statusRef.current.innerHTML = 'Invalid email';
+            statusRef.current.className = 'failed';
+            return false;
+        }
+        if(!validPhone){
+            statusRef.current.innerHTML = 'Invalid phone number';
+            statusRef.current.className = 'failed';
+            return false;
+        }
+        if(password !== rePassword){
+            statusRef.current.innerHTML = 'Passwords do not match';
+            statusRef.current.className = 'failed';
+            return false;
+        }
+        if(age < 10){
+            statusRef.current.innerHTML = 'You must be at least 10 years old';
+            statusRef.current.className = 'failed';
+            return false;
+        }
+        return true;
+    }
+
+    const register = async () => {
+        if(!validate()) return;
+        const data = {
+            firstName,
+            lastName,
+            phoneNumber,
+            birthDate,
+            otherInfo,
+            username,
+            email,
+            password,
+            isOwner
+        }
+        const response = await fetch('http://localhost:5000/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        const res = await response.json();
+        if(res.error){
+            statusRef.current.innerHTML = res.error;
+            statusRef.current.className = 'failed';
+        }else{
+            statusRef.current.innerHTML = 'Register success';
+            statusRef.current.className = 'succesfull';
+            navigate('/login');
+        }
+    }
 
     return(
     <>
@@ -34,7 +101,7 @@ function Register(){
             </div>
         </div>
         <div className="container desc p-3 mt-5 text-center">
-        <h3 className="text-center mt-3">Please fill all inputs</h3>
+        <h3 className={fillInputClass}>Please fill all inputs</h3>
             <div className="row register-row mt-3">
                     <div className="d-flex flex-column register-column">
                         <span>First Name</span>    
@@ -98,7 +165,8 @@ function Register(){
                     <label for="accept-check" className="ms-1 mb-auto">I agree to <Link>Terms of Use and Privacy Policy</Link></label>
                 </div>
             </div>
-            <button className="mt-2 row register-confirm-btn ms-auto me-auto">Register</button>
+            <h5 ref={statusRef}></h5>
+            <button className="mt-2 row register-confirm-btn ms-auto me-auto" onClick={register}>Register</button>
         </div>
     </>  
     )
