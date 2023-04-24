@@ -13,7 +13,7 @@ const range = (start, end) => {
 
 function Search(){
     const { keyWords } = useParams();
-    const [searchKeyWords, setSearchKeyWords] = useState(keyWords.replace('%', ' '));
+    const [searchKeyWords, setSearchKeyWords] = useState(decodeURIComponent(keyWords.replace('%', ' ')));
     const [searchResults, setSearchResults] = useState([{title:'Networking', img:Networking, rating:"4.5 (100 Rating)",price: '60$'}
                                                         ,{title:'Graphic Design', img:GrahpicDesign, rating:"4.5 (100 Rating)",price: '60$'}
                                                         ,{title:'Carpenters', img:Carpenters, rating:"4.5 (100 Rating)",price: '60$'}
@@ -128,7 +128,7 @@ function Search(){
                     </div>   
                 </div>
                 <div className="col ms-3">
-                    <h3 className="text-center">{searchResults.length} Results Found for {keyWords.replace('%',' ')}</h3>
+                    <h3 className="text-center">{searchResults.length} Results Found for {decodeURIComponent(keyWords.replace('%', ' '))}</h3>
                     <SearchResult resultList={searchResults} />
                 </div>
             </div>
