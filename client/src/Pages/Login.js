@@ -7,7 +7,7 @@ import '../Assets/Styles/Login.css'
 function Login(){
     return(
         <>
-         <div className="containter-fluid header">
+         <div className="containter-fluid header mb-3">
             <h1 className="text-center mt-5">Login</h1>
          </div>
         <div className="desc mt-auto mb-auto pb-5 pe-5 ps-5">

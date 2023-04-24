@@ -12,13 +12,13 @@ function ScrollToTop({viewRef}){
     useEffect(() => {
         const onScroll = () => {
             if(!isViewVisable){
-                document.querySelector('.scroll-to-top').classList.add('show');
+                document.querySelector('.scroll-to-top').classList.add('show-scroll-to-top');
                 setTimeout(() => {
-                    document.querySelector('.scroll-to-top').classList.remove('show');
+                    document.querySelector('.scroll-to-top').classList.remove('show-scroll-to-top');
                     document.querySelector('.scroll-to-top').classList.add('hover-to-show');
                 }, 1500)
             }else{
-                document.querySelector('.scroll-to-top').classList.remove('show');
+                document.querySelector('.scroll-to-top').classList.remove('show-scroll-to-top');
                 document.querySelector('.scroll-to-top').classList.remove('hover-to-show');
             }
         }
@@ -28,12 +28,9 @@ function ScrollToTop({viewRef}){
         return () => window.removeEventListener('scroll', onScroll);
     })
 
-    return( 
-    <>
-        {<button className="scroll-to-top d-flex" onClick={scrollToTop}>
+    return<button className="scroll-to-top d-flex" onClick={scrollToTop}>
             <img src={arrowUp} alt="arrow-up" />
-        </button>}
-    </>)
+        </button>
 }
 
 export default ScrollToTop;

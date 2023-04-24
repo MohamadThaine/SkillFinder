@@ -9,6 +9,7 @@ function ContactUs(){
     const [email, emailInput] = useInput({className:'col ms-2 defultInput contact-us-input', type:'email', placeholder:'Email'})
     const [subject, subjectInput] = useInput({className:'row mt-4 defultInput contact-us-input', type:'text', placeholder:'Subject'})
     const statusRef = useRef();
+    const descRef = useRef();
     const [headerClass, setHeaderClass] = useState('mb-3');
     const [description, setDescription] = useState('');
     var EmailJsTemplateParams = {
@@ -49,7 +50,9 @@ function ContactUs(){
 
     onkeyup = (key) => {
         if(key.which === 13){
-            sendReport();
+            if(document.activeElement !== descRef.current){
+                sendReport();
+            }
         }
     }
 
@@ -68,7 +71,7 @@ function ContactUs(){
                 {emailInput}
              </div>
              {subjectInput}
-             <textarea className='row mt-4 defultInput contact-us-desc' placeholder='Description Here..' value={description}
+             <textarea className='row mt-4 defultInput contact-us-desc' ref={descRef} placeholder='Description Here..' value={description}
                         onChange={(e) => setDescription(e.target.value)} />
              <button className='row mt-4 contact-us-submit mx-auto'
                      onClick={sendReport}>

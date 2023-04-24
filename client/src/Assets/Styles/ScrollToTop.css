@@ -25,7 +25,7 @@
     opacity: 1;
 }
 
-.show{
+.show-scroll-to-top{
     visibility: visible;
     opacity: 1 !important;
 }

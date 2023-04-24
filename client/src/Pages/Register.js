@@ -25,16 +25,16 @@ function Register(){
         <div className="container desc mt-2 text-center pb-4">
             <h3 className="text-center mb-2">Would you like to register as?</h3>
             <div className="d-flex justify-content-center">
-                <button className={"register-type-btn " + (isOwner? 'type-active': '')} onClick={() => setIsOwner(true)}>
-                    Owner
-                </button>
                 <button className={"register-type-btn " + (!isOwner? 'type-active': '')} onClick={() => setIsOwner(false)}>
                     Apprentice
                 </button>  
+                <button className={"register-type-btn " + (isOwner? 'type-active': '')} onClick={() => setIsOwner(true)}>
+                    Owner
+                </button>
             </div>
         </div>
         <div className="container desc p-3 mt-5 text-center">
-            <h3 className="text-center mt-3">Please fill all inputs</h3>
+        <h3 className="text-center mt-3">Please fill all inputs</h3>
             <div className="row register-row mt-3">
                     <div className="d-flex flex-column register-column">
                         <span>First Name</span>    
