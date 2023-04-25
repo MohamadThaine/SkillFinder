@@ -48,7 +48,6 @@ const registerAsApprentice = (res, user_id, study_level,email, verifyToken) => {
         [user_id, study_level],
         (err, result) => {
             if (err) {
-                console.log(err);
                 res.send({ error: err });
                 return;
             }
@@ -65,7 +64,6 @@ const registerAsApprenticeshipOwner = (res, user_id, major, email, verifyToken) 
         [user_id, major],
         (err, result) => {
             if (err) {
-                console.log(err);
                 res.send({ error: err });
                 return;
             }

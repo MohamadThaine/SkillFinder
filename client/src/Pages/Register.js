@@ -85,7 +85,6 @@ function Register(){
         });
         const res = await response.json();
         if(res.error){
-            console.log(res);
             statusRef.current.innerHTML = res.error;
             statusRef.current.className = 'failed';
         }else{
@@ -196,7 +195,7 @@ function Register(){
                     <button className="mt-2 row register-confirm-btn ms-auto me-auto" onClick={register}>Register</button>
                 </div>
             </div>
-            <VerifyEmail email={email} verify_token={verifyToken}/>
+            <VerifyEmail email={email} verify_token={verifyToken} from='register' />
         </div>
         
     </>  

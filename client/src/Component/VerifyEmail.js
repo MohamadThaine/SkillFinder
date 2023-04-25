@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import Logo from '../Assets/Images/SkillFinderLogoNoTitle.png'
 import useInput from '../Hooks/useInput';
 import { useRef } from 'react';
-function VerifyEmail({email, verify_token}){
+function VerifyEmail({email, verify_token, from}){
     const [verifyCode, verifyCodeInput] = useInput({type: 'text', placeholder: 'Enter Verify Code...', className: 'defultInput row me-auto ms-auto mt-3 verify-input'});
     const statusRef = useRef();
     const navigate = useNavigate();
@@ -22,11 +22,22 @@ function VerifyEmail({email, verify_token}){
         const res = await response.json();
         if(res.status === 'success'){
             statusRef.current.innerHTML = 'Verify code is correct\nRedirecting to login page...';
-        statusRef.current.style.color = 'green';
-        setTimeout(() => {
-            navigate('/Login');
-        }, 2000);
-    }
+            statusRef.current.style.color = 'green';
+            if(from === 'register'){
+                setTimeout(() => {
+                    navigate('/login');
+                }, 2000);
+            }
+            else{
+                setTimeout(() => {
+                    document.querySelector('.verify-email-box').classList.remove('verify-email-box-to-left');
+                    document.querySelector('.login-box').classList.remove('login-box-to-left');
+                }, 1000);
+                setTimeout(() => {
+                    document.getElementById('login-btn').click();
+                }, 1200);
+            }
+        }
 }
 
     return(
