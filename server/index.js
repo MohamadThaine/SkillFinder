@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const register = require('./api/post/register');
-
+const verifyEmail = require('./api/put/verifyAccount')
 const app = express();
 
 app.use(cors());
@@ -11,3 +11,4 @@ app.listen(5000, () => {
   });
 
 app.post('/register', register);
+app.put('/verify-email', verifyEmail);

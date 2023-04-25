@@ -3,6 +3,14 @@
     src: url(../Fonts/Shanti-Regular.ttf);
 }
 
+.register-page-boxes{
+    width: 100vw;
+    position: relative;
+    display: flex;
+    height: 74vh;
+    overflow: hidden;
+}
+
 .register-type-btn{
     margin: 10px !important;
     width: 25% !important;
@@ -69,10 +77,46 @@ input[type="date"]{
     border-radius: 3px;
 }
 
+.verify-input{
+    width: 23rem !important;
+    height: 2.2rem !important;
+    border-radius: 9px !important;
+}
 
+@media screen and (max-width: 1024px) {
+    .register-type-btn{
+        width: 30% !important;
+    }
+}
+
+@media screen and (max-width:1200px) {
+    .register-page-boxes{
+        height: 110vh;
+    }
+}
+
+@media screen and (max-height:900px) {
+    .register-page-boxes{
+        height: 140vh;
+    }
+}
+
+@media screen and (max-height: 700px){
+    .register-page-boxes{
+        height: 200vw;
+    }
+}
 
 @media screen and (max-height: 768px){
     .register-type-btn:nth-child(2){
         margin-top: 5px;
     }
 }
+
+@media screen and (max-width: 990px) {
+     .verify-input{
+        width:18rem !important;
+     }
+}
+
+

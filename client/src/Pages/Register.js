@@ -3,8 +3,7 @@ import useInput from '../Hooks/useInput'
 import '../Assets/Styles/Register.css'
 import { Link, useNavigate } from "react-router-dom";
 import randomstring from 'randomstring';
-
-export var Verify_Token = "";
+import VerifyEmail from "../Component/VerifyEmail";
 
 function Register(){
     const [isOwner, setIsOwner] = useState(false);
@@ -20,6 +19,7 @@ function Register(){
     const [fillInputClass, setFillInputClass] = useState('mt-2');
     const [gender, setGender] = useState('');
     const [acceptedTerms, setAcceptedTerms] = useState(false);
+    const [verifyToken, setVerifyToken] = useState(randomstring.generate(20));
     const navigate = useNavigate();
     const statusRef = useRef();
     const validate = () => {
@@ -63,7 +63,6 @@ function Register(){
 
     const register = async () => {
         if(!validate()) return;
-        Verify_Token = randomstring.generate(20);
         const data = {
             firstName,
             lastName,
@@ -75,7 +74,7 @@ function Register(){
             password,
             gender,
             isOwner,
-            Verify_Token
+            verifyToken
         }
         const response = await fetch('http://localhost:5000/register', {
             method: 'POST',
@@ -86,11 +85,16 @@ function Register(){
         });
         const res = await response.json();
         if(res.error){
+            console.log(res);
             statusRef.current.innerHTML = res.error;
             statusRef.current.className = 'failed';
         }else{
-            statusRef.current.innerHTML = 'Register success';
+            statusRef.current.innerHTML = 'Registered successfully';
             statusRef.current.className = 'succesfull';
+            setTimeout(() => {
+                document.querySelector('.verify-email-box').classList.add('verify-email-box-to-left');
+                document.querySelector('.register-box').classList.add('register-box-to-left');
+            }, [1000])
         }
     }
 
@@ -101,94 +105,100 @@ function Register(){
                 <h1 className="text-center mt-5">Register</h1>
             </div>
         </div>
-        <div className="container desc mt-2 text-center pb-4">
-            <h3 className="text-center mb-2">Would you like to register as?</h3>
-            <div className="d-flex justify-content-center">
-                <button className={"register-type-btn " + (!isOwner? 'type-active': '')} onClick={() => setIsOwner(false)}>
-                    Apprentice
-                </button>  
-                <button className={"register-type-btn " + (isOwner? 'type-active': '')} onClick={() => setIsOwner(true)}>
-                    Owner
-                </button>
+        <div className="register-page-boxes d-flex flex-column">
+            <div className="register-box transtion-boxes">
+                <div className="container desc mt-2 text-center pb-4">
+                    <h3 className="text-center mb-2">Would you like to register as?</h3>
+                    <div className="d-flex justify-content-center">
+                        <button className={"register-type-btn " + (!isOwner? 'type-active': '')} onClick={() => setIsOwner(false)}>
+                            Apprentice
+                        </button>  
+                        <button className={"register-type-btn " + (isOwner? 'type-active': '')} onClick={() => setIsOwner(true)}>
+                            Owner
+                        </button>
+                    </div>
+                </div>
+                <div className="container desc p-3 mt-5 text-center">
+                <h3 className={fillInputClass}>Please fill all inputs</h3>
+                    <div className="row register-row mt-3">
+                            <div className="d-flex flex-column register-column">
+                                <span>First Name</span>    
+                                {firstNameInput}
+                            </div>
+                            <div className="d-flex flex-column register-column">
+                                <span>Last Name</span>    
+                                {lastNameInput}
+                            </div>
+                    </div>
+                    <div className="row register-row">
+                        <div className="register-column d-flex flex-column">
+                            <span>Phone Number</span>    
+                            {phoneNumberInput}
+                        </div>
+                        <div className="register-column d-flex flex-column">
+                            <span>Birth Date</span>    
+                            {birthDateInput}
+                        </div>
+                    </div>
+                    <div className="row register-row">
+                        <div className="register-column d-flex flex-column">
+                            <span>
+                                {isOwner ? "Major" : "Study level"}
+                            </span>    
+                            {otherInfoInput}
+                        </div>
+                        <div className="register-column d-flex flex-column gender-column">
+                            <span>Gender</span>    
+                            <div>
+                                <input type="radio" className="form-check-input" id="male-radio" name="Gender"
+                                    onChange={() => setGender('Male')} />
+                                <label for="male-radio" className="ms-1">Male</label>
+                                <input className="ms-3 form-check-input" type="radio" id="female-radio" name="Gender"
+                                    onChange={() => setGender('Female')} />
+                                <label for="female-radio" className="ms-1">Female</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row register-row">
+                        <div className="register-column d-flex flex-column">
+                            <span>Username</span>    
+                            {usernameInput}
+                        </div>
+                        <div className="register-column d-flex flex-column">
+                            <span>Email</span>    
+                            {emailInput}
+                        </div>
+                    </div>
+                    <div className="row register-row">
+                        <div className="register-column d-flex flex-column">
+                            <span>Password</span>    
+                            {passwordInput}
+                        </div>
+                        <div className="register-column d-flex flex-column">
+                            <span className="me-auto">Re-enter Password</span>    
+                            {rePasswordInput}
+                        </div>
+                    </div>
+                    <div className="row register-row mt-3">
+                        <div className="register-column d-flex">
+                            <input type="checkbox" className="form-check-input" id="accept-check"
+                                onChange={e => {
+                                    if(e.target.checked)
+                                        setAcceptedTerms(true);
+                                    else
+                                        setAcceptedTerms(false);
+                                }}
+                                value={acceptedTerms}/>
+                            <label for="accept-check" className="ms-1 mb-auto">I agree to <Link>Terms of Use and Privacy Policy</Link></label>
+                        </div>
+                    </div>
+                    <h5 ref={statusRef}></h5>
+                    <button className="mt-2 row register-confirm-btn ms-auto me-auto" onClick={register}>Register</button>
+                </div>
             </div>
+            <VerifyEmail email={email} verify_token={verifyToken}/>
         </div>
-        <div className="container desc p-3 mt-5 text-center">
-        <h3 className={fillInputClass}>Please fill all inputs</h3>
-            <div className="row register-row mt-3">
-                    <div className="d-flex flex-column register-column">
-                        <span>First Name</span>    
-                        {firstNameInput}
-                    </div>
-                    <div className="d-flex flex-column register-column">
-                        <span>Last Name</span>    
-                        {lastNameInput}
-                    </div>
-            </div>
-            <div className="row register-row">
-                <div className="register-column d-flex flex-column">
-                    <span>Phone Number</span>    
-                    {phoneNumberInput}
-                </div>
-                <div className="register-column d-flex flex-column">
-                    <span>Birth Date</span>    
-                    {birthDateInput}
-                </div>
-            </div>
-            <div className="row register-row">
-                <div className="register-column d-flex flex-column">
-                    <span>
-                        {isOwner ? "Major" : "Study level"}
-                    </span>    
-                    {otherInfoInput}
-                </div>
-                <div className="register-column d-flex flex-column gender-column">
-                    <span>Gender</span>    
-                    <div>
-                        <input type="radio" className="form-check-input" id="male-radio" name="Gender"
-                            onChange={() => setGender('Male')} />
-                        <label for="male-radio" className="ms-1">Male</label>
-                        <input className="ms-3 form-check-input" type="radio" id="female-radio" name="Gender"
-                            onChange={() => setGender('Female')} />
-                        <label for="female-radio" className="ms-1">Female</label>
-                    </div>
-                </div>
-            </div>
-            <div className="row register-row">
-                <div className="register-column d-flex flex-column">
-                    <span>Username</span>    
-                    {usernameInput}
-                </div>
-                <div className="register-column d-flex flex-column">
-                    <span>Email</span>    
-                    {emailInput}
-                </div>
-            </div>
-            <div className="row register-row">
-                <div className="register-column d-flex flex-column">
-                    <span>Password</span>    
-                    {passwordInput}
-                </div>
-                <div className="register-column d-flex flex-column">
-                    <span className="me-auto">Re-enter Password</span>    
-                    {rePasswordInput}
-                </div>
-            </div>
-            <div className="row register-row mt-3">
-                <div className="register-column d-flex">
-                    <input type="checkbox" className="form-check-input" id="accept-check"
-                        onChange={e => {
-                            if(e.target.checked)
-                                setAcceptedTerms(true);
-                            else
-                                setAcceptedTerms(false);
-                        }}
-                        value={acceptedTerms}/>
-                    <label for="accept-check" className="ms-1 mb-auto">I agree to <Link>Terms of Use and Privacy Policy</Link></label>
-                </div>
-            </div>
-            <h5 ref={statusRef}>    </h5>
-            <button className="mt-2 row register-confirm-btn ms-auto me-auto" onClick={register}>Register</button>
-        </div>
+        
     </>  
     )
 }

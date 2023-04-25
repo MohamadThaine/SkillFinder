@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom'
 import Networking from '../Assets/Images/NetworkingExample.png';
 import GrahpicDesign from '../Assets/Images/GraphicDesignExample.png';
@@ -34,6 +34,10 @@ function Search(){
             search();
         }
     }
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [])
 
     return(
         <div className='container-fluid searchPage'>

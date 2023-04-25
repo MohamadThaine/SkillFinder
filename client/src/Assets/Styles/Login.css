@@ -28,25 +28,26 @@ body{
     transition: 1s ease-in-out;
 }
 
-.login-box{
+.login-box, .register-box{
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    z-index: 0;
 }
 
-.reset-password-box{
+.reset-password-box, .verify-email-box{
     position: absolute;
     left: 150%;
     top: 50%;
     transform: translate(-50%, -50%);
 }
 
-.login-box-to-left{
+.login-box-to-left, .register-box-to-left{
     left: -150%;
 }
 
-.reset-password-box-to-left{
+.reset-password-box-to-left, .verify-email-box-to-left{
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
