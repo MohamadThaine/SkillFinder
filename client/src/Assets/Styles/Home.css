@@ -35,6 +35,7 @@
     border-radius: 6px;
     border: #C0C0C0 1px solid;
     font-family: 'Shanti';
+    padding-left: 7px !important;
 }
 
 .defultButton{

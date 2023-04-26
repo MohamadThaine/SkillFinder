@@ -4,6 +4,7 @@ import '../Assets/Styles/Register.css'
 import { Link, useNavigate } from "react-router-dom";
 import randomstring from 'randomstring';
 import VerifyEmail from "../Component/VerifyEmail";
+import emailjs from '@emailjs/browser';
 
 function Register(){
     const [isOwner, setIsOwner] = useState(false);
@@ -90,11 +91,22 @@ function Register(){
         }else{
             statusRef.current.innerHTML = 'Registered successfully';
             statusRef.current.className = 'succesfull';
+            sendEmailVerifying(res)
             setTimeout(() => {
                 document.querySelector('.verify-email-box').classList.add('verify-email-box-to-left');
                 document.querySelector('.register-box').classList.add('register-box-to-left');
             }, [1000])
         }
+    }
+
+    const sendEmailVerifying = async (res) => {
+        const EmailJsTemplateParams = {
+            to_name: res.data.name,
+            email: res.data.email,
+            code: res.data.verifyToken
+        }
+        emailjs.send(process.env.React_APP_EmailJsServiceID , process.env.React_APP_EmailJsVerifyEmailTemplateID , EmailJsTemplateParams ,  process.env.React_APP_EmailJs_API_KEY);
+
     }
 
     return(

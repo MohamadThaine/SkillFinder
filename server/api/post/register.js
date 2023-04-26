@@ -1,5 +1,5 @@
 const db = require('../../dbConnection');
-const nodemailer = require("nodemailer");
+
 const register = (req, res) => {
     const { username,
             password,
@@ -34,15 +34,15 @@ const register = (req, res) => {
             }
             else{
                 if(isOwner){
-                    registerAsApprenticeshipOwner(res, result.insertId, otherInfo, email, verifyToken);
+                    registerAsApprenticeshipOwner(res, result.insertId, otherInfo, email, verifyToken, firstName + ' ' + lastName);
                 }else{
-                    registerAsApprentice(res, result.insertId, otherInfo, email, verifyToken);
+                    registerAsApprentice(res, result.insertId, otherInfo, email, verifyToken, firstName + ' ' + lastName);
                 }
             }
         });
 }
 
-const registerAsApprentice = (res, user_id, study_level,email, verifyToken) => {
+const registerAsApprentice = (res, user_id, study_level,email, verifyToken, name) => {
     db.query(
         'INSERT INTO apprentice (User_ID, No_Of_Courses, Study_Level) VALUES (?, 0, ?)',
         [user_id, study_level],
@@ -52,13 +52,17 @@ const registerAsApprentice = (res, user_id, study_level,email, verifyToken) => {
                 return;
             }
             else{
-                res.send({ message: 'Register success' });
-                verifyEmail(res, email, verifyToken);
+                const data = {
+                    email: email,
+                    verifyToken: verifyToken,
+                    name: name
+                }
+                res.send({ data: data });
             }
         });
 }
 
-const registerAsApprenticeshipOwner = (res, user_id, major, email, verifyToken) => {
+const registerAsApprenticeshipOwner = (res, user_id, major, email, verifyToken, name) => {
     db.query(
         'INSERT INTO apprenticeship_owner (User_ID, Picture, Major) VALUES (?, "", ?)',
         [user_id, major],
@@ -68,37 +72,16 @@ const registerAsApprenticeshipOwner = (res, user_id, major, email, verifyToken) 
                 return;
             }
             else{
-                res.send({ message: 'Register success' });
-                verifyEmail(res, email, verifyToken);
+                const data = {
+                    email: email,
+                    verifyToken: verifyToken,
+                    name: name
+                }
+                res.send({data: data});
             }
         });
 }
 
-const verifyEmail  = async (res, email, Verify_Token) => {
-    let msgBody = "<h1>Your Code is:" + Verify_Token + "</h1>"
-    let transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: process.env.EMAIL_HOST_USER,
-          pass: process.env.EMAIL_HOST_PASSWORD,
-        },
-      });
-      let info = await transporter.sendMail({
-        from: '"SkillFinder Team"' + process.env.EMAIL_HOST_USER,
-        to: email, 
-        subject: "Your SkillFinder Verify Code",
-        html: `
-        <h1>Welcome to SkillFinder</h1>
-        <h2>Your Code is: ` + Verify_Token + ` </h2>
-        <p>Do not share your code with anyone.</p>
-        <p>Thank you for registering with SkillFinder. Please verify your email address by entering the code above.</p>
-        <p>Best regards,</p>
-        <p>SkillFinder Team</p>
-        <p>Do not reply to this email. This email was sent from an unmonitored email address.</p>
-        `,
-      });
-
-}
 
 
 module.exports = register;

@@ -49,7 +49,7 @@ function NavBar(){
             <input className={"defultInput nav-bar-search " + (currentPage=== '/'? 'hideSearch': '')}
                    type="text" placeholder="Search..." aria-label="Search"
                     value={searchKeyWords} onChange={e => setSearchKeyWords(e.target.value)}/>
-            <button className={'nav-bar-search-btn ' + (currentPage=== '/'? 'hideSearch': '')}>
+            <button className={'nav-bar-search-btn ' + (currentPage=== '/'? 'hideSearch': '')} onClick={search}>
               <img src={searchIcon} />
             </button>
             <div className="navbar-nav ms-auto me-4 ">
