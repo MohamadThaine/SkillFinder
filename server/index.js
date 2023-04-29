@@ -3,6 +3,7 @@ const cors = require('cors');
 const register = require('./api/post/register');
 const login = require('./api/post/login');
 const verifyEmail = require('./api/put/verifyAccount')
+const getApprinticeshipInfo = require('./api/get/getApprenticeshipInfo');
 const app = express();
 
 app.use(cors());
@@ -14,4 +15,4 @@ app.listen(5000, () => {
 app.post('/register', register);
 app.post('/login', login);
 app.put('/verify-email', verifyEmail);
-
+app.get('/apprenticeship/:id', getApprinticeshipInfo);

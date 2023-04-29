@@ -4,6 +4,7 @@ import Networking from '../Assets/Images/NetworkingExample.png';
 import GrahpicDesign from '../Assets/Images/GraphicDesignExample.png';
 import Carpenters from '../Assets/Images/CarpentersExample.png';
 import RatingIcon from '../Assets/Images/RatingIcon.svg';
+import { Link } from "react-router-dom";
 import '../Assets/Styles/Search.css'
 
 const range = (start, end) => {
@@ -14,15 +15,15 @@ const range = (start, end) => {
 function Search(){
     const { keyWords } = useParams();
     const [searchKeyWords, setSearchKeyWords] = useState(decodeURIComponent(keyWords.replace('%', ' ')));
-    const [searchResults, setSearchResults] = useState([{title:'Networking', img:Networking, rating:"4.5 (100 Rating)",price: '60$'}
-                                                        ,{title:'Graphic Design', img:GrahpicDesign, rating:"4.5 (100 Rating)",price: '60$'}
-                                                        ,{title:'Carpenters', img:Carpenters, rating:"4.5 (100 Rating)",price: '60$'}
+    const [searchResults, setSearchResults] = useState([{title:'Networking', img:Networking, rating:"4.5 (100 Rating)",price: '60$', category: 'Networking'}
+                                                        ,{title:'Graphic Design', img:GrahpicDesign, rating:"4.5 (100 Rating)",price: '60$', category: 'Graphic Design'}
+                                                        ,{title:'Carpenters', img:Carpenters, rating:"4.5 (100 Rating)",price: '60$', category: 'Carpenters'}
                                                         ,{title:'Networking', img:Networking, rating:"4.5 (100 Rating)",price: '60$'}
-                                                        ,{title:'Graphic Design', img:GrahpicDesign, rating:"4.5 (100 Rating)",price: '60$'}
-                                                        ,{title:'Carpenters', img:Carpenters, rating:"4.5 (100 Rating)",price: '60$'}
-                                                        ,{title:'Networking', img:Networking, rating:"4.5 (100 Rating)",price: '60$'}
-                                                        ,{title:'Graphic Design', img:GrahpicDesign, rating:"4.5 (100 Rating)",price: '60$'}
-                                                        ,{title:'Carpenters', img:Carpenters, rating:"4.5 (100 Rating)",price: '60$'}]);
+                                                        ,{title:'Graphic Design', img:GrahpicDesign, rating:"4.5 (100 Rating)",price: '60$', category: 'Graphic Design'}
+                                                        ,{title:'Carpenters', img:Carpenters, rating:"4.5 (100 Rating)",price: '60$', category: 'Carpenters'}
+                                                        ,{title:'Networking', img:Networking, rating:"4.5 (100 Rating)",price: '60$', category: 'Networking'}
+                                                        ,{title:'Graphic Design', img:GrahpicDesign, rating:"4.5 (100 Rating)",price: '60$', category: 'Graphic Design'}
+                                                        ,{title:'Carpenters', img:Carpenters, rating:"4.5 (100 Rating)",price: '60$', category: 'Carpenters'}]);
     const navigate = useNavigate();
     const search = () =>{
         if(searchKeyWords === '') return;
@@ -156,17 +157,17 @@ const SearchResult = ({resultList}) => {
 
 const Result = ({result}) => {
     return(
-        <div className="result">
+        <Link className="result" to={'/Apprenticeship/' + result.ID} >
             <img className="result-img" src={result.img} />
             <div className="row result-info">
-                <h5>{result.title}</h5>
+                <h5 className="mt-2">{result.title}</h5>
                 <h6>Price: {result.price}</h6>
             </div>
             <div className="row me-auto rating-info">
                 <img className="rating-star" src={RatingIcon} />
                 <span>{result.rating}</span>
             </div>
-        </div>
+        </Link>
     )
 }
 

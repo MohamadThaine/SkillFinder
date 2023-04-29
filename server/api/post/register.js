@@ -64,7 +64,7 @@ const registerAsApprentice = (res, user_id, study_level,email, verifyToken, name
 
 const registerAsApprenticeshipOwner = (res, user_id, major, email, verifyToken, name) => {
     db.query(
-        'INSERT INTO apprenticeship_owner (User_ID, Picture, Major) VALUES (?, "", ?)',
+        'INSERT INTO apprenticeship_owner (User_ID, Picture, Major, isApproved) VALUES (?, "", ?, False)',
         [user_id, major],
         (err, result) => {
             if (err) {

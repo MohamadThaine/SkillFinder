@@ -44,7 +44,6 @@ function NavBar(){
           <h5 className="offcanvas-title ms-4" id="offcanvasNavbarLabel">SkillFinder Menu</h5>
           <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-
         <div className="offcanvas-body">
             <input className={"defultInput nav-bar-search " + (currentPage=== '/'? 'hideSearch': '')}
                    type="text" placeholder="Search..." aria-label="Search"
@@ -53,7 +52,6 @@ function NavBar(){
               <img src={searchIcon} />
             </button>
             <div className="navbar-nav ms-auto me-4 ">
-              
               <Link className={"nav-item nav-link pages-buttons " + (currentPage === '/'? 'active': '')}
                     to='/'>Home</Link>
               <Link className={"nav-item nav-link pages-buttons " + (currentPage === '/AboutUs'? 'active': '')}

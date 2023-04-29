@@ -29,7 +29,7 @@ function Home(){
 
     return(
         <>
-            <div className='container-fluid mt-5 intro'>
+            <div className='container-fluid mt-auto intro'>
                 <div className='row main-intro'>
                     <div className='col ms-5'>
                         <div className='row mt-5 p-3'>

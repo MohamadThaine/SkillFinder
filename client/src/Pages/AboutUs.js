@@ -9,7 +9,7 @@ function AboutUs(){
                 <h1 className="text-center mt-5">WHAT WE DO</h1>
             </div> 
          </div>
-         <div className='container'>
+         <div className='container mt-auto mb-auto'>
             <div className="row mt-4 desc mb-2">
                 <WhatWeDo />
                 <Link to='/ContactUs' className='text-center mt-2'>

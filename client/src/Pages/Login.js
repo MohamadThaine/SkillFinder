@@ -4,6 +4,7 @@ import '../Assets/Styles/Login.css'
 import ResetPassword from '../Component/ResetPassword';
 import useInput from '../Hooks/useInput';
 import VerifyEmail from '../Component/VerifyEmail';
+import emailjs from '@emailjs/browser';
 
 function Login(){
     const [username, usernameInput] = useInput({type:'text', placeholder:'Enter Username...', className:'defultInput row me-auto ms-auto mt-3 login-input'});
@@ -41,6 +42,7 @@ function Login(){
                 setEmail(res[0].Email);
                 setVerifyToken(res[0].Verify_Token);
                 document.getElementById('verify-account-btn').addEventListener('click', () => {
+                sendEmailVerifying(res);   
                 document.querySelector('.verify-email-box').classList.add('verify-email-box-to-left');
                 document.querySelector('.login-box').classList.add('login-box-to-left');
             })
@@ -51,6 +53,15 @@ function Login(){
                 localStorage.setItem('user', JSON.stringify(res[0]));
             }
         }
+    }
+
+    const sendEmailVerifying = async (res) => {
+        const EmailJsTemplateParams = {
+            to_name: res[0].Name,
+            email: res[0].Email,
+            code: res[0].Verify_Token
+        }
+        emailjs.send(process.env.React_APP_EmailJsServiceID , process.env.React_APP_EmailJsVerifyEmailTemplateID , EmailJsTemplateParams ,  process.env.React_APP_EmailJs_API_KEY);
     }
     
     onkeyup = (e) => {

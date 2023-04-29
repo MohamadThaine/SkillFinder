@@ -63,7 +63,7 @@ function ContactUs(){
                 <h1 className="text-center mt-5">CONTACT US</h1>
             </div> 
          </div>
-        <div className='d-flex align-items-center justify-content-center mt-5'>
+        <div className='d-flex align-items-center justify-content-center mt-auto mb-auto'>
             <div className='d-flex flex-column contact-us-form mt-5 desc p-5'>
              <div className='row text-center'>
                 <h2 className={headerClass}>Please fill all inputs</h2>

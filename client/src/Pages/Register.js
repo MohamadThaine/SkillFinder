@@ -106,7 +106,6 @@ function Register(){
             code: res.data.verifyToken
         }
         emailjs.send(process.env.React_APP_EmailJsServiceID , process.env.React_APP_EmailJsVerifyEmailTemplateID , EmailJsTemplateParams ,  process.env.React_APP_EmailJs_API_KEY);
-
     }
 
     return(

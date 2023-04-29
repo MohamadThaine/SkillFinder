@@ -8,6 +8,8 @@ import ContactUs from "./Pages/ContactUs";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import Search from './Pages/Search';
+import Apprenticeship from './Pages/Apprenticeship';
+import PageNotFound from './Pages/PageNotFound';
 
 function App() {
   return (
@@ -20,7 +22,8 @@ function App() {
         <Route path="/Login" element={<Login />} />
         <Route path="/Register" element={<Register />} />
         <Route path='/Search/:keyWords' element={<Search />} />
-        <Route path="*" element={<>Page Not Found</>} />
+        <Route path='/Apprenticeship/:ID' element={<Apprenticeship />} />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
       <Footer />
     </>

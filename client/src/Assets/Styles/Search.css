@@ -35,6 +35,12 @@
     padding: 0 !important;
     padding-bottom: 10px !important;
     width: 22.7% !important;
+    text-decoration: none;
+    color: black;
+}
+
+.result:hover{
+    color: black;
 }
 
 .result-info > *{

@@ -32,6 +32,10 @@ body{
   color: #61dafb;
 }
 
+.pageNotFoundPic{
+  width: 40rem;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

@@ -1,0 +1,85 @@
+@font-face {
+    font-family: 'Poppins';
+    src: url(../Fonts/Poppins-Regular.ttf);
+}
+
+.apprenticeship{
+    padding: 0px;
+    background-color: transparent !important;
+    color: white;
+    font-family: 'Poppins';
+    box-shadow: none;
+}
+
+.apprenticeship > .row > *{
+    margin: auto;
+}
+
+.first-section-of-app{
+    background-color: #36506C;
+    border-radius: 20px 20px 0px 0px;
+    box-shadow: 0 0 50px #36506C;
+    padding: 10px;
+}
+
+.author{
+    border-radius: 35px;
+    width: 50%;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    color: black;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.author-img{
+    height: 4rem !important;
+    width: 4rem !important;
+    border-radius: 90px;
+}
+
+.app-img{
+    width: 25rem !important;
+    border-radius: 60px !important;
+}
+
+.second-section-of-app{
+    background-color: white;
+    color: black;
+    padding: 10px;
+    box-shadow: 0 0 50px #ccc;
+}
+
+.third-section-of-app{
+    background-color: #36506C;
+    border-radius: 0px 0px 20px 20px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 50px #ccc;
+}
+
+.entrolled-students{
+    background-color: #36506C;
+    border-radius: 0px 0px 20px 20px;
+    width: 20rem !important;
+}
+
+.review-section{
+    background-color: #36506C;
+    border-radius: 0px 0px 20px 20px;
+    width: 20rem !important;
+    cursor: pointer;
+}
+
+.rating-info-app{
+    display: flex;
+    justify-content: center;
+
+}
