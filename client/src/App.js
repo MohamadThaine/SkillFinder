@@ -10,16 +10,42 @@ import Register from "./Pages/Register";
 import Search from './Pages/Search';
 import Apprenticeship from './Pages/Apprenticeship';
 import PageNotFound from './Pages/PageNotFound';
+import { useState, useEffect } from 'react';
 
 function App() {
+
+  const [user, setUser] = useState(null);
+  const [otherUserInfo, setOtherUserInfo] = useState(null);
+  useEffect (() => {
+    try
+    {
+      if(localStorage.getItem('user') != null){
+        setUser(JSON.parse(localStorage.getItem('user')));
+        setOtherUserInfo(JSON.parse(localStorage.getItem('otherInfo')));
+      }  
+    }catch(e){}
+  }, []);
+
+  const handleLogin = () => {
+    setUser(JSON.parse(localStorage.getItem('user')));
+    setOtherUserInfo(JSON.parse(localStorage.getItem('otherInfo')));
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('otherInfo');
+    setUser(null);
+    setOtherUserInfo(null);
+  }
+
   return (
     <>
-      <NavBar />
+      <NavBar user={user} otherUserInfo={otherUserInfo} handleLogout={handleLogout} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/AboutUs" element={<AboutUs />} />
         <Route path="/ContactUs" element={<ContactUs />} />
-        <Route path="/Login" element={<Login />} />
+        <Route path="/Login" element={<Login handleLogin={handleLogin}/>} />
         <Route path="/Register" element={<Register />} />
         <Route path='/Search/:keyWords' element={<Search />} />
         <Route path='/Apprenticeship/:ID' element={<Apprenticeship />} />

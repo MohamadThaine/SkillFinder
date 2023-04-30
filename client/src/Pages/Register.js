@@ -1,4 +1,4 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import useInput from '../Hooks/useInput'
 import '../Assets/Styles/Register.css'
 import { Link, useNavigate } from "react-router-dom";
@@ -7,6 +7,12 @@ import VerifyEmail from "../Component/VerifyEmail";
 import emailjs from '@emailjs/browser';
 
 function Register(){
+    const navigate = useNavigate();
+    useEffect(() => {
+        if(localStorage.getItem('user') != null){
+            navigate('/');
+        }
+    },[])
     const [isOwner, setIsOwner] = useState(false);
     const [firstName, firstNameInput] = useInput({type: 'text', className: 'defultInput register-input'});
     const [lastName, lastNameInput] = useInput({type: 'text', className: 'defultInput register-input'});
@@ -21,7 +27,6 @@ function Register(){
     const [gender, setGender] = useState('');
     const [acceptedTerms, setAcceptedTerms] = useState(false);
     const [verifyToken, setVerifyToken] = useState(randomstring.generate(20));
-    const navigate = useNavigate();
     const statusRef = useRef();
     const validate = () => {
         const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);

@@ -14,10 +14,10 @@ const register = (req, res) => {
             verifyToken } = req.body;
     db.query(
         'INSERT INTO user (username, password, Email, Name, Phone_Number, ' +
-            'Birth_Date, Gender, Verify_Token, Verify_Status)' +
-             'VALUES (?, ?, ?, ?, ?, ?, ?, ?, False)',
+            'Birth_Date, Gender, Verify_Token, Verify_Status, User_Type)' +
+             'VALUES (?, ?, ?, ?, ?, ?, ?, ?, False, ?)',
         [username, password, email, firstName + ' ' + lastName,
-         phoneNumber, birthDate,gender , verifyToken],
+         phoneNumber, birthDate,gender , verifyToken, (isOwner ? 2 : 1)],
         (err, result) => {
             if (err) {
 

@@ -57,6 +57,19 @@
     display: none;
 }
 
+.user-menu{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.nav-profile-pic{
+    width: 3rem;
+    height: 3rem;;
+}
+
 @media screen and (max-width: 990px){
 
     .nav-bar-search{

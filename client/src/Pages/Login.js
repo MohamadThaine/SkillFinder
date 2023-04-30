@@ -5,8 +5,16 @@ import ResetPassword from '../Component/ResetPassword';
 import useInput from '../Hooks/useInput';
 import VerifyEmail from '../Component/VerifyEmail';
 import emailjs from '@emailjs/browser';
+import { useNavigate } from 'react-router-dom';
 
-function Login(){
+function Login({handleLogin}){
+    const navigate = useNavigate();
+    useEffect(() => {
+        if(localStorage.getItem('user') != null){
+            navigate('/');
+        }
+    },[])
+
     const [username, usernameInput] = useInput({type:'text', placeholder:'Enter Username...', className:'defultInput row me-auto ms-auto mt-3 login-input'});
     const [password, passwordInput] = useInput({type:'password', placeholder:'Enter Password...', className:'defultInput row me-auto ms-auto mt-4 login-input'});
     const [email, setEmail] = useState('');
@@ -35,7 +43,7 @@ function Login(){
             statusRef.current.style.color = 'red';
         }
         else{
-            if(res[0].Verify_Status == 0)
+            if(res.user.Verify_Status == 0)
             {
                 statusRef.current.style.color = '';
                 statusRef.current.innerHTML = 'Please verify your account first! <span class="login-reset-password" id="verify-account-btn">Verify Account</span>';
@@ -47,10 +55,19 @@ function Login(){
                 document.querySelector('.login-box').classList.add('login-box-to-left');
             })
             }
+            else if(res.user.User_Type == 2){
+                if(res.otherInfo.isApproved == 0){
+                    statusRef.current.style.color = 'red';
+                    statusRef.current.innerHTML = 'Your account has not been approved yet!';
+                    return;
+                }
+            }
             else{
                 statusRef.current.innerHTML = 'Login Success';
                 statusRef.current.style.color = 'green';
-                localStorage.setItem('user', JSON.stringify(res[0]));
+                localStorage.setItem('user', JSON.stringify(res.user));
+                localStorage.setItem('otherInfo', JSON.stringify(res.otherInfo));
+                handleLogin();
             }
         }
     }
@@ -83,7 +100,7 @@ function Login(){
                 {passwordInput}
                 <p className='mt-2'>Forgot password? <span onClick={openResetPassword} className='login-reset-password'>Reset Password</span></p>
                 <p ref={statusRef} className='mt-1 text-center'></p>
-                <button className='defultButton row me-auto ms-auto mt-3 login-button' id='login-btn' onClick={login}>Login</button>
+                <button className='defultButton row me-auto ms-auto mt-3 login-button' id='login-btn' onClick={(login)}>Login</button>
             </div>
             <ResetPassword />
             <VerifyEmail email={email} verify_token={verifyToken} from='login' />
