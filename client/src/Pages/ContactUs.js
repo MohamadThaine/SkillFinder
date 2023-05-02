@@ -3,7 +3,7 @@ import useInput from '../Hooks/useInput'
 import { browserName, browserVersion } from "react-device-detect";
 import emailjs from '@emailjs/browser';
 import '../Assets/Styles/ContactUs.css'
-
+import { Alert } from '@mui/material';
 function ContactUs(){
     const [name, nameInput] = useInput({className:'col defultInput contact-us-input', type:'text', placeholder:'Full Name'})
     const [email, emailInput] = useInput({className:'col ms-2 defultInput contact-us-input', type:'email', placeholder:'Email'})
@@ -78,7 +78,9 @@ function ContactUs(){
                 Submit
              </button>
              <p className='text-center mt-3' ref={statusRef}></p>
-             <small className='form-text text-muted mt-1'>* We'll never share your info with anyone else!</small>
+             <Alert severity="info">
+                <small>We'll never share your info with anyone else!</small>
+            </Alert>
              
             </div> 
         </div>

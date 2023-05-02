@@ -6,6 +6,7 @@ import useInput from '../Hooks/useInput';
 import VerifyEmail from '../Component/VerifyEmail';
 import emailjs from '@emailjs/browser';
 import { useNavigate } from 'react-router-dom';
+import { Alert } from '@mui/material';
 
 function Login({handleLogin}){
     const navigate = useNavigate();
@@ -20,6 +21,7 @@ function Login({handleLogin}){
     const [email, setEmail] = useState('');
     const [verifyToken, setVerifyToken] = useState('');
     const statusRef = useRef();
+    const [alert, setAlert] = useState({message:'', severity:'', needed:false});
     const openResetPassword = () => {
         document.querySelector('.reset-password-box').classList.add('reset-password-box-to-left');
         document.querySelector('.login-box').classList.add('login-box-to-left');
@@ -39,14 +41,12 @@ function Login({handleLogin}){
         })
         const res = await respone.json();
         if(res.error){
-            statusRef.current.innerHTML = 'Wrong username or password';
-            statusRef.current.style.color = 'red';
+            setAlert({message:res.error, severity:'error', needed:true});
         }
         else{
             if(res.user.Verify_Status == 0)
             {
-                statusRef.current.style.color = '';
-                statusRef.current.innerHTML = 'Please verify your account first! <span class="login-reset-password" id="verify-account-btn">Verify Account</span>';
+                setAlert({message:'Please verify your email first!', severity:'warning', needed:true});
                 setEmail(res[0].Email);
                 setVerifyToken(res[0].Verify_Token);
                 document.getElementById('verify-account-btn').addEventListener('click', () => {
@@ -57,14 +57,12 @@ function Login({handleLogin}){
             }
             else if(res.user.User_Type == 2){
                 if(res.otherInfo.isApproved == 0){
-                    statusRef.current.style.color = 'red';
-                    statusRef.current.innerHTML = 'Your account has not been approved yet!';
+                    setAlert({message:'Your account is not approved yet!', severity:'warning', needed:true});
                     return;
                 }
             }
             else{
-                statusRef.current.innerHTML = 'Login Success';
-                statusRef.current.style.color = 'green';
+                setAlert({message:'Login Successfully!', severity:'success', needed:true});
                 localStorage.setItem('user', JSON.stringify(res.user));
                 localStorage.setItem('otherInfo', JSON.stringify(res.otherInfo));
                 handleLogin();
@@ -99,7 +97,7 @@ function Login({handleLogin}){
                 {usernameInput}
                 {passwordInput}
                 <p className='mt-2'>Forgot password? <span onClick={openResetPassword} className='login-reset-password'>Reset Password</span></p>
-                <p ref={statusRef} className='mt-1 text-center'></p>
+                {alert.needed && <Alert severity={alert.severity} >{alert.message}</Alert>}
                 <button className='defultButton row me-auto ms-auto mt-3 login-button' id='login-btn' onClick={(login)}>Login</button>
             </div>
             <ResetPassword />

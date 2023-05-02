@@ -4,13 +4,16 @@ import useInput from '../Hooks/useInput';
 import Randomstring from 'randomstring';
 import emailjs from '@emailjs/browser';
 import { useState } from 'react';
+import { Alert } from '@mui/material';
+
 function ResetPassword(){
     const [email, emailInput] = useInput({type:'email', placeholder:'Enter Email...', className:'defultInput me-auto ms-auto mt-3 login-input'});
+    const [name, setName] = useState('');
     const [password, passwordInput] = useInput({type:'password', placeholder:'Enter Password...', className:'defultInput row me-auto ms-auto mt-4 login-input'});
     const [randomCode, setRandomCode] = useState(Randomstring.generate(6));
     const [askedForCode, setAskedForCode] = useState(false);
     const [verifyCode, verifyCodeInput] = useInput({type:'text', placeholder:'Enter Verify Code...', className:'defultInput row me-auto ms-auto mt-3 login-input', disabled:askedForCode? false:true});
-    const [status, setStatus] = useState('');
+    const [alert, setAlert] = useState({message:'', severity:'', needed:false});
     const [success, setSuccess] = useState(false);
     const openLogin = () => {
         document.querySelector('.reset-password-box').classList.remove('reset-password-box-to-left');
@@ -20,11 +23,11 @@ function ResetPassword(){
     const sendCode = () => {
         const isValidEmail = email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
         if(email == ''){
-            setStatus('Please Enter Email');
+            setAlert({message:'Please Enter Email', severity:'error', needed:true});
             return;
         }
         if(!isValidEmail){
-            setStatus('Please Enter Valid Email');
+            setAlert({message:'Please Enter Valid Email', severity:'error', needed:true});
             return;
         }
         fetch('http://localhost:5000/checkEmail', {
@@ -37,50 +40,49 @@ function ResetPassword(){
             return res.json();
             }).then((data) => {
             if(data.error){
-                setStatus('Email Not Found');
+                setAlert({message:'Email Not Found', severity:'error', needed:true});
                 return;
             }
             else{
-                setStatus('');
+                setName(data.name);
             }
             }).catch((err) => {
-                setStatus('Something Went Wrong');
+                setAlert({message:'Something Went Wrong', severity:'error', needed:true});
                 return;
         });
-        if(status != '') return;
+        if(alert.message != '') return;
         const EmailJsTemplateParams = {
-            to_name: 'SkillFinder User',
+            to_name: name,
             email: email,
             code: randomCode
         }
         emailjs.send(process.env.React_APP_EmailJsServiceID , process.env.React_APP_EmailJsVerifyEmailTemplateID , EmailJsTemplateParams ,  process.env.React_APP_EmailJs_API_KEY)
         .then(() => {
             setAskedForCode(true);
-            setStatus('Verify Code Sent To Your Email');
+            setAlert({message:'Verify Code Sent To Your Email', severity:'success', needed:true});
         }).catch((err) => {
             console.log(err);
         });
     }
 
     const checkVerifyCode = () => {
-        alert(randomCode + ' ' + verifyCode);
         if(verifyCode == randomCode && askedForCode){
             setSuccess(true);
-            setStatus('');
+            setAlert('');
         }
         else if(!askedForCode){
-            setStatus('Please Send Verify Code To Your Email');
+            setAlert({message:'Please Send Verify Code First', severity:'error', needed:true});
             return;
         }
         else{
-            setStatus('Wrong Verify Code');
+            setAlert({message:'Wrong Verify Code', severity:'error', needed:true});
             return;
         }
     }
 
     const resetPassword = () => {
         if(password == ''){
-            setStatus('Please Enter Password');
+            setAlert({message:'Please Enter Password', severity:'error', needed:true});
             return;
         }
         fetch('http://localhost:5000/resetPassword', {
@@ -94,11 +96,11 @@ function ResetPassword(){
             }
             ).then((data) => {
             if(data.error){
-                setStatus('Something Went Wrong');
+                setAlert('Something Went Wrong');
                 return;
             }
             else{
-                setStatus('Password Reset Successfully');
+                setAlert({message:'Password Reset Successfully', severity:'success', needed:true});
                 setSuccess(false);
                 setTimeout(() => {
                     document.querySelector('.reset-password-box').classList.remove('reset-password-box-to-left');
@@ -106,7 +108,7 @@ function ResetPassword(){
                 }, 1000);
             }
             }).catch((err) => {
-                setStatus('Something Went Wrong');
+                setAlert({message:'Something Went Wrong', severity:'error', needed:true});
                 return;
         });
     }
@@ -126,7 +128,7 @@ function ResetPassword(){
                 {passwordInput}
             </div>}
             <p className='mt-2'>Remembered Password? <span onClick={openLogin} className='login-reset-password'>Go Back To Login</span></p>
-            <p className='mt-2 text-center'>{status}</p>
+            {alert.needed && <Alert severity={alert.severity} className='mt-2'>{alert.message}</Alert>}
             <button className='defultButton row me-auto ms-auto mt-3 login-button'
              onClick={() => {if(success) resetPassword(); else checkVerifyCode()}}>Reset Password</button>
         </div>

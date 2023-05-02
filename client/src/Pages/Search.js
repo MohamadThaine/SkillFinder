@@ -3,8 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Networking from '../Assets/Images/NetworkingExample.png';
 import GrahpicDesign from '../Assets/Images/GraphicDesignExample.png';
 import Carpenters from '../Assets/Images/CarpentersExample.png';
-import RatingIcon from '../Assets/Images/RatingIcon.svg';
-import { Link } from "react-router-dom";
+import Apprenticeship from "../Component/Apprenticeship";
+
 import '../Assets/Styles/Search.css'
 
 const range = (start, end) => {
@@ -148,26 +148,10 @@ const SearchResult = ({resultList}) => {
         rowLength.map((row) => (
             <div className="row result-row">
                 {resultList.slice((row - 1)*4, row*4).map((result) => (
-                    <Result result={result} />
+                    <Apprenticeship app={result} />
                 ))}
             </div>
         ))
-    )
-}
-
-const Result = ({result}) => {
-    return(
-        <Link className="result" to={'/Apprenticeship/' + result.ID} >
-            <img className="result-img" src={result.img} />
-            <div className="row result-info">
-                <h5 className="mt-2">{result.title}</h5>
-                <h6>Price: {result.price}</h6>
-            </div>
-            <div className="row me-auto rating-info">
-                <img className="rating-star" src={RatingIcon} />
-                <span>{result.rating}</span>
-            </div>
-        </Link>
     )
 }
 

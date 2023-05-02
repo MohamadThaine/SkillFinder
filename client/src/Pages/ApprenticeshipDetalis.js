@@ -10,7 +10,7 @@ import calender from '../Assets/Images/calender.svg';
 import calenderCheck from '../Assets/Images/calender-check.svg';
 import { useNavigate } from 'react-router-dom';
 
-function Apprenticeship(){
+function ApprenticeshipDetalis(){
     const { ID } = useParams();
     const [name, setName] = useState('');
     const [category, setCategory] = useState('');
@@ -137,4 +137,4 @@ function Apprenticeship(){
     )
 }
 
-export default Apprenticeship;
+export default ApprenticeshipDetalis;

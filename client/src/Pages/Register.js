@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import randomstring from 'randomstring';
 import VerifyEmail from "../Component/VerifyEmail";
 import emailjs from '@emailjs/browser';
+import { Alert } from "@mui/material";
 
 function Register(){
     const navigate = useNavigate();
@@ -27,7 +28,7 @@ function Register(){
     const [gender, setGender] = useState('');
     const [acceptedTerms, setAcceptedTerms] = useState(false);
     const [verifyToken, setVerifyToken] = useState(randomstring.generate(20));
-    const statusRef = useRef();
+    const [alert, setAlert] = useState({ message: '', severity: '', needed: false});
     const validate = () => {
         const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         const validPhone = /^[0-9]{10}$/.test(phoneNumber);
@@ -40,28 +41,23 @@ function Register(){
             return false;
         }
         if(!validEmail){
-            statusRef.current.innerHTML = 'Invalid email';
-            statusRef.current.className = 'failed';
+            setAlert({ message: 'Invalid email', severity: 'error', needed: true});
             return false;
         }
         if(!validPhone){
-            statusRef.current.innerHTML = 'Invalid phone number';
-            statusRef.current.className = 'failed';
+            setAlert({ message: 'Invalid phone number', severity: 'error', needed: true});
             return false;
         }
         if(password !== rePassword){
-            statusRef.current.innerHTML = 'Passwords do not match';
-            statusRef.current.className = 'failed';
+            setAlert({ message: 'Passwords do not match', severity: 'error', needed: true});
             return false;
         }
         if(age < 10){
-            statusRef.current.innerHTML = 'You must be at least 10 years old';
-            statusRef.current.className = 'failed';
+            setAlert({ message: 'You must be at least 10 years old', severity: 'error', needed: true});
             return false;
         }
         if(!acceptedTerms){
-            statusRef.current.innerHTML = 'You must accept the terms';
-            statusRef.current.className = 'failed';
+            setAlert({ message: 'You must accept the terms and conditions', severity: 'error', needed: true});
             return false;
         }
         return true;
@@ -91,11 +87,9 @@ function Register(){
         });
         const res = await response.json();
         if(res.error){
-            statusRef.current.innerHTML = res.error;
-            statusRef.current.className = 'failed';
+            setAlert({ message: res.error, severity: 'error', needed: true});
         }else{
-            statusRef.current.innerHTML = 'Registered successfully';
-            statusRef.current.className = 'succesfull';
+            setAlert({ message: 'Registered successfully', severity: 'success', needed: true});
             sendEmailVerifying(res)
             setTimeout(() => {
                 document.querySelector('.verify-email-box').classList.add('verify-email-box-to-left');
@@ -207,7 +201,7 @@ function Register(){
                             <label for="accept-check" className="ms-1 mb-auto">I agree to <Link>Terms of Use and Privacy Policy</Link></label>
                         </div>
                     </div>
-                    <h5 ref={statusRef}></h5>
+                    {alert.needed && <Alert message={alert.message} severity={alert.severity} />}
                     <button className="mt-2 row register-confirm-btn ms-auto me-auto" onClick={register}>Register</button>
                 </div>
             </div>

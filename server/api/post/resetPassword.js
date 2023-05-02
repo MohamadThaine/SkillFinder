@@ -5,7 +5,7 @@ const checkEmail = (req, res) => {
     db.query(`SELECT * FROM user WHERE Email = '${email}'`, (err, result) => {
         if(err) res.send({error: true});
         else if(result.length == 0) res.send({error: true});
-        else res.send({error: false});
+        else res.send({name: result[0].Name});
     });
 }
 

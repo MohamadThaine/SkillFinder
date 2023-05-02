@@ -8,9 +8,13 @@ import ContactUs from "./Pages/ContactUs";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import Search from './Pages/Search';
-import Apprenticeship from './Pages/Apprenticeship';
+import ApprenticeshipDetalis from './Pages/ApprenticeshipDetalis';
 import PageNotFound from './Pages/PageNotFound';
 import { useState, useEffect } from 'react';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 
 function App() {
 
@@ -48,7 +52,7 @@ function App() {
         <Route path="/Login" element={<Login handleLogin={handleLogin}/>} />
         <Route path="/Register" element={<Register />} />
         <Route path='/Search/:keyWords' element={<Search />} />
-        <Route path='/Apprenticeship/:ID' element={<Apprenticeship />} />
+        <Route path='/Apprenticeship/:ID' element={<ApprenticeshipDetalis />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
       <Footer />

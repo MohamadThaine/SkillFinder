@@ -1,16 +1,16 @@
 import { useNavigate } from 'react-router-dom';
 import Logo from '../Assets/Images/SkillFinderLogoNoTitle.png'
 import useInput from '../Hooks/useInput';
-import { useRef } from 'react';
+import { useState } from 'react';
+import { Alert } from '@mui/material';
+
 function VerifyEmail({email, verify_token, from}){
     const [verifyCode, verifyCodeInput] = useInput({type: 'text', placeholder: 'Enter Verify Code...', className: 'defultInput row me-auto ms-auto mt-3 verify-input'});
-    const statusRef = useRef();
+    const [alert, setAlert] = useState({message:'', severity:'', needed:false});
     const navigate = useNavigate();
     const verifyEmail = async () => {
         if(verify_token !== verifyCode){
-            alert(verify_token)
-            statusRef.current.innerHTML = 'Verify code is incorrect';
-            statusRef.current.style.color = 'red';
+            setAlert({message:'Verify code is incorrect!', severity:'error', needed:true});
             return;
         }
         const data = {email};
@@ -21,8 +21,7 @@ function VerifyEmail({email, verify_token, from}){
         });
         const res = await response.json();
         if(res.status === 'success'){
-            statusRef.current.innerHTML = 'Verify code is correct\nRedirecting to login page...';
-            statusRef.current.style.color = 'green';
+            setAlert({message:'Your email is verified!', severity:'success', needed:true});
             if(from === 'register'){
                 setTimeout(() => {
                     navigate('/login');
@@ -47,7 +46,7 @@ function VerifyEmail({email, verify_token, from}){
             <h5 className='text-center'>Your Email is</h5>
             <h5 className='mb-2 mt-2 text-center'>{email}</h5>
             {verifyCodeInput}
-            <p ref={statusRef} className='mt-2 text-center'></p>
+            {alert.needed && <Alert severity={alert.severity}>{alert.message}</Alert>}
             <button className='defultButton row me-auto ms-auto mt-3 login-button' onClick={verifyEmail}>Verify</button>
         </div>
     )
