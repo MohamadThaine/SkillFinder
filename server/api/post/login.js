@@ -12,7 +12,13 @@ const login = (req, res) => {
             }
             else{
                 if(result.length === 0){
-                    res.send({ error: 'Wrong username or password' });
+                    isAdmin(res, username, password).then((isAdmin) => {
+                        if(isAdmin){
+                            res.send({ admin: isAdmin });
+                        }else{
+                            res.send({ error: 'User not found' });
+                        }
+                    });
                 }else{
                     if(result[0].User_Type === 1){
                         getApprenticeInfo(res, result[0].ID).then((apprenticeInfo) => {
@@ -54,6 +60,26 @@ const getOwnerInfo = (res, ID) => {
                     reject(err);
                 } else {
                     resolve(result[0]);
+                }
+            }
+        );
+    });
+}
+
+const isAdmin = (res, username, password) => {
+    return new Promise((resolve, reject) => {
+        db.query(
+            'SELECT * FROM admin WHERE username = ? AND password = ?',
+            [username, password],
+            (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    if(result.length === 0){
+                        resolve(false);
+                    }else{
+                        resolve(result[0]);
+                    }
                 }
             }
         );

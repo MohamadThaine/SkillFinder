@@ -9,6 +9,9 @@ import locationIcon from '../Assets/Images/location-icon.svg';
 import calender from '../Assets/Images/calender.svg';
 import calenderCheck from '../Assets/Images/calender-check.svg';
 import { useNavigate } from 'react-router-dom';
+import { Box, Modal } from '@mui/material';
+import arrowRight from '../Assets/Images/arrow-right-solid.svg';
+import arrowLeft from '../Assets/Images/arrow-left-solid.svg';
 
 function ApprenticeshipDetalis(){
     const { ID } = useParams();
@@ -25,6 +28,7 @@ function ApprenticeshipDetalis(){
     const [authorPic, setAuthorPic] = useState();
     const [authorID, setAuthorID] = useState('');
     const [entrolledStudents, setEntrolledStudents] = useState('');
+    const [openPictureModal, setOpenPictureModal] = useState(false);
     const navigate = useNavigate();
     useEffect(() => {
         fetch('http://localhost:5000/apprenticeship/' + ID)
@@ -59,6 +63,10 @@ function ApprenticeshipDetalis(){
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat'
+    }
+
+    const handleModal = (setOpened, opened) => {
+        setOpened(!opened);
     }
 
     return(
@@ -126,15 +134,88 @@ function ApprenticeshipDetalis(){
                                 <button className='app-btn'>Reviews</button>
                             </div>
                             <div className='row app-btn-container'>
-                                <button className='app-btn'>Picture</button>
+                                <button className='app-btn' onClick={() => handleModal(setOpenPictureModal, openPictureModal)}>Picture</button>
                                 <button className='app-btn'>Contact</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <PicturesModal open={openPictureModal} handleClose={() => handleModal(setOpenPictureModal, openPictureModal)} />
         </>
     )
 }
+
+const PicturesModal = ({handleClose, open, ID}) => {
+    const [pictures, setPictures] = useState([]);
+    const [mainPicture, setMainPicture] = useState();
+
+
+    useEffect(() => {
+        fetch('http://localhost:5000/apprenticeship-pics/' + 1)
+        .then(res => res.json())
+        .then(data => {
+            setPictures(data);
+            setMainPicture(data[0]);
+            console.log(mainPicture)
+        })
+        
+    }, [])
+
+    const PicturesRow = () => {
+        return(
+            <div className='pics-row mt-5'>
+                {pictures.map((picture, index) => {
+                    return(
+                        <img src={picture} alt='Picture' className={'img-thumbnail ' + (mainPicture === picture? 'selectedPic': '')} key={index} onClick={changeMainPicute} />
+                    )
+                })}
+            </div>
+        )
+    }
+
+    const goLeft = () => {
+        let index = pictures.indexOf(mainPicture);
+        if(index == 0) setMainPicture(pictures[pictures.length - 1]);
+        else setMainPicture(pictures[index - 1]);
+    }
+
+    const goRight = () => {
+        let index = pictures.indexOf(mainPicture);
+        if(index == pictures.length - 1) setMainPicture(pictures[0]);
+        else setMainPicture(pictures[index + 1]);
+    }
+
+    const changeMainPicute = (e) => {
+        setMainPicture(e.target.src);
+    }
+
+    const fadeImg = (e) => {
+        const img = e.currentTarget;
+        img.className = 'main-pic fade-img';
+        setTimeout(() => {
+            img.className = 'main-pic';
+        }
+        , 1000);
+    }
+
+    return(
+        <Modal
+            open={open}
+            onClose={handleClose}
+        >
+            <Box className='center-modal container-fluid'>
+                <h2 className='text-center'>Apprenticeship Picture</h2>
+                <div className='main-pic-con'>
+                    <img src={arrowLeft} alt='Arrow Left' className='arrow' onClick={goLeft} />
+                    <img className='main-pic' src={mainPicture} alt='Main Picture' onLoad={fadeImg} />
+                    <img src={arrowRight} alt='Arrow Right' className='arrow' onClick={goRight} />
+                </div>
+                <PicturesRow />
+            </Box>
+        </Modal>
+    )
+}
+
 
 export default ApprenticeshipDetalis;

@@ -1,0 +1,20 @@
+.admin-buttons-row{
+    margin: 10px !important;
+}
+
+.admin-buttons-row > button{
+    margin: 10px !important;
+    height: 10rem;
+    display: flex;
+    flex-direction: column;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    font-size: 1.4rem;
+    padding: 20px;
+    min-width: 20rem;
+}
+
+.admin-buttons-row > button > img{
+    width: 5rem;
+    margin-bottom: 10px;
+}

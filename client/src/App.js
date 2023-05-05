@@ -1,6 +1,7 @@
 import './App.css';
 import Home from './Pages/Home';
 import NavBar from './Component/NavBar';
+import AdminNavBar from './Component/AdminNavBar';
 import Footer from "./Component/Footer";
 import { Routes, Route } from 'react-router-dom';
 import AboutUs from "./Pages/AboutUs";
@@ -15,11 +16,14 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import './Assets/Styles/Modal.css'
+import AdminHome from './Pages/AdminHome';
 
 function App() {
 
   const [user, setUser] = useState(null);
   const [otherUserInfo, setOtherUserInfo] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(true);
   useEffect (() => {
     try
     {
@@ -44,7 +48,8 @@ function App() {
 
   return (
     <>
-      <NavBar user={user} otherUserInfo={otherUserInfo} handleLogout={handleLogout} />
+      {!isAdmin && <NavBar user={user} otherUserInfo={otherUserInfo} handleLogout={handleLogout} />}
+      {isAdmin ? <AdminNavBar isAdmin={isAdmin} /> : null}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/AboutUs" element={<AboutUs />} />
@@ -53,6 +58,7 @@ function App() {
         <Route path="/Register" element={<Register />} />
         <Route path='/Search/:keyWords' element={<Search />} />
         <Route path='/Apprenticeship/:ID' element={<ApprenticeshipDetalis />} />
+        <Route path='/Admin' element={<AdminHome isAdmin={isAdmin} />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
       <Footer />
