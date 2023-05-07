@@ -5,11 +5,18 @@ import addIcon from '../Assets/Images/plus-solid-white.svg';
 import schoolIcom from '../Assets/Images/school-solid-white.svg';
 import '../Assets/Styles/AdminHome.css';
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 function AdminHome({isAdmin}){
     const navigate = useNavigate();
-
-    if(!isAdmin)
-        navigate('/PageNotFound');
+    
+    useEffect(() => {
+        if(!isAdmin)
+        {
+            navigate('/PageNotFound');
+        }
+    }, [isAdmin, navigate])
+    
+        
 
     return(
         <div className="container mt-auto mb-auto d-flex justify-content-center">
@@ -18,7 +25,7 @@ function AdminHome({isAdmin}){
                     <img src={userIcon} alt="user" className="admin-nav-bar-icons"/>
                     Users
                 </Button>
-                <Button variant="contained">
+                <Button variant="contained" onClick={() => navigate('/Admin/Apprenticeship')}>
                     <img src={schoolIcom} alt="user" className="admin-nav-bar-icons"/>
                     Apprenticeship
                 </Button>

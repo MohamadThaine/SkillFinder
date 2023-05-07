@@ -18,18 +18,24 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import './Assets/Styles/Modal.css'
 import AdminHome from './Pages/AdminHome';
+import { useNavigate } from 'react-router-dom';
+import AdminApprenticeshipList from './Pages/AdminApprenticeshipList';
 
 function App() {
-
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [otherUserInfo, setOtherUserInfo] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   useEffect (() => {
     try
     {
       if(localStorage.getItem('user') != null){
         setUser(JSON.parse(localStorage.getItem('user')));
         setOtherUserInfo(JSON.parse(localStorage.getItem('otherInfo')));
+        if(JSON.parse(localStorage.getItem('otherInfo')).isAdmin){
+          setIsAdmin(true);
+          navigate('/Admin');
+        }
       }  
     }catch(e){}
   }, []);
@@ -37,6 +43,10 @@ function App() {
   const handleLogin = () => {
     setUser(JSON.parse(localStorage.getItem('user')));
     setOtherUserInfo(JSON.parse(localStorage.getItem('otherInfo')));
+    if(JSON.parse(localStorage.getItem('otherInfo')).isAdmin){
+      setIsAdmin(true);
+      navigate('/Admin');
+    }
   }
 
   const handleLogout = () => {
@@ -58,6 +68,7 @@ function App() {
         <Route path="/Register" element={<Register />} />
         <Route path='/Search/:keyWords' element={<Search />} />
         <Route path='/Apprenticeship/:ID' element={<ApprenticeshipDetalis />} />
+        <Route path='/Admin/Apprenticeship' element={<AdminApprenticeshipList isAdmin={isAdmin} />} />
         <Route path='/Admin' element={<AdminHome isAdmin={isAdmin} />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>

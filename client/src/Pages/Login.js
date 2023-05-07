@@ -44,7 +44,6 @@ function Login({handleLogin}){
             setAlert({message:res.error, severity:'error', needed:true});
         }
         else{
-            console.log(res)
             if(res.admin){
                 setAlert({message:'Login Successfully!', severity:'success', needed:true});
                 localStorage.setItem('user', JSON.stringify(res.admin));

@@ -1,88 +1,61 @@
-const db = require('../../dbConnection');
+const {User, Owner, Apprentice, Admin} = require('../../models/User');
 
 const login = (req, res) => {
     const { username, password } = req.body;
-    db.query(
-        'SELECT * FROM user WHERE username = ? AND password = ?',
-        [username, password],
-        (err, result) => {
-            if (err) {
-                res.send({ error: err });
-                return;
-            }
-            else{
-                if(result.length === 0){
-                    isAdmin(res, username, password).then((isAdmin) => {
-                        if(isAdmin){
-                            res.send({ admin: isAdmin });
-                        }else{
-                            res.send({ error: 'User not found' });
-                        }
-                    });
-                }else{
-                    if(result[0].User_Type === 1){
-                        getApprenticeInfo(res, result[0].ID).then((apprenticeInfo) => {
-                            res.send({ user: result[0], otherInfo: apprenticeInfo });
-                        });
-                    }else{
-                        getOwnerInfo(res, result[0].ID).then((ownerInfo) => {
-                            res.send({ user: result[0], otherInfo: ownerInfo });
-                        });
+    const user = User.findOne({
+        where: {
+            username: username,
+            password: password
+        }
+    }).then(user => {
+        if(user){
+            if(user.User_Type === 1){
+                Apprentice.findOne({
+                    where: {
+                        User_ID: user.id
                     }
-                }
-            }
-        });
-}
-
-const getApprenticeInfo = (res, ID) => {
-    return new Promise((resolve, reject) => {
-        db.query(
-            'SELECT * FROM apprentice WHERE User_ID = ?',
-            [ID],
-            (err, result) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(result[0]);
-                }
-            }
-        );
-    });
-}
-
-const getOwnerInfo = (res, ID) => {
-    return new Promise((resolve, reject) => {
-        db.query(
-            'SELECT * FROM apprenticeship_owner WHERE User_ID = ?',
-            [ID],
-            (err, result) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(result[0]);
-                }
-            }
-        );
-    });
-}
-
-const isAdmin = (res, username, password) => {
-    return new Promise((resolve, reject) => {
-        db.query(
-            'SELECT * FROM admin WHERE username = ? AND password = ?',
-            [username, password],
-            (err, result) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    if(result.length === 0){
-                        resolve(false);
-                    }else{
-                        resolve(result[0]);
+                }).then(apprentice => {
+                    if(apprentice){
+                        res.send({user: user});
+                    } else {
+                        res.send({error: 'Apprentice not found'});
                     }
-                }
+                }).catch(err => {
+                    res.send({error: err.message});
+                });
+            } else if(user.User_Type === 2){
+                Owner.findOne({
+                    where: {
+                        User_ID: user.id
+                    }
+                }).then(owner => {
+                    if(owner){
+                        res.send({user: user});
+                    } else {
+                        res.send({error: 'Owner not found'});
+                    }
+                }).catch(err => {
+                    res.send({error: err.message});
+                });
             }
-        );
+        }else{
+            const isAdmin = Admin.findOne({
+                where: {
+                    username: username,
+                    password: password
+                }
+            }).then(admin => {
+                if(admin){
+                    res.send({admin: admin});
+                } else {
+                    res.send({error: 'User not found'});
+                }
+            }).catch(err => {
+                res.send({error: err.message});
+            });
+        }
+    }).catch(err => {
+        res.send({error: err.message});
     });
 }
 

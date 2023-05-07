@@ -201,7 +201,7 @@ function Register(){
                             <label for="accept-check" className="ms-1 mb-auto">I agree to <Link>Terms of Use and Privacy Policy</Link></label>
                         </div>
                     </div>
-                    {alert.needed && <Alert message={alert.message} severity={alert.severity} />}
+                    {alert.needed && <Alert severity={alert.severity}> {alert.message} </Alert>}
                     <button className="mt-2 row register-confirm-btn ms-auto me-auto" onClick={register}>Register</button>
                 </div>
             </div>

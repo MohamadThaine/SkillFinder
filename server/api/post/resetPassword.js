@@ -1,24 +1,48 @@
-const db = require('../../dbConnection');
+const { User } = require('../../models/User');
 
-const checkEmail = (req, res) => {
-    const { email } = req.body;
-    db.query(`SELECT * FROM user WHERE Email = '${email}'`, (err, result) => {
-        if(err) res.send({error: true});
-        else if(result.length == 0) res.send({error: true});
-        else res.send({name: result[0].Name});
+const checkEmail = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({
+      where: {
+        Email: email,
+      },
     });
-}
 
-const resetPassword = (req, res) => {
-    const { email, password } = req.body;
-    db.query(`UPDATE user SET Password = '${password}' WHERE Email = '${email}'`, (err, result) => {
-        if(err) res.send({error: true});
-        else res.send({error: false});
-    });
-}
+    if (!user) {
+      res.send({ error: true });
+    } else {
+      res.send({ name: user.Name });
+    }
+  } catch (error) {
+    res.send({ error: true });
+  }
+};
 
+const resetPassword = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const result = await User.update(
+      { Password: password },
+      {
+        where: {
+          Email: email,
+        },
+      }
+    );
+   console.log(email, password)
+    if (result[0] === 0) {
+      res.send({ error: true });
+    } else {
+      res.send({ error: false });
+    }
+  } catch (error) {
+    res.send({ error: true });
+  }
+};
 
 module.exports = {
-    checkEmail,
-    resetPassword
-}
+  checkEmail,
+  resetPassword,
+};
