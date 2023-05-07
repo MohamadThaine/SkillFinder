@@ -15,6 +15,8 @@ function AdminApprenticeshipList(){
     const [apprenticeshipList, setApprenticeshipList] = useState([]);
     const [saveApprenticeship, setSaveApprenticeship] = useState([]);
     const [openModal, setOpenModal] = useState(false);
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
+    const [deletedApprenticeshipID, setDeletedApprenticeshipID] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const viewDetalis = (apprenticeship) => {
         setOpenModal(true);
@@ -27,9 +29,9 @@ function AdminApprenticeshipList(){
     }
 
     const deleteApprenticeship = (e,id) => {
+        setDeletedApprenticeshipID(id);
         e.stopPropagation();
-        setApprenticeshipList(apprenticeshipList.filter((apprenticeship) => apprenticeship.id !== id));
-        setSaveApprenticeship(saveApprenticeship.filter((apprenticeship) => apprenticeship.id !== id));
+        setOpenDeleteModal(true);
     }
 
     const handleSearch = (e) => {
@@ -46,13 +48,54 @@ function AdminApprenticeshipList(){
         , 500);
     }
 
+    const confirmDialogClose = () => {
+        setOpenDeleteModal(false);
+        setDeletedApprenticeshipID(null);
+    }
+
+    const ConfimDeleteDialog = () => {
+        const modelStyle = {
+            backgroundColor: 'white',
+        }
+        const confirmDelte = () => {
+            setApprenticeshipList(apprenticeshipList.filter((apprenticeship) => apprenticeship.ID !== deletedApprenticeshipID));
+            setSaveApprenticeship(saveApprenticeship.filter((apprenticeship) => apprenticeship.ID !== deletedApprenticeshipID));
+            fetch(`http://localhost:5000/deleteApprenticeship/${deletedApprenticeshipID}`, {
+                method: 'DELETE',
+            }).then(res => res.json())
+            .then(data => {
+                confirmDialogClose();
+            }
+            ).catch(err => console.log(err));
+    }
+        return (
+            <>
+              {deletedApprenticeshipID != null &&  <Modal
+                open={openDeleteModal}
+                onClose={confirmDialogClose}>
+                    <Box className='center-modal desc p-4' style={modelStyle}>
+                        <h4 className="text-center mb-5">Are you sure you want to delete this apprenticeship?</h4>
+                        <div className="row text-center mb-2">
+                            <div className="col-6 ">
+                                <Button variant="contained" color="error" onClick={confirmDelte}>Delete</Button>
+                            </div>
+                            <div className="col-6">
+                                <Button variant="contained" color="secondary" onClick={confirmDialogClose}>Cancel</Button>
+                            </div>
+                        </div>
+                    </Box>
+                </Modal>}
+            </>
+            
+        )
+    }
+
     useEffect(() => {
         fetch('http://localhost:5000/apprenticeships')
         .then(res => res.json())
         .then(data => {
             setApprenticeshipList(data);
             setSaveApprenticeship(data);
-            console.log(data);
         }).catch(err => console.log(err));
     }, [])
 
@@ -61,6 +104,7 @@ function AdminApprenticeshipList(){
             <input type="text" placeholder="Search" className="form-control mt-3 mb-3" value={searchTerm} onChange={handleSearch}/>
             <AdminTable columns={columns} data={apprenticeshipList} onRowClick={viewDetalis} onBtnClick={deleteApprenticeship} rowButtonText={'Delete'}/>
             <ApprenticeshipInfo apprenticeship={apprenticeship} open={openModal} handleClose={handleClose}/>
+            <ConfimDeleteDialog/>
         </div>  
     )  
 }

@@ -7,7 +7,7 @@ const getApprinticeshipInfo = require('./api/get/getApprenticeshipInfo');
 const getApprenticeshipPics = require('./api/get/getApprenticeshipPics');
 const getAllApprenticeship = require('./api/get/getAllApprenticeship');
 const resetPassword = require('./api/post/resetPassword');
-const path = require('path');
+const deleteApprenticeship = require('./api/delete/deleteApprenticeship');
 const app = express();
 
 app.use(express.static('public'));
@@ -35,3 +35,4 @@ app.put('/resetPassword', resetPassword.resetPassword)
 app.get('/apprenticeship/:id', getApprinticeshipInfo);
 app.get('/apprenticeship-pics/:id', getApprenticeshipPics);
 app.get('/apprenticeships', getAllApprenticeship);
+app.delete('/deleteApprenticeship/:id', deleteApprenticeship);

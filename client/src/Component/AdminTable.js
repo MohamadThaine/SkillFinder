@@ -31,7 +31,7 @@ const AdminTable = ({ columns, data, rowButtonText, onRowClick, onBtnClick }) =>
               {columns.map((column) => (
                 <TableCell key={column.id} align="center">   
                   {column.id === rowButtonText ? (
-                    <Button variant="contained" color="error" onClick={e => onBtnClick(e,row.id)}>
+                    <Button variant="contained" color="error" onClick={e => onBtnClick(e,row.ID)}>
                       {rowButtonText}
                     </Button>
                   ) : (

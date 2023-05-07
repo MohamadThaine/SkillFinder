@@ -20,11 +20,8 @@ const getAllApprenticeship = async (req, res) => {
         'Owner.User.ID'
       ],
     });
-
-    console.log(apprenticeships);
     res.json(apprenticeships);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: error });
   }
 };
