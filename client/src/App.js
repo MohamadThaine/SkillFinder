@@ -20,6 +20,8 @@ import './Assets/Styles/Modal.css'
 import AdminHome from './Pages/AdminHome';
 import { useNavigate } from 'react-router-dom';
 import AdminApprenticeshipList from './Pages/AdminApprenticeshipList';
+import AdminApproveList from './Pages/AdminApproveList';
+import AdminUserList from './Pages/AdminUserList';
 
 function App() {
   const navigate = useNavigate();
@@ -69,6 +71,8 @@ function App() {
         <Route path='/Search/:keyWords' element={<Search />} />
         <Route path='/Apprenticeship/:ID' element={<ApprenticeshipDetalis />} />
         <Route path='/Admin/Apprenticeship' element={<AdminApprenticeshipList isAdmin={isAdmin} />} />
+        <Route path='/Admin/Approve' element={<AdminApproveList isAdmin={isAdmin} />} />
+        <Route path='/Admin/User' element={<AdminUserList isAdmin={isAdmin} />} />
         <Route path='/Admin' element={<AdminHome isAdmin={isAdmin} />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>

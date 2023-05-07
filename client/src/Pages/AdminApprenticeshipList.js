@@ -2,8 +2,14 @@ import { Paper, Table, TableRow, TableBody, TableContainer, TableCell, TableHead
 import { useEffect, useState } from "react";
 import React from 'react';
 import AdminTable from "../Component/AdminTable";
+import { useNavigate } from "react-router-dom";
 
-function AdminApprenticeshipList(){
+function AdminApprenticeshipList({isAdmin}){
+    const navigate = useNavigate();
+    if(!isAdmin){
+        navigate('/pageNotFound');
+    }
+    
     const columns = [
         { id: 'Name', label: 'Name', minWidth: 50 , align: 'center' },
         { id: 'Price', label: 'Price', minWidth: 50, align: 'center' },
@@ -11,6 +17,7 @@ function AdminApprenticeshipList(){
         { id: 'ID', label: 'ID', minWidth: 50, align: 'center' },
         { id: 'Delete', label: 'Delete', minWidth: 50, align: 'center' },
     ];
+
     const [apprenticeship, setApprenticeship] = useState(null);
     const [apprenticeshipList, setApprenticeshipList] = useState([]);
     const [saveApprenticeship, setSaveApprenticeship] = useState([]);
