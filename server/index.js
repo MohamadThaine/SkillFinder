@@ -5,6 +5,7 @@ const login = require('./api/post/login');
 const verifyEmail = require('./api/put/verifyAccount')
 const getApprinticeshipInfo = require('./api/get/getApprenticeshipInfo');
 const getApprenticeshipPics = require('./api/get/getApprenticeshipPics');
+const getAllApprenticeship = require('./api/get/getAllApprenticeship');
 const resetPassword = require('./api/post/resetPassword');
 const path = require('path');
 const app = express();
@@ -33,3 +34,4 @@ app.put('/verify-email', verifyEmail);
 app.put('/resetPassword', resetPassword.resetPassword)
 app.get('/apprenticeship/:id', getApprinticeshipInfo);
 app.get('/apprenticeship-pics/:id', getApprenticeshipPics);
+app.get('/apprenticeships', getAllApprenticeship);

@@ -9,39 +9,39 @@ import { useNavigate } from 'react-router-dom';
 function AdminNavBar({isAdmin}){
 
     const navigate = useNavigate();
-
+    const currentPath = window.location.pathname;
     if(!isAdmin)
         navigate('/PageNotFound');
 
     return(
-        <div class="d-flex flex-column flex-shrink-0 p-3 bg-light position-absolute admin-nav-bar">
-    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-      <span class="fs-4">Admin Dashboard</span>
+        <div className="d-flex flex-column flex-shrink-0 p-3 bg-light position-absolute admin-nav-bar">
+    <a href="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+      <span className="fs-4">Admin Dashboard</span>
     </a>
     <hr/>
-    <ul class="nav nav-pills flex-column mb-auto">
-      <li class="nav-item">
-        <Link to="/admin" class="nav-link active" aria-current="page">
+    <ul className="nav nav-pills flex-column mb-auto">
+      <li className="nav-item">
+        <Link to="/admin" className={"nav-link " + (currentPath === '/Admin/User'? 'active': 'link-dark')}>
             <img src={userIcon} alt="user" className="admin-nav-bar-icons"/>
             Users
         </Link>
       </li>
       <li>
-        <Link to="/admin/app" class="nav-link link-dark">
+        <Link to="/Admin/Apprenticeship" className={"nav-link " + (currentPath === '/Admin/Apprenticeship'? 'active': 'link-dark')}>
             <img src={schoolIcom} alt="school" className="admin-nav-bar-icons"/>
             Apprenticeships
         </Link>
       </li>
-      <li class="nav-item">
-        <Link to="/admin/approve" class="nav-link link-dark">
+      <li className="nav-item">
+        <Link to="/admin/approve" className={"nav-link " + (currentPath === '/Admin/Approve'? 'active': 'link-dark')}>
             <img src={approveIcon} alt="approve" className="admin-nav-bar-icons"/>
             Approve
         </Link>
       </li>
-      <li class="nav-item">
-        <Link to="/admin/add" class="nav-link link-dark">
+      <li className="nav-item">
+        <Link to="/admin/Edit" className={"nav-link " + (currentPath === '/Admin/Edit'? 'active': 'link-dark')}>
             <img src={addIcon} alt="add" className="admin-nav-bar-icons"/>
-            Add
+            Edit Categories
         </Link>
       </li>
     </ul>

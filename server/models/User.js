@@ -1,5 +1,6 @@
 const sequelize = require('../sequelize');
 const { DataTypes } = require('sequelize');
+const { Apprenticeship, ApprenticeshipApprentice } = require('./Apprenticeship');
 
 const User = sequelize.define('User', {
     Username: {
@@ -111,7 +112,16 @@ const Admin = sequelize.define('admin', {
     timestamps: false
 });
 
-
+User.hasOne(Owner, { foreignKey: 'User_ID' });
+User.hasOne(Apprentice, { foreignKey: 'User_ID' });
+Owner.belongsTo(User, { foreignKey: 'User_ID' });
+Apprentice.belongsTo(User, { foreignKey: 'User_ID' });
+Owner.hasMany(Apprenticeship, { foreignKey: 'Owner_ID' });
+Apprenticeship.belongsTo(Owner, { foreignKey: 'Owner_ID' });
+Apprentice.hasMany(ApprenticeshipApprentice, { foreignKey: 'Apperntice_ID' });
+ApprenticeshipApprentice.belongsTo(Apprentice, { foreignKey: 'Apperntice_ID' });
+Apprenticeship.hasMany(ApprenticeshipApprentice, { foreignKey: 'Apprenticeship_ID' });
+ApprenticeshipApprentice.belongsTo(Apprenticeship, { foreignKey: 'Apprenticeship_ID' });
 
 module.exports = {
     User,
