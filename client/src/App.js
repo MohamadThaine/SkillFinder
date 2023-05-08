@@ -22,6 +22,7 @@ import { useNavigate } from 'react-router-dom';
 import AdminApprenticeshipList from './Pages/AdminApprenticeshipList';
 import AdminApproveList from './Pages/AdminApproveList';
 import AdminUserList from './Pages/AdminUserList';
+import AdminCategoryEdit from './Pages/AdminCategoryEdit';
 
 function App() {
   const navigate = useNavigate();
@@ -73,6 +74,7 @@ function App() {
         <Route path='/Admin/Apprenticeship' element={<AdminApprenticeshipList isAdmin={isAdmin} />} />
         <Route path='/Admin/Approve' element={<AdminApproveList isAdmin={isAdmin} />} />
         <Route path='/Admin/User' element={<AdminUserList isAdmin={isAdmin} />} />
+        <Route path='/Admin/Edit' element={<AdminCategoryEdit isAdmin={isAdmin} />} />
         <Route path='/Admin' element={<AdminHome isAdmin={isAdmin} />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>

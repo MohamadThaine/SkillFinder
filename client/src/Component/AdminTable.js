@@ -1,7 +1,7 @@
 import { Paper, Table, TableContainer, TableHead, TableRow, TableCell, TableBody, Button } from '@mui/material';
 import getValueByNestedProperty from '../Helper/getValueByNestedProperty';
-
-const AdminTable = ({ columns, data, rowButtonText, onRowClick, onBtnClick }) => {
+import { Fragment } from 'react';
+const AdminTable = ({ columns, data, rowButtons, onRowClick }) => {
   return (
     <TableContainer component={Paper} className="max-height-table">
       <Table sx={{ minWidth: 650 }}>
@@ -29,11 +29,24 @@ const AdminTable = ({ columns, data, rowButtonText, onRowClick, onBtnClick }) =>
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               {columns.map((column) => (
-                <TableCell key={column.id} align="center">   
-                  {column.id === rowButtonText ? (
-                    <Button variant="contained" color="error" onClick={e => onBtnClick(e,row.ID)}>
-                      {rowButtonText}
-                    </Button>
+                <TableCell key={column.id} align="center">
+                  {rowButtons.find(button => button.text === column.id) ? (
+                    <Fragment>
+                      {rowButtons.map((button, buttonIndex) => {
+                        if (button.text === column.id) {
+                          return (
+                            <Button
+                              key={buttonIndex}
+                              variant="contained"
+                              color={button.color}
+                              onClick={e => button.onClick(e, row.ID)}
+                            >
+                              {button.text}
+                            </Button>
+                          );
+                        }
+                      })}
+                    </Fragment>
                   ) : (
                     getValueByNestedProperty(row, column.id)
                   )}

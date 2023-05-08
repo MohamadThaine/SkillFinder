@@ -6,7 +6,7 @@ function AdminApproveList({isAdmin}){
         navigate('/pageNotFound');
     }
     return(
-        <div>
+        <div className="container mt-auto mb-auto">
             <h1>Admin Approve List</h1>
         </div>
     )

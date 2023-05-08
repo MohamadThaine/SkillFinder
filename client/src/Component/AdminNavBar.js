@@ -21,7 +21,7 @@ function AdminNavBar({isAdmin}){
     <hr/>
     <ul className="nav nav-pills flex-column mb-auto">
       <li className="nav-item">
-        <Link to="/admin" className={"nav-link " + (currentPath === '/Admin/User'? 'active': 'link-dark')}>
+        <Link to="/Admin/User" className={"nav-link " + (currentPath === '/Admin/User'? 'active': 'link-dark')}>
             <img src={userIcon} alt="user" className="admin-nav-bar-icons"/>
             Users
         </Link>
@@ -33,13 +33,13 @@ function AdminNavBar({isAdmin}){
         </Link>
       </li>
       <li className="nav-item">
-        <Link to="/admin/approve" className={"nav-link " + (currentPath === '/Admin/Approve'? 'active': 'link-dark')}>
+        <Link to="/Admin/Approve" className={"nav-link " + (currentPath === '/Admin/Approve'? 'active': 'link-dark')}>
             <img src={approveIcon} alt="approve" className="admin-nav-bar-icons"/>
             Approve
         </Link>
       </li>
       <li className="nav-item">
-        <Link to="/admin/Edit" className={"nav-link " + (currentPath === '/Admin/Edit'? 'active': 'link-dark')}>
+        <Link to="/Admin/Edit" className={"nav-link " + (currentPath === '/Admin/Edit'? 'active': 'link-dark')}>
             <img src={addIcon} alt="add" className="admin-nav-bar-icons"/>
             Edit Categories
         </Link>

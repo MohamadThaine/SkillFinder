@@ -60,21 +60,37 @@ function AdminApprenticeshipList({isAdmin}){
         setDeletedApprenticeshipID(null);
     }
 
+    const confirmDelte = () => {
+        if(deletedApprenticeshipID == null){
+            if(apprenticeship != null){
+                setDeletedApprenticeshipID(apprenticeship.ID);
+            }
+        }
+        setApprenticeshipList(
+            saveApprenticeship.filter(app =>
+              app.ID !== (deletedApprenticeshipID ? deletedApprenticeshipID : apprenticeship.ID)
+            )
+          );
+        setSaveApprenticeship(
+            saveApprenticeship.filter(app =>
+              app.ID !== (deletedApprenticeshipID ? deletedApprenticeshipID : apprenticeship.ID)
+            )
+          );
+        fetch(`http://localhost:5000/deleteApprenticeship/${deletedApprenticeshipID ? deletedApprenticeshipID : apprenticeship.ID}`, {
+            method: 'DELETE',
+        }).then(res => res.json())
+        .then(data => {
+            confirmDialogClose();
+            handleClose();
+        }
+        ).catch(err => console.log(err));
+    }
+
     const ConfimDeleteDialog = () => {
         const modelStyle = {
             backgroundColor: 'white',
         }
-        const confirmDelte = () => {
-            setApprenticeshipList(apprenticeshipList.filter((apprenticeship) => apprenticeship.ID !== deletedApprenticeshipID));
-            setSaveApprenticeship(saveApprenticeship.filter((apprenticeship) => apprenticeship.ID !== deletedApprenticeshipID));
-            fetch(`http://localhost:5000/deleteApprenticeship/${deletedApprenticeshipID}`, {
-                method: 'DELETE',
-            }).then(res => res.json())
-            .then(data => {
-                confirmDialogClose();
-            }
-            ).catch(err => console.log(err));
-    }
+        
         return (
             <>
               {deletedApprenticeshipID != null &&  <Modal
@@ -105,18 +121,18 @@ function AdminApprenticeshipList({isAdmin}){
             setSaveApprenticeship(data);
         }).catch(err => console.log(err));
     }, [])
-
+    const [buttons, setButtons] = useState([{text:'Delete', color:'error', onClick:deleteApprenticeship}]);
     return (
         <div className="container mt-auto mb-auto">
             <input type="text" placeholder="Search" className="form-control mt-3 mb-3" value={searchTerm} onChange={handleSearch}/>
-            <AdminTable columns={columns} data={apprenticeshipList} onRowClick={viewDetalis} onBtnClick={deleteApprenticeship} rowButtonText={'Delete'}/>
-            <ApprenticeshipInfo apprenticeship={apprenticeship} open={openModal} handleClose={handleClose}/>
+            <AdminTable columns={columns} data={apprenticeshipList} onRowClick={viewDetalis} rowButtons={buttons}/>
+            <ApprenticeshipInfo apprenticeship={apprenticeship} open={openModal} handleClose={handleClose} deleteApprenticeship={confirmDelte} setDeletedApprenticeshipID={setDeletedApprenticeshipID}/>
             <ConfimDeleteDialog/>
         </div>  
     )  
 }
 
-const ApprenticeshipInfo = ({apprenticeship, open, handleClose}) => {
+const ApprenticeshipInfo = ({apprenticeship, open, handleClose, deleteApprenticeship, setDeletedApprenticeshipID}) => {
     const modelStyle = {
         backgroundColor: 'white',
     }
@@ -167,7 +183,8 @@ const ApprenticeshipInfo = ({apprenticeship, open, handleClose}) => {
                         </div>
                         <div className="row text-center mb-2">
                             <div className="col-6 ">
-                                <Button variant="contained" color="error">Delete</Button>
+                                <Button variant="contained" color="error" onClick={deleteApprenticeship}>Delete</Button>
+
                             </div>
                             <div className="col-6">
                                 <Button variant="contained" color="secondary" onClick={handleClose}>Close</Button>
