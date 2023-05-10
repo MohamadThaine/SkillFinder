@@ -28,9 +28,7 @@ function AdminApproveList({ isAdmin }) {
     ];
 
     const [ownersList, setOwnersList] = useState([]);
-
     const [apprenticeshipsList, setApprenticeshipsList] = useState([]);
-    const [buttons, setButtons] = useState([{ text: 'Approve', color: 'success', onClick: (e, id) => { console.log(id) } }, { text: 'Disapprove', color: 'error', onClick: (e, id) => { console.log(id) } }]);
     const [open, setOpen] = useState(false);
     const [owner, setOwner] = useState(null);
     const [apprenticeship, setApprenticeship] = useState(null);
@@ -50,6 +48,56 @@ function AdminApproveList({ isAdmin }) {
         setOwner(null);
     }
 
+    const approveApprenticeship = (e,ID) => {
+        e.stopPropagation();
+        fetch(`http://localhost:5000/approve/apprenticeship/${ID}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(() => {
+            setApprenticeshipsList(apprenticeshipsList.filter(apprenticeship => apprenticeship.ID !== ID));
+        }).catch(err => console.log(err));
+        }
+
+    const approveOwner = (e,ID) => {
+        e.stopPropagation();
+        fetch(`http://localhost:5000/approve/owner/${ID}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(() => {
+            setOwnersList(ownersList.filter(owner => owner.User_ID !== ID));
+        }
+        ).catch(err => console.log(err));
+    }
+
+    const disapproveApprenticeship = (ID) => {
+        fetch(`http://localhost:5000/deleteApprenticeship/${ID}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        }).then(() => {
+            setApprenticeshipsList(apprenticeshipsList.filter(apprenticeship => apprenticeship.ID !== ID));
+        }
+        ).catch(err => console.log(err));
+    }
+
+    const disapproveOwner = (ID) => {
+        fetch(`http://localhost:5000/rejectOwner/${ID}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(() => {
+            setOwnersList(ownersList.filter(owner => owner.User_ID !== ID));
+        }
+        ).catch(err => console.log(err));
+    }
+        
     useEffect(() => {
         fetch('http://localhost:5000/users/false')
         .then(res => res.json())
@@ -66,7 +114,8 @@ function AdminApproveList({ isAdmin }) {
         }).catch(err => console.log(err));
     }, [])
 
-
+    const [OwnerButtons, setButtons] = useState([{ text: 'Approve', color: 'success', onClick: approveOwner} , { text: 'Disapprove', color: 'error', onClick: disapproveOwner }]);
+    const [ApprenticeshipButtons, setApprenticeshipButtons] = useState([{ text: 'Approve', color: 'success', onClick: approveApprenticeship} , { text: 'Disapprove', color: 'error', onClick: disapproveApprenticeship }]);
 
 
     return (
@@ -78,7 +127,9 @@ function AdminApproveList({ isAdmin }) {
             </div>
             <input type="text" className="form-control mt-3 mb-3" placeholder="Search" />
             <AdminTable columns={activeButton === 'Owners' ? OwnersColumns : ApprenticeshipsColumns}
-                data={activeButton === 'Owners' ? ownersList : apprenticeshipsList} rowButtons={buttons} onRowClick={openModal} />
+                data={activeButton === 'Owners' ? ownersList : apprenticeshipsList} 
+                rowButtons={activeButton === 'Owners' ? OwnerButtons : ApprenticeshipButtons} 
+                onRowClick={openModal} />
             <OwnerModal owner={owner} open={open} handleClose={handleClose} />
             <ApprenticeshipModal apprenticeship={apprenticeship} open={open} handleClose={handleClose} />
         </div>

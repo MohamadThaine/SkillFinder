@@ -46,7 +46,7 @@ function VerifyEmail({email, verify_token, from}){
             <h5 className='text-center'>Your Email is</h5>
             <h5 className='mb-2 mt-2 text-center'>{email}</h5>
             {verifyCodeInput}
-            {alert.needed && <Alert severity={alert.severity}>{alert.message}</Alert>}
+            {alert.needed && <Alert severity={alert.severity} className='mt-2 mb-2'>{alert.message}</Alert>}
             <button className='defultButton row me-auto ms-auto mt-3 login-button' onClick={verifyEmail}>Verify</button>
         </div>
     )

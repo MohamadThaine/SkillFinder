@@ -40,7 +40,7 @@ const AdminTable = ({ columns, data, rowButtons, onRowClick }) => {
                                 key={buttonIndex}
                                 variant="contained"
                                 color={button.color}
-                                onClick={e => button.onClick(e, row.ID)}
+                                onClick={row.ID === undefined? e => button.onClick(e,row.id) : e => button.onClick(e, row.ID)}
                               >
                                 {button.text}
                               </Button>

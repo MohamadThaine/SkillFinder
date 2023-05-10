@@ -6,7 +6,8 @@ import approveIcon from '../Assets/Images/check-solid.svg';
 import addIcon from '../Assets/Images/plus-solid.svg';
 import schoolIcom from '../Assets/Images/school-solid.svg';
 import { useNavigate } from 'react-router-dom';
-function AdminNavBar({isAdmin}){
+import { Button } from '@mui/material';
+function AdminNavBar({isAdmin, handleLogout}){
 
     const navigate = useNavigate();
     const currentPath = window.location.pathname;
@@ -47,7 +48,7 @@ function AdminNavBar({isAdmin}){
     </ul>
     <hr/>
     <li>
-        <span>Logout</span>
+        <Button variant="contained" onClick={handleLogout} className='ms-5'>Logout</Button>
     </li>
   </div>
     )

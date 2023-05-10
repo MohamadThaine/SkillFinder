@@ -1,14 +1,21 @@
 const {User, Owner, Apprentice, Admin} = require('../../models/User');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+const bcryptjs = require('bcryptjs');
+const sercetKey = process.env.SECRET_KEY;
 
 const login = (req, res) => {
     const { username, password } = req.body;
     const user = User.findOne({
         where: {
-            username: username,
-            password: password
+            Username: username,
         }
     }).then(user => {
         if(user){
+            const isMatch = bcryptjs.compareSync(password, user.Password);
+            if(!isMatch){
+                return res.send({error: 'Wrong password'});
+            }
             if(user.User_Type === 1){
                 Apprentice.findOne({
                     where: {
@@ -16,7 +23,8 @@ const login = (req, res) => {
                     }
                 }).then(apprentice => {
                     if(apprentice){
-                        res.send({user: user});
+                        const token = jwt.sign({id: user.id}, sercetKey);
+                        res.send({token: token, user: user, apprentice: apprentice});
                     } else {
                         res.send({error: 'Apprentice not found'});
                     }
@@ -30,7 +38,8 @@ const login = (req, res) => {
                     }
                 }).then(owner => {
                     if(owner){
-                        res.send({user: user});
+                        const token = jwt.sign({id: user.id}, sercetKey);
+                        res.send({token: token, user: user, owner: owner});
                     } else {
                         res.send({error: 'Owner not found'});
                     }
@@ -42,11 +51,15 @@ const login = (req, res) => {
             const isAdmin = Admin.findOne({
                 where: {
                     username: username,
-                    password: password
                 }
             }).then(admin => {
+                const isMatch = bcryptjs.compareSync(password, admin.Password);
+                if(!isMatch){
+                    return res.send({error: 'Wrong password'});
+                }
                 if(admin){
-                    res.send({admin: admin});
+                    const token = jwt.sign({isAdmin: true}, sercetKey);
+                    res.send({token: token, admin: admin});
                 } else {
                     res.send({error: 'User not found'});
                 }

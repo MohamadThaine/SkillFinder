@@ -1,4 +1,5 @@
 const { User } = require('../../models/User');
+const bcryptjs = require('bcryptjs');
 
 const checkEmail = async (req, res) => {
   const { email } = req.body;
@@ -22,16 +23,16 @@ const checkEmail = async (req, res) => {
 
 const resetPassword = async (req, res) => {
   const { email, password } = req.body;
+  const passwordHash = bcryptjs.hashSync(password, 10);
   try {
     const result = await User.update(
-      { Password: password },
+      { Password: passwordHash },
       {
         where: {
           Email: email,
         },
       }
     );
-   console.log(email, password)
     if (result[0] === 0) {
       res.send({ error: true });
     } else {

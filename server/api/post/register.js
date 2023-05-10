@@ -1,5 +1,5 @@
-const {User, Owner, Apprentice} = require('../../models/User');
-
+const { User, Owner, Apprentice } = require('../../models/User');
+const bcryptjs = require('bcryptjs');
 const register = async (req, res) => {
     const { username,
         password,
@@ -13,9 +13,10 @@ const register = async (req, res) => {
         gender,
         verifyToken } = req.body;
     try {
+        const passwordHash = bcryptjs.hashSync(password, 10);
         const user = await User.create({
-            username: username,
-            password: password,
+            Username: username,
+            Password: passwordHash,
             Email: email,
             Name: firstName + ' ' + lastName,
             Phone_Number: phoneNumber,
@@ -25,7 +26,7 @@ const register = async (req, res) => {
             Verify_Status: false,
             User_Type: isOwner ? 2 : 1,
         });
-        if(isOwner){
+        if (isOwner) {
             await Owner.create({
                 User_ID: user.id,
                 Major: otherInfo,
@@ -43,22 +44,21 @@ const register = async (req, res) => {
             verifyToken: verifyToken,
             name: firstName + ' ' + lastName
         }
-        res.send({data: data});
+        res.send({ data: data });
     } catch (err) {
-        if (err.parent.code === 'ER_DUP_ENTRY') {
-            if (err.parent.sqlMessage.includes(username)) {
-              res.send({ error: 'Username already exists' });
-            } else if (err.parent.sqlMessage.includes(email)) {
-              res.send({ error: 'Email already exists' });
-            } else if (err.parent.sqlMessage.includes(phoneNumber)) {
-              res.send({ error: 'Phone number already exists' });
-            }
-          } else {
+        console.log(err);
+        if (err.parent.sqlMessage.includes(username)) {
+            res.send({ error: 'Username already exists' });
+        } else if (err.parent.sqlMessage.includes(email)) {
+            res.send({ error: 'Email already exists' });
+        } else if (err.parent.sqlMessage.includes(phoneNumber)) {
+            res.send({ error: 'Phone number already exists' });
+        } else {
             res.send({ error: err.message });
-          }
+        }
     }
 }
-    
+
 
 
 

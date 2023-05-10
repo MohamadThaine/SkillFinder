@@ -55,14 +55,17 @@ function App() {
   const handleLogout = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('otherInfo');
+    localStorage.removeItem('token');
     setUser(null);
     setOtherUserInfo(null);
+    setIsAdmin(false);
+    navigate('/');
   }
 
   return (
     <>
       {!isAdmin && <NavBar user={user} otherUserInfo={otherUserInfo} handleLogout={handleLogout} />}
-      {isAdmin ? <AdminNavBar isAdmin={isAdmin} /> : null}
+      {isAdmin && <AdminNavBar isAdmin={isAdmin} handleLogout={handleLogout} />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/AboutUs" element={<AboutUs />} />

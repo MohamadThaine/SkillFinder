@@ -2,7 +2,6 @@ const db = require('../../dbConnection');
 
 const getApprenticeshipInfo = async (req, res) => {
     const { id } = req.params;
-  
     try {
       const apprenticeshipResult = await new Promise((resolve, reject) => {
         db.query(
@@ -66,8 +65,8 @@ const getApprenticeshipInfo = async (req, res) => {
         (err, result) => {
           if (err) {
             reject(err);
-            console.log(err);
           } else {
+            delete result[0].Password;
             resolve(result[0]);
           }
         }

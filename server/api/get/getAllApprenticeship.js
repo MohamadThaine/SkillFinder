@@ -2,6 +2,7 @@ const { Apprenticeship, ApprenticeshipApprentice } = require('../../models/Appre
 const Category = require('../../models/Category');
 const { User, Owner } = require('../../models/User');
 const sequelize = require('../../sequelize');
+const verifyToken = require('../../utils/verifyToken');
 
 const getAllApprenticeship = async (req, res) => {
   try {
@@ -32,7 +33,6 @@ const getAllApprenticeship = async (req, res) => {
         [sequelize.fn('COUNT', sequelize.literal('apprenticeship_apprentices.Apprenticeship_ID')), 'enrolledStudentsCount'],
       ],
       where: {
-        
         isApproved: req.params.isApproved === 'true',
       },
       group: [
@@ -41,7 +41,9 @@ const getAllApprenticeship = async (req, res) => {
         'Owner.User.id',
       ],
     });
-
+    apprenticeships.map((apprenticeship) => {
+      delete apprenticeship.dataValues.Owner.dataValues.User.dataValues.Password;
+    });
     res.json(apprenticeships);
   } catch (error) {
     res.status(500).json({ error: error.message });

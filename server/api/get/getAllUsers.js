@@ -1,8 +1,10 @@
 const { User, Owner, Apprentice } = require('../../models/User');
 const { Op } = require('sequelize');
-
+const verifyToken = require('../../utils/verifyToken');
 const getAllUsers = async (req, res) => {
   try {
+    if(!verifyToken(req)) return res.status(401).json({ error: 'Unauthorized' });
+    if(req.user.isAdmin !== true) return res.status(401).json({ error: 'Unauthorized' });
     const { isApproved } = req.params;
     const users = await User.findAll({
       include: [

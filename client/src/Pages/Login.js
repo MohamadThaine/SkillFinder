@@ -8,6 +8,7 @@ import emailjs from '@emailjs/browser';
 import { useNavigate } from 'react-router-dom';
 import { Alert } from '@mui/material';
 
+
 function Login({handleLogin}){
     const navigate = useNavigate();
     useEffect(() => {
@@ -15,7 +16,6 @@ function Login({handleLogin}){
             navigate('/');
         }
     },[])
-
     const [username, usernameInput] = useInput({type:'text', placeholder:'Enter Username...', className:'defultInput row me-auto ms-auto mt-3 login-input'});
     const [password, passwordInput] = useInput({type:'password', placeholder:'Enter Password...', className:'defultInput row me-auto ms-auto mt-4 login-input'});
     const [email, setEmail] = useState('');
@@ -48,6 +48,7 @@ function Login({handleLogin}){
                 setAlert({message:'Login Successfully!', severity:'success', needed:true});
                 localStorage.setItem('user', JSON.stringify(res.admin));
                 localStorage.setItem('otherInfo', JSON.stringify({isAdmin:true}));
+                localStorage.setItem('token', res.token);
                 handleLogin();
                 return;
             }
@@ -63,7 +64,7 @@ function Login({handleLogin}){
             })
             }
             else if(res.user.User_Type == 2){
-                if(res.otherInfo.isApproved == 0){
+                if(res.owner.isApproved == 0){
                     setAlert({message:'Your account is not approved yet!', severity:'warning', needed:true});
                     return;
                 }
@@ -71,7 +72,13 @@ function Login({handleLogin}){
             else{
                 setAlert({message:'Login Successfully!', severity:'success', needed:true});
                 localStorage.setItem('user', JSON.stringify(res.user));
-                localStorage.setItem('otherInfo', JSON.stringify(res.otherInfo));
+                if(res.owner){
+                    localStorage.setItem('otherInfo', JSON.stringify(res.owner));
+                }
+                else{
+                    localStorage.setItem('otherInfo', JSON.stringify(res.apprentice));
+                }
+                localStorage.setItem('token', res.token);
                 handleLogin();
             }
         }

@@ -19,7 +19,13 @@ function AdminUserList({isAdmin}){
     const [buttons, setButtons] = useState([{text: 'Deactive', color: 'error', onClick: (e, id) => {console.log(id)}}]);
 
     useEffect(() => {
-        fetch('http://localhost:5000/users/true')
+        fetch('http://localhost:5000/users/true', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              authorization: localStorage.getItem('token'),
+            },
+          })
           .then(res => res.json())
           .then(data => {
             const userList = data.map(user => {
