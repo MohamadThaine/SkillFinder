@@ -11,18 +11,40 @@ const getAllApprenticeship = async (req, res) => {
         { model: Owner, include: [{ model: User }] },
         {
           model: ApprenticeshipApprentice,
-          attributes: [[sequelize.fn('COUNT', sequelize.col('*')), 'enrolledStudentsCount']],
+          attributes: [],
         },
       ],
+      attributes: [
+        'ID',
+        'Owner_ID',
+        'Name',
+        'Description',
+        'isApproved',
+        'Duration',
+        'Start_Date',
+        'End_Date',
+        'LearningMethod',
+        'isSimulation',
+        'Category_ID',
+        'Address_ID',
+        'Price',
+        'FreeTrailAvaliable',
+        [sequelize.fn('COUNT', sequelize.literal('apprenticeship_apprentices.Apprenticeship_ID')), 'enrolledStudentsCount'],
+      ],
+      where: {
+        
+        isApproved: req.params.isApproved === 'true',
+      },
       group: [
-        'Apprenticeship.ID',
-        'Category.ID',
-        'Owner.User.ID'
+        'Apprenticeship.id',
+        'Category.id',
+        'Owner.User.id',
       ],
     });
+
     res.json(apprenticeships);
   } catch (error) {
-    res.status(500).json({ error: error });
+    res.status(500).json({ error: error.message });
   }
 };
 

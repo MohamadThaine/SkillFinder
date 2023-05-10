@@ -17,11 +17,6 @@ const Category = sequelize.define('Category', {
     timestamps: false
 });
 
-Category.associations = () => {
-    Category.hasMany(Apprenticeship, {
-        foreignKey: 'Category_ID'
-    });
-}
 
 
 module.exports = Category;

@@ -127,6 +127,7 @@ const ApprenticeshipApprentice = sequelize.define('apprenticeship_apprentice', {
 });
 
 Apprenticeship.belongsTo(Category, { foreignKey: 'Category_ID' });
+Category.hasMany(Apprenticeship, { foreignKey: 'Category_ID' });
 
 
 

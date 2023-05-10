@@ -6,6 +6,8 @@ const verifyEmail = require('./api/put/verifyAccount')
 const getApprinticeshipInfo = require('./api/get/getApprenticeshipInfo');
 const getApprenticeshipPics = require('./api/get/getApprenticeshipPics');
 const getAllApprenticeship = require('./api/get/getAllApprenticeship');
+const getAllUsers = require('./api/get/getAllUsers');
+const getAllCategories = require('./api/get/getAllCategories');
 const resetPassword = require('./api/post/resetPassword');
 const deleteApprenticeship = require('./api/delete/deleteApprenticeship');
 const app = express();
@@ -34,5 +36,7 @@ app.put('/verify-email', verifyEmail);
 app.put('/resetPassword', resetPassword.resetPassword)
 app.get('/apprenticeship/:id', getApprinticeshipInfo);
 app.get('/apprenticeship-pics/:id', getApprenticeshipPics);
-app.get('/apprenticeships', getAllApprenticeship);
+app.get('/apprenticeships/:isApproved', getAllApprenticeship);
+app.get('/categories', getAllCategories);
+app.get('/users/:isApproved', getAllUsers);
 app.delete('/deleteApprenticeship/:id', deleteApprenticeship);

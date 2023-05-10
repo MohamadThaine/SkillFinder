@@ -49,7 +49,7 @@ function AdminApprenticeshipList({isAdmin}){
             if(searchText === ''){
                 setApprenticeshipList(saveApprenticeship);
             }else{
-                setApprenticeshipList(apprenticeshipList.filter((apprenticeship) => apprenticeship.name.toLowerCase().includes(searchText.toLowerCase())));
+                setApprenticeshipList(apprenticeshipList.filter((apprenticeship) => apprenticeship.Name.toLowerCase().includes(searchText.toLowerCase())));
             }
         }
         , 500);
@@ -97,7 +97,8 @@ function AdminApprenticeshipList({isAdmin}){
                 open={openDeleteModal}
                 onClose={confirmDialogClose}>
                     <Box className='center-modal desc p-4' style={modelStyle}>
-                        <h4 className="text-center mb-5">Are you sure you want to delete this apprenticeship?</h4>
+                        <h5 className="text-center mb-4 mt-1">Are you sure you want to</h5>
+                        <h5 className="text-center mb-4 mt-1">delete this apprenticeship?</h5>
                         <div className="row text-center mb-2">
                             <div className="col-6 ">
                                 <Button variant="contained" color="error" onClick={confirmDelte}>Delete</Button>
@@ -114,7 +115,7 @@ function AdminApprenticeshipList({isAdmin}){
     }
 
     useEffect(() => {
-        fetch('http://localhost:5000/apprenticeships')
+        fetch('http://localhost:5000/apprenticeships/true')
         .then(res => res.json())
         .then(data => {
             setApprenticeshipList(data);
@@ -124,15 +125,16 @@ function AdminApprenticeshipList({isAdmin}){
     const [buttons, setButtons] = useState([{text:'Delete', color:'error', onClick:deleteApprenticeship}]);
     return (
         <div className="container mt-auto mb-auto">
+            <h2 className="text-center">Apprenticeship List</h2>
             <input type="text" placeholder="Search" className="form-control mt-3 mb-3" value={searchTerm} onChange={handleSearch}/>
             <AdminTable columns={columns} data={apprenticeshipList} onRowClick={viewDetalis} rowButtons={buttons}/>
-            <ApprenticeshipInfo apprenticeship={apprenticeship} open={openModal} handleClose={handleClose} deleteApprenticeship={confirmDelte} setDeletedApprenticeshipID={setDeletedApprenticeshipID}/>
+            <ApprenticeshipInfo apprenticeship={apprenticeship} open={openModal} handleClose={handleClose} deleteApprenticeship={confirmDelte}/>
             <ConfimDeleteDialog/>
         </div>  
     )  
 }
 
-const ApprenticeshipInfo = ({apprenticeship, open, handleClose, deleteApprenticeship, setDeletedApprenticeshipID}) => {
+const ApprenticeshipInfo = ({apprenticeship, open, handleClose, deleteApprenticeship}) => {
     const modelStyle = {
         backgroundColor: 'white',
     }
@@ -167,7 +169,7 @@ const ApprenticeshipInfo = ({apprenticeship, open, handleClose, deleteApprentice
                             <div className="col-6">
                                 <h5 className="text-center">Participants</h5>
                                 <p className="text-center">{
-                                    apprenticeship.apprenticeship_apprentices.length > 0? apprenticeship.apprenticeship_apprentices[0].enrolledStudentsCount : 'No Participants'
+                                    apprenticeship.enrolledStudentsCount > 0? apprenticeship.enrolledStudentsCount : 'No Participants'
                                 }</p>
                             </div>
                             <div className="col-6">
@@ -179,6 +181,26 @@ const ApprenticeshipInfo = ({apprenticeship, open, handleClose, deleteApprentice
                                     ? 'On-Site'
                                     : 'Online & On-Site'}
                                 </p>
+                            </div>
+                        </div>
+                        <div className="row mb-2">
+                            <div className="col-6">
+                                <h5 className="text-center">Category</h5>
+                                <p className="text-center">{apprenticeship.Category.Name}</p>
+                            </div>
+                            <div className="col-6">
+                                <h5 className="text-center">Addresss</h5>
+                                <p className="text-center">{apprenticeship.Address != null? apprenticeship.Address : 'No Address'}</p>
+                            </div>
+                        </div>
+                        <div className="row mb-2">
+                            <div className="col-6">
+                                <h5 className="text-center">Start Date</h5>
+                                <p className="text-center">{apprenticeship.Start_Date}</p>
+                            </div>
+                            <div className="col-6">
+                                <h5 className="text-center">End Date</h5>
+                                <p className="text-center">{apprenticeship.End_Date}</p>
                             </div>
                         </div>
                         <div className="row text-center mb-2">
