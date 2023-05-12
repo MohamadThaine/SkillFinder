@@ -115,13 +115,13 @@ function AdminUserList({isAdmin}){
             <h1>Admin User List</h1>
             <input type="text" placeholder="Search" className="form-control mt-3 mb-3"/>
             <AdminTable columns={columns} data={userList} rowButtons={buttons} onRowClick={openModal}/>
-            <UserModal user={selectedUser} open={open} handleClose={handleClose} deleteAccount={deactiveAccount}/>
+            <UserModal user={selectedUser} open={open} handleClose={handleClose} deactiveAccount={deactiveAccount}/>
             <ConfimDeleteDialog/>
         </div>
     )
 }
 
-const UserModal = ({ user, open, handleClose, deleteAccount }) => {
+const UserModal = ({ user, open, handleClose, deactiveAccount }) => {
   const modelStyle = {
       backgroundColor: 'white',
   }
@@ -162,7 +162,10 @@ const UserModal = ({ user, open, handleClose, deleteAccount }) => {
                   </div>
                   <div className="row">
                       <div className="col-md-5 ms-auto">
-                          <Button variant="contained" color="error" className="m-2" onClick={e => deleteAccount(e, user.id)}>Deactive</Button>
+                          <Button variant="contained" color="error" className="m-2" onClick={e => {
+                            deactiveAccount(e,user.id);
+                            handleClose();
+                          }}>Deactive</Button>
                       </div>
                       <div className="col-md-3 me-auto">
                           <Button variant="contained" color="primary" className="m-2" onClick={handleClose}>Close</Button>

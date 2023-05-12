@@ -13,6 +13,7 @@ const resetPassword = require('./api/post/resetPassword');
 const deleteApprenticeship = require('./api/delete/deleteApprenticeship');
 const rejectOwner = require('./api/delete/rejectOwner');
 const deactiveUser = require('./api/delete/deactiveUser');
+const deleteCatogry = require('./api/delete/deleteCategory');
 const app = express();
 
 app.use(express.static('public'));
@@ -41,6 +42,7 @@ app.put('/verify-email', verifyEmail);
 app.put('/approve/apprenticeship/:id', approve.approveApprenticeship);
 app.put('/approve/owner/:id', approve.approveOwner);
 app.put('/resetPassword', resetPassword.resetPassword)
+app.put('/editCategory/:id', require('./api/put/editCategory'));
 app.get('/apprenticeship/:id', getApprinticeshipInfo);
 app.get('/apprenticeship-pics/:id', getApprenticeshipPics);
 app.get('/apprenticeships/:isApproved', getAllApprenticeship);
@@ -49,3 +51,4 @@ app.get('/users/:isApproved',getAllUsers);
 app.delete('/deleteApprenticeship/:id', deleteApprenticeship);
 app.delete('/rejectOwner/:id', rejectOwner);
 app.delete('/deactiveUser/:id', deactiveUser);
+app.delete('/deleteCategory/:id', deleteCatogry);
