@@ -1,7 +1,12 @@
 import { Button } from "@mui/material";
 import AdminTable from "../Component/AdminTable";
 import { useEffect, useState } from "react";
-function AdminCategoryEdit(){
+import { useNavigate } from "react-router-dom";
+function AdminCategoryEdit({isAdmin}){
+    const navigate = useNavigate();
+    useEffect(() => {
+        if(!isAdmin) navigate('/pageNotFound');
+    }, []);
     const columns = [
         { id: 'Name', label: 'Name', minWidth: 50 , align: 'center' },
         { id: 'apprenticeshipCount', label: 'Number of Apprenticeships', minWidth: 50, align: 'center'},
@@ -10,7 +15,7 @@ function AdminCategoryEdit(){
         { id: 'Edit', label: 'Edit', minWidth: 50, align: 'center'},
         
     ];
-    const [categoryList, setCategoryList] = useState([{Name: 'test', ID: 1, Number:20}, {Name: 'test2', ID: 2, Number:20}, {Name: 'test3', ID: 3, Number:20}, {Name: 'test4', ID: 4, Number:20}]);
+    const [categoryList, setCategoryList] = useState([]);
     const [buttons, setButtons] = useState([{text: 'Delete', color: 'error', onClick: (e, id) => {console.log(id)}}, {text: 'Edit', color: 'primary', onClick: (e, id) => {console.log(id)}}]);
 
     useEffect(() => {

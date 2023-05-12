@@ -12,6 +12,7 @@ const getAllCategories = require('./api/get/getAllCategories');
 const resetPassword = require('./api/post/resetPassword');
 const deleteApprenticeship = require('./api/delete/deleteApprenticeship');
 const rejectOwner = require('./api/delete/rejectOwner');
+const deactiveUser = require('./api/delete/deactiveUser');
 const app = express();
 
 app.use(express.static('public'));
@@ -47,3 +48,4 @@ app.get('/categories', getAllCategories);
 app.get('/users/:isApproved',getAllUsers);
 app.delete('/deleteApprenticeship/:id', deleteApprenticeship);
 app.delete('/rejectOwner/:id', rejectOwner);
+app.delete('/deactiveUser/:id', deactiveUser);

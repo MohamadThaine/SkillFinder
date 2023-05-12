@@ -44,6 +44,10 @@ const User = sequelize.define('User', {
     User_Type: {
         type: DataTypes.TINYINT,
         allowNull: false
+    },
+    Deactivated: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false
     }
 }, {
     tableName: 'user',

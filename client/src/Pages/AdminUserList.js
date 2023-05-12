@@ -1,12 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AdminTable from "../Component/AdminTable";
+import { Box, Modal, Typography, Button } from "@mui/material";
 
 function AdminUserList({isAdmin}){
     const navigate = useNavigate();
-    if(!isAdmin){
-        navigate('/pageNotFound');
-    }
+    useEffect(() => {
+        if(!isAdmin) navigate('/pageNotFound');
+    }, []);
 
     const columns = [
         { id: 'id', label: 'ID', minWidth: 50, align: 'center' },
@@ -16,7 +17,17 @@ function AdminUserList({isAdmin}){
     ];
 
     const [userList, setUserList] = useState([]);
-    const [buttons, setButtons] = useState([{text: 'Deactive', color: 'error', onClick: (e, id) => {console.log(id)}}]);
+    const [open, setOpen] = useState(false);
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
+    const [deactiveUserID, setDeactiveUserID] = useState(null);
+
+    const openModal = (row) => {
+        setSelectedUser(row);
+        setOpen(true);
+    };
+
+    const handleClose = () => setOpen(false);
 
     useEffect(() => {
         fetch('http://localhost:5000/users/true', {
@@ -37,15 +48,130 @@ function AdminUserList({isAdmin}){
             setUserList(userList);
           })
           .catch(err => console.log(err));
-      }, []);      
+      }, []);   
+      
+      const deactiveAccount = (id) => {
+        fetch(`http://localhost:5000/deactiveUser/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: localStorage.getItem('token'),
+          },
+        })
+          .then(res => res.json())
+          .then(data => {
+            if(data.error) return console.log(data.error);
+            setUserList(userList.filter(user => user.id !== id));
+          })
+          .catch(err => console.log(err));
+      }
+
+      const openConfirm = (e, id) => {
+        e.stopPropagation();
+        setOpenDeleteModal(true);
+        setDeactiveUserID(id);
+      }
+
+      const confirmDialogClose = () => {
+        setOpenDeleteModal(false);
+        setDeactiveUserID(null);
+      }
+
+      const ConfimDeleteDialog = () => {
+        const modelStyle = {
+            backgroundColor: 'white',
+        }
+        
+        return (
+            <>
+              {deactiveUserID != null &&  <Modal
+                open={openDeleteModal}
+                onClose={confirmDialogClose}>
+                    <Box className='center-modal desc p-4' style={modelStyle}>
+                        <h5 className="text-center mb-4 mt-1">Are you sure you want to deactive</h5>
+                        <h5 className="text-center mb-4 mt-1"> this user account?</h5>
+                        <div className="row text-center mb-2">
+                            <div className="col-6 ">
+                                <Button variant="contained" color="error" onClick={() => {
+                                  deactiveAccount(deactiveUserID);
+                                  confirmDialogClose();
+                                }}>Delete</Button>
+                            </div>
+                            <div className="col-6">
+                                <Button variant="contained" color="secondary" onClick={confirmDialogClose}>Cancel</Button>
+                            </div>
+                        </div>
+                    </Box>
+                </Modal>}
+            </>
+            
+        )
+    }
+
+      const [buttons, setButtons] = useState([{text: 'Deactive', color: 'error', onClick: openConfirm}]);
 
     return(
         <div className="container mt-auto mb-auto">
             <h1>Admin User List</h1>
             <input type="text" placeholder="Search" className="form-control mt-3 mb-3"/>
-            <AdminTable columns={columns} data={userList} rowButtons={buttons} onRowClick={() => alert('hi')}/>
+            <AdminTable columns={columns} data={userList} rowButtons={buttons} onRowClick={openModal}/>
+            <UserModal user={selectedUser} open={open} handleClose={handleClose} deleteAccount={deactiveAccount}/>
+            <ConfimDeleteDialog/>
         </div>
     )
+}
+
+const UserModal = ({ user, open, handleClose, deleteAccount }) => {
+  const modelStyle = {
+      backgroundColor: 'white',
+  }
+  return (
+      <>
+          {user != null && <Modal open={open} onClose={handleClose}>
+              <Box className='center-modal desc p-5' style={modelStyle}>
+                  <Typography variant="h4" className="text-center mb-3">User Details</Typography>
+                  <div className="row mb-3">
+                      <div className="col-md-5">
+                          <h5 className="text-center">Name</h5>
+                          <p className="text-center">{user.Name}</p>
+                      </div>
+                      <div className="col-md-7">
+                          <h5 className="text-center">Email</h5>
+                          <p className="text-center">{user.Email}</p>
+                      </div>
+                  </div>
+                  <div className="row mb-3">
+                      <div className="col-md-5">
+                          <h5 className="text-center">ID</h5>
+                          <p className="text-center">{user.id}</p>
+                      </div>
+                      <div className="col-md-7">
+                          <h5 className="text-center">Phone</h5>
+                          <p className="text-center">{user.Phone_Number}</p>
+                      </div>
+                  </div>
+                  <div className="row mb-3">
+                      <div className="col-md-5">
+                          <h5 className="text-center">Type</h5>
+                          <p className="text-center">{user.User_Type === 2 ? 'Owner' : 'Apprentice'}</p>
+                      </div>
+                      <div className="col-md-7">
+                          <h5 className="text-center">{user.User_Type === 2 ? 'Major' : 'Study Level'}</h5>
+                          <p className="text-center">{user.User_Type === 2 ? user.Owner.Major : user.apprentice.Study_Level}</p>
+                      </div>
+                  </div>
+                  <div className="row">
+                      <div className="col-md-5 ms-auto">
+                          <Button variant="contained" color="error" className="m-2" onClick={e => deleteAccount(e, user.id)}>Deactive</Button>
+                      </div>
+                      <div className="col-md-3 me-auto">
+                          <Button variant="contained" color="primary" className="m-2" onClick={handleClose}>Close</Button>
+                      </div>
+                  </div>
+              </Box>
+          </Modal>}
+      </>
+  )
 }
 
 export default AdminUserList;

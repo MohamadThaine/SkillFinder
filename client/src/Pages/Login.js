@@ -63,6 +63,10 @@ function Login({handleLogin}){
                 document.querySelector('.login-box').classList.add('login-box-to-left');
             })
             }
+            else if(res.user.Deactivated == 1){
+                setAlert({message:'Your account is deactivated!', severity:'warning', needed:true});
+                return;
+            }
             else if(res.user.User_Type == 2){
                 if(res.owner.isApproved == 0){
                     setAlert({message:'Your account is not approved yet!', severity:'warning', needed:true});

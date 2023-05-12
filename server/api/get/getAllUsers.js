@@ -4,7 +4,7 @@ const verifyToken = require('../../utils/verifyToken');
 const getAllUsers = async (req, res) => {
   try {
     if(!verifyToken(req)) return res.status(401).json({ error: 'Unauthorized' });
-    if(req.user.isAdmin !== true) return res.status(401).json({ error: 'Unauthorized' });
+    if(!req.user.isAdmin) return res.status(401).json({ error: 'Unauthorized' });
     const { isApproved } = req.params;
     const users = await User.findAll({
       include: [
@@ -24,6 +24,9 @@ const getAllUsers = async (req, res) => {
         [Op.or]: [
           { '$Owner.User_ID$': { [Op.not]: null } },
           { '$Apprentice.User_ID$': { [Op.not]: null } },
+        ],
+        [Op.and]: [
+          { 'Deactivated': false}
         ],
       },
     });

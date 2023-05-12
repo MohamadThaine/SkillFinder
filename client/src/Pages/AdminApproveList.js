@@ -73,7 +73,8 @@ function AdminApproveList({ isAdmin }) {
         ).catch(err => console.log(err));
     }
 
-    const disapproveApprenticeship = (ID) => {
+    const disapproveApprenticeship = (e ,ID) => {
+        e.stopPropagation();
         fetch(`http://localhost:5000/deleteApprenticeship/${ID}`, {
             method: 'DELETE',
             headers: {
@@ -86,7 +87,8 @@ function AdminApproveList({ isAdmin }) {
         ).catch(err => console.log(err));
     }
 
-    const disapproveOwner = (ID) => {
+    const disapproveOwner = (e, ID) => {
+        e.stopPropagation();
         fetch(`http://localhost:5000/rejectOwner/${ID}`, {
             method: 'DELETE',
             headers: {
@@ -99,7 +101,10 @@ function AdminApproveList({ isAdmin }) {
     }
         
     useEffect(() => {
-        fetch('http://localhost:5000/users/false')
+        fetch('http://localhost:5000/users/false', {
+            headers: {
+                authorization: localStorage.getItem('token'),
+        }})
         .then(res => res.json())
         .then(data => {
             setOwnersList(data);
@@ -136,7 +141,7 @@ function AdminApproveList({ isAdmin }) {
     )
 }
 
-const OwnerModal = ({ owner, open, handleClose }) => {
+const OwnerModal = ({ owner, open, handleClose, approveOwner, disapproveOwner }) => {
     const modelStyle = {
         backgroundColor: 'white',
     }
@@ -167,10 +172,10 @@ const OwnerModal = ({ owner, open, handleClose }) => {
                     </div>
                     <div className="row">
                         <div className="col">
-                            <Button variant="contained" color="success" className="m-2">Approve</Button>
+                            <Button variant="contained" color="success" className="m-2" onClick={e => approveOwner(e, owner.id)}>Approve</Button>
                         </div>
                         <div className="col">
-                            <Button variant="contained" color="error" className="m-2">Disapprove</Button>
+                            <Button variant="contained" color="error" className="m-2" onClick={e => disapproveOwner(e,owner.id)}>Disapprove</Button>
                         </div>
                         <div className="col">
                             <Button variant="contained" color="primary" className="m-2" onClick={handleClose}>Close</Button>
@@ -182,7 +187,7 @@ const OwnerModal = ({ owner, open, handleClose }) => {
     )
 }
 
-const ApprenticeshipModal = ({apprenticeship, open, handleClose}) => {
+const ApprenticeshipModal = ({apprenticeship, open, handleClose, approveApprenticeship, disapproveApprenticeship}) => {
     const modelStyle = {
         backgroundColor: 'white',
     }
@@ -216,10 +221,10 @@ const ApprenticeshipModal = ({apprenticeship, open, handleClose}) => {
                         
                         <div className="row mb-2">
                             <div className="col ">
-                                <Button variant="contained" color="success">Approve</Button>
+                                <Button variant="contained" color="success" onClick={e => approveApprenticeship(e, apprenticeship.ID)}>Approve</Button>
                             </div>
                             <div className="col">
-                                <Button variant="contained" color="error" onClick={handleClose}>Disapprove</Button>
+                                <Button variant="contained" color="error" onClick={e => disapproveApprenticeship(e,apprenticeship.ID)}>Disapprove</Button>
                             </div>
                             <div className="col">
                                 <Button variant="contained" color="primary" onClick={handleClose}>Close</Button>
