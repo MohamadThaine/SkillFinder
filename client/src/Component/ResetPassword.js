@@ -30,7 +30,7 @@ function ResetPassword(){
             setAlert({message:'Please Enter Valid Email', severity:'error', needed:true});
             return;
         }
-        fetch('http://localhost:5000/checkEmail', {
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/checkEmail`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ function ResetPassword(){
             setAlert({message:'Please Enter Password', severity:'error', needed:true});
             return;
         }
-        fetch('http://localhost:5000/resetPassword', {
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/resetPassword`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

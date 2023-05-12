@@ -14,7 +14,7 @@ function VerifyEmail({email, verify_token, from}){
             return;
         }
         const data = {email};
-        const response = await fetch('http://localhost:5000/verify-email', {
+        const response = await fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/verify-email`, {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(data)

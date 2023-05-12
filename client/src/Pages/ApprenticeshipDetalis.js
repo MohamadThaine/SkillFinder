@@ -31,7 +31,7 @@ function ApprenticeshipDetalis(){
     const [openPictureModal, setOpenPictureModal] = useState(false);
     const navigate = useNavigate();
     useEffect(() => {
-        fetch('http://localhost:5000/apprenticeship/' + ID)
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/apprenticeship/` + ID)
         .then(res => res.json())
         .then(data => {
             if(data.error){
@@ -152,7 +152,7 @@ const PicturesModal = ({handleClose, open, ID}) => {
 
 
     useEffect(() => {
-        fetch('http://localhost:5000/apprenticeship-pics/' + 1)
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/apprenticeship-pics/` + 1)
         .then(res => res.json())
         .then(data => {
             setPictures(data);

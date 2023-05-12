@@ -23,12 +23,14 @@ import AdminApprenticeshipList from './Pages/AdminApprenticeshipList';
 import AdminApproveList from './Pages/AdminApproveList';
 import AdminUserList from './Pages/AdminUserList';
 import AdminCategoryEdit from './Pages/AdminCategoryEdit';
+import { Alert, Snackbar } from '@mui/material';
 
 function App() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [otherUserInfo, setOtherUserInfo] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [snackBarInfo, setSnackBarInfo] = useState({open: false, message: '', severity: ''});
   useEffect (() => {
     try
     {
@@ -62,10 +64,25 @@ function App() {
     navigate('/');
   }
 
+  useEffect(() => {
+    if(snackBarInfo.open === false) return;
+    setTimeout(() => {
+      setSnackBarInfo({open: false, message: '', severity: ''});
+    }, 3000);
+  }, [snackBarInfo]);
+
   return (
     <>
+      {console.log(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}`)}
       {!isAdmin && <NavBar user={user} otherUserInfo={otherUserInfo} handleLogout={handleLogout} />}
       {isAdmin && <AdminNavBar isAdmin={isAdmin} handleLogout={handleLogout} />}
+      <Snackbar 
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={snackBarInfo.open}>
+          <Alert severity={snackBarInfo.severity} sx={{ width: '100%' }}>
+            {snackBarInfo.message}
+          </Alert>
+      </Snackbar>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/AboutUs" element={<AboutUs />} />
@@ -75,9 +92,9 @@ function App() {
         <Route path='/Search/:keyWords' element={<Search />} />
         <Route path='/Apprenticeship/:ID' element={<ApprenticeshipDetalis />} />
         <Route path='/Admin/Apprenticeship' element={<AdminApprenticeshipList isAdmin={isAdmin} />} />
-        <Route path='/Admin/Approve' element={<AdminApproveList isAdmin={isAdmin} />} />
+        <Route path='/Admin/Approve' element={<AdminApproveList isAdmin={isAdmin} setSnackBarInfo={setSnackBarInfo} />} />
         <Route path='/Admin/User' element={<AdminUserList isAdmin={isAdmin} />} />
-        <Route path='/Admin/Edit' element={<AdminCategoryEdit isAdmin={isAdmin} />} />
+        <Route path='/Admin/Edit' element={<AdminCategoryEdit isAdmin={isAdmin} setSnackBarInfo={setSnackBarInfo}/>} />
         <Route path='/Admin' element={<AdminHome isAdmin={isAdmin} />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>

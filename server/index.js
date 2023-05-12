@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const register = require('./api/post/register');
 const login = require('./api/post/login');
+const addCategory = require('./api/post/addCategory');
 const verifyEmail = require('./api/put/verifyAccount')
 const approve = require('./api/put/approve');
 const getApprinticeshipInfo = require('./api/get/getApprenticeshipInfo');
@@ -37,6 +38,7 @@ app.listen(5000, () => {
 
 app.post('/register', register);
 app.post('/login' ,login);
+app.post('/addCategory', addCategory);
 app.post('/checkEmail', resetPassword.checkEmail);
 app.put('/verify-email', verifyEmail);
 app.put('/approve/apprenticeship/:id', approve.approveApprenticeship);

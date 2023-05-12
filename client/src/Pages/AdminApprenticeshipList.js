@@ -76,7 +76,7 @@ function AdminApprenticeshipList({isAdmin}){
               app.ID !== (deletedApprenticeshipID ? deletedApprenticeshipID : apprenticeship.ID)
             )
           );
-        fetch(`http://localhost:5000/deleteApprenticeship/${deletedApprenticeshipID ? deletedApprenticeshipID : apprenticeship.ID}`, {
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/deleteApprenticeship/${deletedApprenticeshipID ? deletedApprenticeshipID : apprenticeship.ID}`, {
             method: 'DELETE',
         }).then(res => res.json())
         .then(data => {
@@ -115,7 +115,7 @@ function AdminApprenticeshipList({isAdmin}){
     }
 
     useEffect(() => {
-        fetch('http://localhost:5000/apprenticeships/true')
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/apprenticeships/true`)
         .then(res => res.json())
         .then(data => {
             setApprenticeshipList(data);

@@ -3,7 +3,7 @@ import AdminTable from "../Component/AdminTable";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Modal, Typography } from "@mui/material";
-function AdminCategoryEdit({isAdmin}){
+function AdminCategoryEdit({isAdmin, setSnackBarInfo}){
     const navigate = useNavigate();
     useEffect(() => {
         if(!isAdmin) navigate('/pageNotFound');
@@ -19,6 +19,7 @@ function AdminCategoryEdit({isAdmin}){
     const [categoryList, setCategoryList] = useState([])
     const [open, setOpen] = useState(false);
     const [selectedCategory, setSelectedCatogry] = useState(null);
+    const [openAdd, setOpenAdd] = useState(false);
     const openModal = (row) => {
         setSelectedCatogry(row);
         setOpen(true);
@@ -31,7 +32,7 @@ function AdminCategoryEdit({isAdmin}){
 
     const deleteCategory = (e, id) => {
         e.stopPropagation();
-        fetch(`http://localhost:5000/deleteCategory/${id}`, {
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/deleteCategory/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -46,7 +47,7 @@ function AdminCategoryEdit({isAdmin}){
 
 
     useEffect(() => {
-        fetch('http://localhost:5000/categories')
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/categories`)
         .then(res => res.json())
         .then(data => {
             setCategoryList(data);
@@ -56,12 +57,14 @@ function AdminCategoryEdit({isAdmin}){
 
     return(
         <div className="container mt-auto mb-auto">
+            <Typography variant="h4" className="text-center mb-3 mt-2 ps-2 pe-2">Edit Category</Typography>
             <div className="row">
-                <Button variant="contained" color="primary" className="col-3 ms-auto me-3"> + Add Category</Button>
+                <Button variant="contained" color="primary" className="col-3 ms-auto me-3" onClick={() => setOpenAdd(true)}> + Add Category</Button>
             </div>
             <input type="text" placeholder="Search" className="form-control mt-3 mb-3"/>
             <AdminTable columns={columns} data={categoryList} rowButtons={buttons} onRowClick={openModal}/>
             <EditCategoryModal open={open} handleClose={handleClose} category={selectedCategory} deleteCategory={deleteCategory}/>
+            <AddCategoryModal open={openAdd} handleClose={() => setOpenAdd(false)} setCategoryList={setCategoryList} setSnackBarInfo={setSnackBarInfo} />
         </div> 
     )
 }
@@ -80,7 +83,7 @@ const EditCategoryModal = ({category, open, handleClose, deleteCategory}) => {
 
     const editCategory = () => {
         if(categoryName === '') return setMessage({message: 'Category name cannot be empty!', severity: 'error'});
-        fetch(`http://localhost:5000/editCategory/${category.ID}`, {
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/editCategory/${category.ID}`, {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             authorization: localStorage.getItem('token'),
@@ -119,6 +122,46 @@ const EditCategoryModal = ({category, open, handleClose, deleteCategory}) => {
                 </Box>
             </Modal>}
         </>
+    )
+}
+
+const AddCategoryModal = ({open, handleClose,setCategoryList, setSnackBarInfo}) => {
+    const modelStyle = {
+        backgroundColor: 'white',
+    }
+
+    const [categoryName, setCategoryName] = useState('');
+
+    const addCategory = () => {
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/addCategory`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            authorization: localStorage.getItem('token'),
+            body: JSON.stringify({name: categoryName})
+        }).then(res => res.json())
+        .then(data => {
+            if(data.error) return setSnackBarInfo({open: true,message: data.error, severity: 'error'});
+            setCategoryList(prevCategoryList => [...prevCategoryList, {ID: data.category.ID, Name: data.category.Name, apprenticeshipCount: 0}]);
+            setSnackBarInfo({open: true,message: 'Category added with ID: ' + data.category.ID , severity: 'success'});
+            handleClose();
+        }).catch(err => {
+            setSnackBarInfo({open: true,message: err, severity: 'error'});
+        });
+    }
+
+    return (
+        <Modal open={open} onClose={handleClose}>
+            <Box className='center-modal desc p-4' style={modelStyle}>
+                <Typography variant="h4" className="text-center mb-3 mt-2 ps-2 pe-2">Add Category</Typography>
+                <div className="row mb-3">
+                    <input type="text" className="form-control" placeholder="Category Name" value={categoryName} onChange={e => setCategoryName(e.target.value)}/>
+                </div>
+                <div className="row mb-2">
+                    <Button variant="contained" color="success" className="col ms-5 me-5" onClick={addCategory}>Add</Button>
+                    <Button variant="contained" color="primary" className="col me-5 ms-5" onClick={handleClose}>Cancel</Button>
+                </div>
+            </Box>
+        </Modal>
     )
 }
 

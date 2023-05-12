@@ -30,7 +30,7 @@ function AdminUserList({isAdmin}){
     const handleClose = () => setOpen(false);
 
     useEffect(() => {
-        fetch('http://localhost:5000/users/true', {
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/users/true`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ function AdminUserList({isAdmin}){
       }, []);   
       
       const deactiveAccount = (id) => {
-        fetch(`http://localhost:5000/deactiveUser/${id}`, {
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/deactiveUser/${id}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -111,8 +111,8 @@ function AdminUserList({isAdmin}){
       const [buttons, setButtons] = useState([{text: 'Deactive', color: 'error', onClick: openConfirm}]);
 
     return(
-        <div className="container mt-auto mb-auto">
-            <h1>Admin User List</h1>
+        <div className="container mt-auto mb-auto text-center">
+            <h2>Admin User List</h2>
             <input type="text" placeholder="Search" className="form-control mt-3 mb-3"/>
             <AdminTable columns={columns} data={userList} rowButtons={buttons} onRowClick={openModal}/>
             <UserModal user={selectedUser} open={open} handleClose={handleClose} deactiveAccount={deactiveAccount}/>

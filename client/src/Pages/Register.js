@@ -78,7 +78,7 @@ function Register(){
             isOwner,
             verifyToken
         }
-        const response = await fetch('http://localhost:5000/register', {
+        const response = await fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

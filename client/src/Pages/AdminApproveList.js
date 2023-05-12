@@ -2,7 +2,7 @@ import { Button, Modal, Typography, Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AdminTable from "../Component/AdminTable";
-function AdminApproveList({ isAdmin }) {
+function AdminApproveList({ isAdmin, setSnackBarInfo }) {
     const navigate = useNavigate();
     useEffect(() => {
         if (!isAdmin) {
@@ -50,7 +50,7 @@ function AdminApproveList({ isAdmin }) {
 
     const approveApprenticeship = (e,ID) => {
         e.stopPropagation();
-        fetch(`http://localhost:5000/approve/apprenticeship/${ID}`, {
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/approve/apprenticeship/${ID}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -59,12 +59,15 @@ function AdminApproveList({ isAdmin }) {
             setApprenticeshipsList(list => {
                 return list.filter(apprenticeship => apprenticeship.ID !== ID);
             });
-        }).catch(err => console.log(err));
+            setSnackBarInfo({ severity: 'success', message: 'Apprenticeship Approved Successfully', open: true });
+        }).catch(err => {
+            setSnackBarInfo({ severity: 'error', message: err, open: true });
+        });
         }
 
     const approveOwner = (e,ID) => {
         e.stopPropagation();
-        fetch(`http://localhost:5000/approve/owner/${ID}`, {
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/approve/owner/${ID}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -72,15 +75,17 @@ function AdminApproveList({ isAdmin }) {
         }).then(() => {
             setOwnersList(list => {
                 return list.filter(owner => owner.User_ID !== ID);
-            }
-            );
+            });
+            setSnackBarInfo({ severity: 'success', message: 'Owner Approved Successfully', open: true });
         }
-        ).catch(err => console.log(err));
+        ).catch(err => {
+            setSnackBarInfo({ severity: 'error', message: err, open: true });
+        });
     }
 
     const disapproveApprenticeship = (e ,ID) => {
         e.stopPropagation();
-        fetch(`http://localhost:5000/deleteApprenticeship/${ID}`, {
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/deleteApprenticeship/${ID}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -90,13 +95,16 @@ function AdminApproveList({ isAdmin }) {
             setApprenticeshipsList(list => {
                 return list.filter(apprenticeship => apprenticeship.ID !== ID);
             });
+            setSnackBarInfo({ severity: 'success', message: 'Apprenticeship Disapproved Successfully', open: true });
         }
-        ).catch(err => console.log(err));
+        ).catch(err => {
+            setSnackBarInfo({ severity: 'error', message: err, open: true });
+        });
     }
 
     const disapproveOwner = (e, ID) => {
         e.stopPropagation();
-        fetch(`http://localhost:5000/rejectOwner/${ID}`, {
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/rejectOwner/${ID}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -106,12 +114,15 @@ function AdminApproveList({ isAdmin }) {
                 return list.filter(owner => owner.User_ID !== ID);
             }
             );
+            setSnackBarInfo({ severity: 'success', message: 'Owner Disapproved Successfully', open: true });
         }
-        ).catch(err => console.log(err));
+        ).catch(err => {
+            setSnackBarInfo({ severity: 'error', message: err, open: true });
+        });
     }
         
     useEffect(() => {
-        fetch('http://localhost:5000/users/false', {
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/users/false`, {
             headers: {
                 authorization: localStorage.getItem('token'),
         }})
@@ -122,7 +133,7 @@ function AdminApproveList({ isAdmin }) {
     }, [])
 
     useEffect(() => {
-        fetch('http://localhost:5000/apprenticeships/false')
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/apprenticeships/false`)
         .then(res => res.json())
         .then(data => {
             setApprenticeshipsList(data);
