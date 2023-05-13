@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Carpenters from '../Assets/Images/CarpentersExample.png';
 import '../Assets/Styles/Apprenticeship.css'
@@ -9,11 +9,11 @@ import locationIcon from '../Assets/Images/location-icon.svg';
 import calender from '../Assets/Images/calender.svg';
 import calenderCheck from '../Assets/Images/calender-check.svg';
 import { useNavigate } from 'react-router-dom';
-import { Box, Modal } from '@mui/material';
+import { Box, Button, Modal } from '@mui/material';
 import arrowRight from '../Assets/Images/arrow-right-solid.svg';
 import arrowLeft from '../Assets/Images/arrow-left-solid.svg';
 
-function ApprenticeshipDetalis(){
+function ApprenticeshipDetalis() {
     const { ID } = useParams();
     const [name, setName] = useState('');
     const [category, setCategory] = useState('');
@@ -29,33 +29,34 @@ function ApprenticeshipDetalis(){
     const [authorID, setAuthorID] = useState('');
     const [entrolledStudents, setEntrolledStudents] = useState('');
     const [openPictureModal, setOpenPictureModal] = useState(false);
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const navigate = useNavigate();
     useEffect(() => {
         fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/apprenticeship/` + ID)
-        .then(res => res.json())
-        .then(data => {
-            if(data.error){
-                navigate('/PageNotFound');
-                return;
-            }
-            setName(data.apprenticeship.Name);
-            setCategory(data.category.Name);
-            if(data.apprenticeship.Price === 0) setPrice('Free');
-            else setPrice('$' + data.apprenticeship.Price);
-            setOverview(data.apprenticeship.Description);
-            setDuration(data.apprenticeship.Duration + ' Months');
-            if(data.apprenticeship.LearningMethod === 1) setLearningMethod('Online');
-            else if(data.apprenticeship.LearningMethod === 2) setLearningMethod('OnSite');
-            else setLearningMethod('Online & OnSite');
-            setStartDate(new Date(data.apprenticeship.Start_Date).toLocaleDateString());
-            setEndDate(new Date(data.apprenticeship.End_Date).toLocaleDateString());
-            setAuthorName(data.author.Name);
-            if(data.authorPic != null) setAuthorPic(data.author.Picture);
-            else setAuthorPic(defalutMalePic);
-            setAuthorID(data.author.ID);
-            if(data.enrolledStudents.enrolledStudentsCount != "0") setEntrolledStudents(data.enrolledStudents.enrolledStudentsCount);
-            else setEntrolledStudents(0);
-        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.error) {
+                    navigate('/PageNotFound');
+                    return;
+                }
+                setName(data.apprenticeship.Name);
+                setCategory(data.category.Name);
+                if (data.apprenticeship.Price === 0) setPrice('Free');
+                else setPrice('$' + data.apprenticeship.Price);
+                setOverview(data.apprenticeship.Description);
+                setDuration(data.apprenticeship.Duration + ' Months');
+                if (data.apprenticeship.LearningMethod === 1) setLearningMethod('Online');
+                else if (data.apprenticeship.LearningMethod === 2) setLearningMethod('OnSite');
+                else setLearningMethod('Online & OnSite');
+                setStartDate(new Date(data.apprenticeship.Start_Date).toLocaleDateString());
+                setEndDate(new Date(data.apprenticeship.End_Date).toLocaleDateString());
+                setAuthorName(data.author.Name);
+                if (data.authorPic != null) setAuthorPic(data.author.Picture);
+                else setAuthorPic(defalutMalePic);
+                setAuthorID(data.author.ID);
+                if (data.enrolledStudents.enrolledStudentsCount != "0") setEntrolledStudents(data.enrolledStudents.enrolledStudentsCount);
+                else setEntrolledStudents(0);
+            })
     }, [])
 
     const imgStyle = {
@@ -69,15 +70,30 @@ function ApprenticeshipDetalis(){
         setOpened(!opened);
     }
 
-    return(
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        }
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, [])
+
+    return (
         <>
             <div className='container-fluid app-img' style={imgStyle}>
-                <div className='author'>
-                    <img src={authorPic} alt='Author' className='author-img' />
-                    <div className='author-info'>
+                    <div className='author'>
+                        <img src={authorPic} alt='Author' className='author-img' />
                         <h5>{authorName}</h5>
                     </div>
-                </div>
+                    <div className='row app-main-info text-center'>
+                        <h4 className='col m-2'>{name}</h4>
+                        <h4 className='col m-2'>{category}</h4>
+                        <h4 className='col m-2'>{price}</h4>
+                        <div className='col m-2'>
+                            <h4>Participants</h4>
+                            <h4>{entrolledStudents}</h4>
+                        </div>
+                    </div>
             </div>
             <div className='container-fluid p-5'>
                 <div className='row'>
@@ -112,22 +128,18 @@ function ApprenticeshipDetalis(){
                                 </div>
                             </div>
                         </div>
-                        <div className='row overview-info p-5'>
-                        <p>Graphic design is the art and practice of combining text, images, and other visual elements to create visually appealing and effective communication materials. It is a creative field that involves the use of typography, photography, illustration, color theory, and layout to convey a message or tell a story visually.</p>
-                        <p>Graphic designers work in a variety of media including print, digital, and interactive design. They may create logos, brochures, flyers, websites, social media graphics, packaging, book covers, and more. The goal of graphic design is to create visual communication that is not only aesthetically pleasing but also communicates a clear message to the audience.</p>
-                        <p>Graphic design is the art and practice of combining text, images, and other visual elements to create visually illustration, color theory, and layout to convey a message or tell a story visually.</p>
-                        </div>
+                        {windowWidth > 580 && <div className='row overview-info p-5'>
+                            <p>Graphic design is the art and practice of combining text, images, and other visual elements to create visually appealing and effective communication materials. It is a creative field that involves the use of typography, photography, illustration, color theory, and layout to convey a message or tell a story visually.</p>
+                            <p>Graphic designers work in a variety of media including print, digital, and interactive design. They may create logos, brochures, flyers, websites, social media graphics, packaging, book covers, and more. The goal of graphic design is to create visual communication that is not only aesthetically pleasing but also communicates a clear message to the audience.</p>
+                            <p>Graphic design is the art and practice of combining text, images, and other visual elements to create visually illustration, color theory, and layout to convey a message or tell a story visually.</p>
+                        </div>}
+                        {windowWidth < 580 && <div className='row overview-info p-5'>
+                            <Button variant="outlined" color="primary">
+                                Read More
+                            </Button>
+                        </div>}
                     </div>
                     <div className='col'>
-                        <div className='row app-main-info me-auto ms-auto text-center mt-4'>
-                            <h3 className='col'>{name}</h3>
-                            <h3 className='col'>{category}</h3>
-                            <h3 className='col'>{price}</h3>
-                            <div className='col'>
-                                <h3>Participants</h3>
-                                <h3 className='text-center'>{entrolledStudents}</h3>
-                            </div>
-                        </div>
                         <div className='row mt-5'>
                             <div className='row app-btn-container'>
                                 <button className='app-btn'>Enroll Now</button>
@@ -146,28 +158,28 @@ function ApprenticeshipDetalis(){
     )
 }
 
-const PicturesModal = ({handleClose, open, ID}) => {
-    const [pictures, setPictures] = useState([]);
+const PicturesModal = ({ handleClose, open, ID }) => {
+    const [pictures, setPictures] = useState();
     const [mainPicture, setMainPicture] = useState();
-
+    const touchStartX = useRef(0);
+    const touchEndX = useRef(0);
 
     useEffect(() => {
         fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/apprenticeship-pics/` + 1)
-        .then(res => res.json())
-        .then(data => {
-            setPictures(data);
-            setMainPicture(data[0]);
-            console.log(mainPicture)
-        })
-        
+            .then(res => res.json())
+            .then(data => {
+                setPictures(data);
+                setMainPicture(data[0]);
+            })
+
     }, [])
 
     const PicturesRow = () => {
-        return(
+        return (
             <div className='pics-row mt-5'>
                 {pictures.map((picture, index) => {
-                    return(
-                        <img src={picture} alt='Picture' className={'img-thumbnail ' + (mainPicture === picture? 'selectedPic': '')} key={index} onClick={changeMainPicute} />
+                    return (
+                        <img src={picture} alt='Picture' className={'img-thumbnail ' + (mainPicture === picture ? 'selectedPic' : '')} key={index} onClick={changeMainPicute} />
                     )
                 })}
             </div>
@@ -176,15 +188,32 @@ const PicturesModal = ({handleClose, open, ID}) => {
 
     const goLeft = () => {
         let index = pictures.indexOf(mainPicture);
-        if(index == 0) setMainPicture(pictures[pictures.length - 1]);
+        if (index == 0) setMainPicture(pictures[pictures.length - 1]);
         else setMainPicture(pictures[index - 1]);
     }
 
     const goRight = () => {
         let index = pictures.indexOf(mainPicture);
-        if(index == pictures.length - 1) setMainPicture(pictures[0]);
+        if (index == pictures.length - 1) setMainPicture(pictures[0]);
         else setMainPicture(pictures[index + 1]);
     }
+
+    const handleTouchStart = event => {
+        touchStartX.current = event.touches[0].clientX;
+      };
+    
+      const handleTouchMove = event => {
+        touchEndX.current = event.touches[0].clientX;
+      };
+    
+      const handleTouchEnd = () => {
+        const touchDistance = touchEndX.current - touchStartX.current;
+        if (touchDistance > 50) {
+          goLeft();
+        } else if (touchDistance < -50) {
+          goRight();
+        }
+      };
 
     const changeMainPicute = (e) => {
         setMainPicture(e.target.src);
@@ -196,17 +225,19 @@ const PicturesModal = ({handleClose, open, ID}) => {
         setTimeout(() => {
             img.className = 'main-pic';
         }
-        , 1000);
+            , 1000);
     }
-
-    return(
+    
+    return (
         <Modal
             open={open}
             onClose={handleClose}
         >
             <Box className='center-modal container-fluid'>
-                <h2 className='text-center'>Apprenticeship Picture</h2>
-                <div className='main-pic-con'>
+                <div className='main-pic-con'
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}>
                     <img src={arrowLeft} alt='Arrow Left' className='arrow' onClick={goLeft} />
                     <img className='main-pic' src={mainPicture} alt='Main Picture' onLoad={fadeImg} />
                     <img src={arrowRight} alt='Arrow Right' className='arrow' onClick={goRight} />

@@ -143,6 +143,7 @@ const AddCategoryModal = ({open, handleClose,setCategoryList, setSnackBarInfo}) 
             if(data.error) return setSnackBarInfo({open: true,message: data.error, severity: 'error'});
             setCategoryList(prevCategoryList => [...prevCategoryList, {ID: data.category.ID, Name: data.category.Name, apprenticeshipCount: 0}]);
             setSnackBarInfo({open: true,message: 'Category added with ID: ' + data.category.ID , severity: 'success'});
+            setCategoryName('');
             handleClose();
         }).catch(err => {
             setSnackBarInfo({open: true,message: err, severity: 'error'});
