@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import AdminTable from "../Component/AdminTable";
 import { Box, Modal, Typography, Button } from "@mui/material";
 
-function AdminUserList({isAdmin}){
+function AdminUserList({isAdmin, setSnackBarInfo}){
     const navigate = useNavigate();
     useEffect(() => {
         if(!isAdmin) navigate('/pageNotFound');
@@ -47,7 +47,9 @@ function AdminUserList({isAdmin}){
             });
             setUserList(userList);
           })
-          .catch(err => console.log(err));
+          .catch(err => {
+            setSnackBarInfo({open: true, message: 'Error Fetching User List ' + err, severity: 'error'});
+          });
       }, []);   
       
       const deactiveAccount = (id) => {
@@ -62,8 +64,11 @@ function AdminUserList({isAdmin}){
           .then(data => {
             if(data.error) return console.log(data.error);
             setUserList(userList.filter(user => user.id !== id));
+            setSnackBarInfo({open: true, message: 'User Deactivated', severity: 'success'});
           })
-          .catch(err => console.log(err));
+          .catch(err => {
+            setSnackBarInfo({open: true, message: 'Error Deactivating User ' + err, severity: 'error'});
+          });
       }
 
       const openConfirm = (e, id) => {

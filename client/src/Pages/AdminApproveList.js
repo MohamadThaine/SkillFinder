@@ -53,9 +53,11 @@ function AdminApproveList({ isAdmin, setSnackBarInfo }) {
         fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/approve/apprenticeship/${ID}`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                authorization: localStorage.getItem('token'),
             }
-        }).then(() => {
+        }).then(data => {
+            if(!data.ok) return setSnackBarInfo({ severity: 'error', message: 'Erorr Approving', open: true });
             setApprenticeshipsList(list => {
                 return list.filter(apprenticeship => apprenticeship.ID !== ID);
             });
@@ -70,11 +72,13 @@ function AdminApproveList({ isAdmin, setSnackBarInfo }) {
         fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/approve/owner/${ID}`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                authorization: localStorage.getItem('token'),
             }
-        }).then(() => {
+        }).then(data => {
+            if(!data.ok) return setSnackBarInfo({ severity: 'error', message: 'Erorr Approving', open: true });
             setOwnersList(list => {
-                return list.filter(owner => owner.User_ID !== ID);
+                return list.filter(owner => owner.id !== ID);
             });
             setSnackBarInfo({ severity: 'success', message: 'Owner Approved Successfully', open: true });
         }
@@ -89,9 +93,10 @@ function AdminApproveList({ isAdmin, setSnackBarInfo }) {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${localStorage.getItem('token')}`
+                authorization: localStorage.getItem('token'),
             }
-        }).then(() => {
+        }).then(data => {
+            if(!data.ok) return setSnackBarInfo({ severity: 'error', message: 'Erorr Disapproving', open: true });
             setApprenticeshipsList(list => {
                 return list.filter(apprenticeship => apprenticeship.ID !== ID);
             });
@@ -107,9 +112,11 @@ function AdminApproveList({ isAdmin, setSnackBarInfo }) {
         fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/rejectOwner/${ID}`, {
             method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                authorization: localStorage.getItem('token'),
             }
-        }).then(() => {
+        }).then(data => {
+            if(!data.ok) return setSnackBarInfo({ severity: 'error', message: 'Erorr Disapproving', open: true });
             setOwnersList(list => {
                 return list.filter(owner => owner.User_ID !== ID);
             }

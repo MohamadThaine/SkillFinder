@@ -2,12 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import Logo from '../Assets/Images/SkillFinderLogoNoTitle.png';
 import '../Assets/Styles/Login.css'
 import ResetPassword from '../Component/ResetPassword';
-import useInput from '../Hooks/useInput';
 import VerifyEmail from '../Component/VerifyEmail';
 import emailjs from '@emailjs/browser';
 import { useNavigate } from 'react-router-dom';
 import { Alert } from '@mui/material';
-
+import { TextField } from '@mui/material';
 
 function Login({handleLogin}){
     const navigate = useNavigate();
@@ -16,8 +15,8 @@ function Login({handleLogin}){
             navigate('/');
         }
     },[])
-    const [username, usernameInput] = useInput({type:'text', placeholder:'Enter Username...', className:'defultInput row me-auto ms-auto mt-3 login-input'});
-    const [password, passwordInput] = useInput({type:'password', placeholder:'Enter Password...', className:'defultInput row me-auto ms-auto mt-4 login-input'});
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [verifyToken, setVerifyToken] = useState('');
     const statusRef = useRef();
@@ -112,8 +111,10 @@ function Login({handleLogin}){
             <div className="desc pb-5 pe-5 ps-5 transtion-boxes login-box">
                 <img src={Logo} alt='login' className='row me-auto ms-auto mb-auto login-img'/>
                 <h4 className='mb-2 text-center'>Welcome to SkillFinder</h4>
-                {usernameInput}
-                {passwordInput}
+                <div className='d-flex flex-column'>
+                <TextField id="outlined-basic" label="Username" variant="outlined" className='login-input mt-4 mb-3' value={username} onChange={e => setUsername(e.target.value)} />
+                <TextField id="outlined-basic" label="Password" variant="outlined" className='login-input mt-4 mb-4'  type='password' value={password} onChange={e => setPassword(e.target.value)}/>
+                </div>
                 <p className='mt-2'>Forgot password? <span onClick={openResetPassword} className='login-reset-password'>Reset Password</span></p>
                 {alert.needed && <Alert severity={alert.severity} >{alert.message}</Alert>}
                 <button className='defultButton row me-auto ms-auto mt-3 login-button' id='login-btn' onClick={(login)}>Login</button>

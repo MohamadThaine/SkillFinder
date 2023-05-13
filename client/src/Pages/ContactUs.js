@@ -5,9 +5,9 @@ import emailjs from '@emailjs/browser';
 import '../Assets/Styles/ContactUs.css'
 import { Alert } from '@mui/material';
 function ContactUs(){
-    const [name, nameInput] = useInput({className:'col defultInput contact-us-input', type:'text', placeholder:'Full Name'})
-    const [email, emailInput] = useInput({className:'col ms-2 defultInput contact-us-input', type:'email', placeholder:'Email'})
-    const [subject, subjectInput] = useInput({className:'row mt-4 defultInput contact-us-input', type:'text', placeholder:'Subject'})
+    const [name, nameInput] = useInput({className:'col defultInput contact-us-input form-control', type:'text', placeholder:'Full Name'})
+    const [email, emailInput] = useInput({className:'col ms-2 defultInput contact-us-input form-control', type:'email', placeholder:'Email'})
+    const [subject, subjectInput] = useInput({className:'row mt-4 defultInput contact-us-input form-control me-auto ms-auto', type:'text', placeholder:'Subject'})
     const statusRef = useRef();
     const descRef = useRef();
     const [headerClass, setHeaderClass] = useState('mb-3');
@@ -71,7 +71,7 @@ function ContactUs(){
                 {emailInput}
              </div>
              {subjectInput}
-             <textarea className='row mt-4 defultInput contact-us-desc' ref={descRef} placeholder='Description Here..' value={description}
+             <textarea className='row mt-4 defultInput contact-us-desc form-control me-auto ms-auto' ref={descRef} placeholder='Description Here..' value={description}
                         onChange={(e) => setDescription(e.target.value)} />
              <button className='row mt-4 contact-us-submit mx-auto'
                      onClick={sendReport}>

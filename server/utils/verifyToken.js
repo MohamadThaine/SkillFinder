@@ -4,6 +4,7 @@ require('dotenv').config();
 const verifyToken = (req) => {
     const token = req.headers.authorization;
     if (!token || token === 'null') {
+      console.log('no token');
       return false;
     }
   

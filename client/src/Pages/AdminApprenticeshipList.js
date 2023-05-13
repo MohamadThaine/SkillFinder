@@ -4,7 +4,7 @@ import React from 'react';
 import AdminTable from "../Component/AdminTable";
 import { useNavigate } from "react-router-dom";
 
-function AdminApprenticeshipList({isAdmin}){
+function AdminApprenticeshipList({isAdmin, setSnackBarInfo}){
     const navigate = useNavigate();
     if(!isAdmin){
         navigate('/pageNotFound');
@@ -82,8 +82,11 @@ function AdminApprenticeshipList({isAdmin}){
         .then(data => {
             confirmDialogClose();
             handleClose();
+            setSnackBarInfo({severity:'success', message:'Apprenticeship deleted successfully', open:true});
         }
-        ).catch(err => console.log(err));
+        ).catch(err => {
+            setSnackBarInfo({severity:'error', message:err, open:true});
+        });
     }
 
     const ConfimDeleteDialog = () => {

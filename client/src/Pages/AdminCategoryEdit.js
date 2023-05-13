@@ -40,9 +40,11 @@ function AdminCategoryEdit({isAdmin, setSnackBarInfo}){
             },
         }).then(res => res.json())
         .then(data => {
-            if(data.error) return console.log(data.error);
             setCategoryList(prevCategoryList => prevCategoryList.filter(category => category.ID !== id));
-        }).catch(err => console.log(err));
+            setSnackBarInfo({open: true, message: 'Category Deleted', severity: 'success'});
+        }).catch(err => {
+            setSnackBarInfo({open: true, message: 'Error Deleting Category ' + err, severity: 'error'});
+        });
     }
 
 
@@ -85,8 +87,9 @@ const EditCategoryModal = ({category, open, handleClose, deleteCategory}) => {
         if(categoryName === '') return setMessage({message: 'Category name cannot be empty!', severity: 'error'});
         fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/editCategory/${category.ID}`, {
             method: 'PUT',
-            headers: {'Content-Type': 'application/json'},
-            authorization: localStorage.getItem('token'),
+            headers: {'Content-Type': 'application/json',
+                     authorization: localStorage.getItem('token')
+            },
             body: JSON.stringify({name: categoryName})
         }).then(res => res.json())
         .then(() => {

@@ -1,8 +1,11 @@
 const { Apprenticeship } = require('../../models/Apprenticeship');
 const { Owner } = require('../../models/User');
+const verifyToken = require('../../utils/verifyToken');
 
 const approveApprenticeship = async (req, res) => {
     try {
+        if(!verifyToken(req)) return res.status(401).json({ error: 'Unauthorized' });
+        if(!req.user.isAdmin) return res.status(401).json({ error: 'Unauthorized' });
         const apprenticeship = await Apprenticeship.findOne({
         where: {
             ID: req.params.id,
@@ -24,6 +27,8 @@ const approveApprenticeship = async (req, res) => {
 
 const approveOwner = async (req, res) => {
     try{
+        if(!verifyToken(req)) return res.status(401).json({ error: 'Unauthorized' });
+        if(!req.user.isAdmin) return res.status(401).json({ error: 'Unauthorized' });
         const owner = await Owner.findOne({
             where: {
                 User_ID: req.params.id,
