@@ -29,15 +29,17 @@ function AdminApproveList({ isAdmin, setSnackBarInfo }) {
 
     const [ownersList, setOwnersList] = useState([]);
     const [apprenticeshipsList, setApprenticeshipsList] = useState([]);
+    const [saveOwnersList, setSaveOwnersList] = useState([]);
+    const [saveApprenticeshipsList, setSaveApprenticeshipsList] = useState([]);
     const [open, setOpen] = useState(false);
     const [owner, setOwner] = useState(null);
     const [apprenticeship, setApprenticeship] = useState(null);
     const openModal = (row) => {
         setOpen(true);
-        if(activeButton === 'Owners'){
+        if (activeButton === 'Owners') {
             setOwner(row);
         }
-        else{
+        else {
             setApprenticeship(row);
         }
     }
@@ -48,7 +50,33 @@ function AdminApproveList({ isAdmin, setSnackBarInfo }) {
         setOwner(null);
     }
 
-    const approveApprenticeship = (e,ID) => {
+    const handleSearch = (e) => {
+        const searchValue = e.target.value.toLowerCase();
+        setTimeout(() => {
+            if (activeButton === 'Owners') {
+                if (searchValue === '') {
+                    setOwnersList(saveOwnersList);
+                }
+                else {
+                    setOwnersList(saveOwnersList.filter(owner => {
+                        return owner.Name.toLowerCase().includes(searchValue) || owner.Email.toLowerCase().includes(searchValue) || owner.Phone_Number.toLowerCase().includes(searchValue) || owner.id.toLowerCase().includes(searchValue);
+                    }));
+                }
+            }
+            else {
+                if (searchValue === '') {
+                    setApprenticeshipsList(saveApprenticeshipsList);
+                }
+                else {
+                    setApprenticeshipsList(saveApprenticeshipsList.filter(apprenticeship => {
+                        return apprenticeship.Name.toLowerCase().includes(searchValue) || apprenticeship.ID.toString().includes(searchValue);
+                    }));
+                }
+            }
+        }, 500);
+    }
+
+    const approveApprenticeship = (e, ID) => {
         e.stopPropagation();
         fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/approve/apprenticeship/${ID}`, {
             method: 'PUT',
@@ -57,17 +85,20 @@ function AdminApproveList({ isAdmin, setSnackBarInfo }) {
                 authorization: localStorage.getItem('token'),
             }
         }).then(data => {
-            if(!data.ok) return setSnackBarInfo({ severity: 'error', message: 'Erorr Approving', open: true });
+            if (!data.ok) return setSnackBarInfo({ severity: 'error', message: 'Erorr Approving', open: true });
             setApprenticeshipsList(list => {
+                return list.filter(apprenticeship => apprenticeship.ID !== ID);
+            });
+            setSaveApprenticeshipsList(list => {
                 return list.filter(apprenticeship => apprenticeship.ID !== ID);
             });
             setSnackBarInfo({ severity: 'success', message: 'Apprenticeship Approved Successfully', open: true });
         }).catch(err => {
             setSnackBarInfo({ severity: 'error', message: err, open: true });
         });
-        }
+    }
 
-    const approveOwner = (e,ID) => {
+    const approveOwner = (e, ID) => {
         e.stopPropagation();
         fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/approve/owner/${ID}`, {
             method: 'PUT',
@@ -76,8 +107,11 @@ function AdminApproveList({ isAdmin, setSnackBarInfo }) {
                 authorization: localStorage.getItem('token'),
             }
         }).then(data => {
-            if(!data.ok) return setSnackBarInfo({ severity: 'error', message: 'Erorr Approving', open: true });
+            if (!data.ok) return setSnackBarInfo({ severity: 'error', message: 'Erorr Approving', open: true });
             setOwnersList(list => {
+                return list.filter(owner => owner.id !== ID);
+            });
+            setSaveOwnersList(list => {
                 return list.filter(owner => owner.id !== ID);
             });
             setSnackBarInfo({ severity: 'success', message: 'Owner Approved Successfully', open: true });
@@ -87,7 +121,7 @@ function AdminApproveList({ isAdmin, setSnackBarInfo }) {
         });
     }
 
-    const disapproveApprenticeship = (e ,ID) => {
+    const disapproveApprenticeship = (e, ID) => {
         e.stopPropagation();
         fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/deleteApprenticeship/${ID}`, {
             method: 'DELETE',
@@ -96,8 +130,11 @@ function AdminApproveList({ isAdmin, setSnackBarInfo }) {
                 authorization: localStorage.getItem('token'),
             }
         }).then(data => {
-            if(!data.ok) return setSnackBarInfo({ severity: 'error', message: 'Erorr Disapproving', open: true });
+            if (!data.ok) return setSnackBarInfo({ severity: 'error', message: 'Erorr Disapproving', open: true });
             setApprenticeshipsList(list => {
+                return list.filter(apprenticeship => apprenticeship.ID !== ID);
+            });
+            setSaveApprenticeshipsList(list => {
                 return list.filter(apprenticeship => apprenticeship.ID !== ID);
             });
             setSnackBarInfo({ severity: 'success', message: 'Apprenticeship Disapproved Successfully', open: true });
@@ -116,52 +153,63 @@ function AdminApproveList({ isAdmin, setSnackBarInfo }) {
                 authorization: localStorage.getItem('token'),
             }
         }).then(data => {
-            if(!data.ok) return setSnackBarInfo({ severity: 'error', message: 'Erorr Disapproving', open: true });
+            if (!data.ok) return setSnackBarInfo({ severity: 'error', message: 'Erorr Disapproving', open: true });
             setOwnersList(list => {
                 return list.filter(owner => owner.User_ID !== ID);
-            }
-            );
+            });
+            setSaveOwnersList(list => {
+                return list.filter(owner => owner.User_ID !== ID);
+            });
             setSnackBarInfo({ severity: 'success', message: 'Owner Disapproved Successfully', open: true });
         }
         ).catch(err => {
             setSnackBarInfo({ severity: 'error', message: err, open: true });
         });
     }
-        
+
     useEffect(() => {
         fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/users/false`, {
             headers: {
                 authorization: localStorage.getItem('token'),
-        }})
-        .then(res => res.json())
-        .then(data => {
-            setOwnersList(data);
-        }).catch(err => console.log(err));
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                setOwnersList(data);
+                setSaveOwnersList(data);
+            }).catch(err => console.log(err));
     }, [])
 
     useEffect(() => {
         fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/apprenticeships/false`)
-        .then(res => res.json())
-        .then(data => {
-            setApprenticeshipsList(data);
-        }).catch(err => console.log(err));
+            .then(res => res.json())
+            .then(data => {
+                setApprenticeshipsList(data);
+                setSaveApprenticeshipsList(data);
+            }).catch(err => console.log(err));
     }, [])
 
-    const [OwnerButtons, setButtons] = useState([{ text: 'Approve', color: 'success', onClick: approveOwner} , { text: 'Disapprove', color: 'error', onClick: disapproveOwner }]);
-    const [ApprenticeshipButtons, setApprenticeshipButtons] = useState([{ text: 'Approve', color: 'success', onClick: approveApprenticeship} , { text: 'Disapprove', color: 'error', onClick: disapproveApprenticeship }]);
+    const [OwnerButtons, setButtons] = useState([{ text: 'Approve', color: 'success', onClick: approveOwner }, { text: 'Disapprove', color: 'error', onClick: disapproveOwner }]);
+    const [ApprenticeshipButtons, setApprenticeshipButtons] = useState([{ text: 'Approve', color: 'success', onClick: approveApprenticeship }, { text: 'Disapprove', color: 'error', onClick: disapproveApprenticeship }]);
 
 
     return (
         <div className="container mt-auto mb-auto">
             <Typography variant="h4" className="mt-3 mb-3 text-center">Approve List</Typography>
             <div className="row">
-                <Button variant={activeButton === 'Owners' ? 'outlined' : 'contained'} color="primary" className="col-md-3 ms-auto m-2" onClick={() => setActiveButton('Owners')}>Owners</Button>
-                <Button variant={activeButton === 'Apprenticeships' ? 'outlined' : 'contained'} color="primary" className="col-md-3 me-auto m-2" onClick={() => setActiveButton('Apprenticeships')}>Apprenticeships</Button>
+                <Button variant={activeButton === 'Owners' ? 'outlined' : 'contained'} color="primary" className="col-md-3 ms-auto m-2" onClick={() => {
+                    setActiveButton('Owners');
+                    setOwnersList(saveOwnersList);
+                }}>Owners</Button>
+                <Button variant={activeButton === 'Apprenticeships' ? 'outlined' : 'contained'} color="primary" className="col-md-3 me-auto m-2" onClick={() => {
+                    setActiveButton('Apprenticeships');
+                    setApprenticeshipsList(saveApprenticeshipsList);
+                }}>Apprenticeships</Button>
             </div>
-            <input type="text" className="form-control mt-3 mb-3" placeholder="Search" />
+            <input type="text" className="form-control mt-3 mb-3" placeholder="Search" onChange={handleSearch}/>
             <AdminTable columns={activeButton === 'Owners' ? OwnersColumns : ApprenticeshipsColumns}
-                data={activeButton === 'Owners' ? ownersList : apprenticeshipsList} 
-                rowButtons={activeButton === 'Owners' ? OwnerButtons : ApprenticeshipButtons} 
+                data={activeButton === 'Owners' ? ownersList : apprenticeshipsList}
+                rowButtons={activeButton === 'Owners' ? OwnerButtons : ApprenticeshipButtons}
                 onRowClick={openModal} />
             <OwnerModal owner={owner} open={open} handleClose={handleClose} approveOwner={approveOwner} disapproveOwner={disapproveOwner} />
             <ApprenticeshipModal apprenticeship={apprenticeship} open={open} handleClose={handleClose} approveApprenticeship={approveApprenticeship} disapproveApprenticeship={disapproveApprenticeship} />
@@ -201,13 +249,13 @@ const OwnerModal = ({ owner, open, handleClose, approveOwner, disapproveOwner })
                     <div className="row">
                         <div className="col">
                             <Button variant="contained" color="success" className="m-2" onClick={e => {
-                                approveOwner(e,owner.id);
+                                approveOwner(e, owner.id);
                                 handleClose();
                             }}>Approve</Button>
                         </div>
                         <div className="col">
                             <Button variant="contained" color="error" className="m-2" onClick={e => {
-                                disapproveOwner(e,owner.id);
+                                disapproveOwner(e, owner.id);
                                 handleClose();
                             }}>Disapprove</Button>
                         </div>
@@ -221,53 +269,53 @@ const OwnerModal = ({ owner, open, handleClose, approveOwner, disapproveOwner })
     )
 }
 
-const ApprenticeshipModal = ({apprenticeship, open, handleClose, approveApprenticeship, disapproveApprenticeship}) => {
+const ApprenticeshipModal = ({ apprenticeship, open, handleClose, approveApprenticeship, disapproveApprenticeship }) => {
     const modelStyle = {
         backgroundColor: 'white',
     }
     return (
         <>
             {apprenticeship != null && <Modal
-            open={open}
-            onClose={handleClose}>
+                open={open}
+                onClose={handleClose}>
                 <Box className='center-modal desc p-5' style={modelStyle}>
-                        <h3 className="text-center mb-5">Apprenticeship Details</h3>
-                        <div className="row mb-2">
-                            <div className="col-6">
-                                <h5 className="text-center">Name</h5>
-                                <p className="text-center">{apprenticeship.Name}</p>
-                            </div>
-                            <div className="col-6">
-                                <h5 className="text-center">Price</h5>
-                                <p className="text-center">{apprenticeship.Price}$</p>
-                            </div>
+                    <h3 className="text-center mb-5">Apprenticeship Details</h3>
+                    <div className="row mb-2">
+                        <div className="col-6">
+                            <h5 className="text-center">Name</h5>
+                            <p className="text-center">{apprenticeship.Name}</p>
                         </div>
-                        <div className="row mb-2">
-                            <div className="col-6">
-                                <h5 className="text-center">Owner</h5>
-                                <p className="text-center">{apprenticeship.Owner.User.Name}</p>
-                            </div>
-                            <div className="col-6">
-                                <h5 className="text-center">ID</h5>
-                                <p className="text-center">{apprenticeship.ID}</p>
-                            </div>
+                        <div className="col-6">
+                            <h5 className="text-center">Price</h5>
+                            <p className="text-center">{apprenticeship.Price}$</p>
                         </div>
-                        
-                        <div className="row mb-2">
-                            <div className="col ">
-                                <Button variant="contained" color="success" onClick={e => {
-                                    approveApprenticeship(e,apprenticeship.ID);
-                                    handleClose();
-                                }}>Approve</Button>
-                            </div>
-                            <div className="col">
-                                <Button variant="contained" color="error" onClick={e => {
-                                    disapproveApprenticeship(e,apprenticeship.ID);
-                                    handleClose();
-                                }}>Disapprove</Button>
-                            </div>
-                            <div className="col">
-                                <Button variant="contained" color="primary" onClick={handleClose}>Close</Button>
+                    </div>
+                    <div className="row mb-2">
+                        <div className="col-6">
+                            <h5 className="text-center">Owner</h5>
+                            <p className="text-center">{apprenticeship.Owner.User.Name}</p>
+                        </div>
+                        <div className="col-6">
+                            <h5 className="text-center">ID</h5>
+                            <p className="text-center">{apprenticeship.ID}</p>
+                        </div>
+                    </div>
+
+                    <div className="row mb-2">
+                        <div className="col ">
+                            <Button variant="contained" color="success" onClick={e => {
+                                approveApprenticeship(e, apprenticeship.ID);
+                                handleClose();
+                            }}>Approve</Button>
+                        </div>
+                        <div className="col">
+                            <Button variant="contained" color="error" onClick={e => {
+                                disapproveApprenticeship(e, apprenticeship.ID);
+                                handleClose();
+                            }}>Disapprove</Button>
+                        </div>
+                        <div className="col">
+                            <Button variant="contained" color="primary" onClick={handleClose}>Close</Button>
                         </div>
                     </div>
                 </Box>

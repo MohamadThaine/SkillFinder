@@ -17,6 +17,7 @@ function AdminUserList({isAdmin, setSnackBarInfo}){
     ];
 
     const [userList, setUserList] = useState([]);
+    const [saveUserList, setSaveUserList] = useState([]);
     const [open, setOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
@@ -28,6 +29,20 @@ function AdminUserList({isAdmin, setSnackBarInfo}){
     };
 
     const handleClose = () => setOpen(false);
+
+    const handleSearch = (e) => {
+        const searchValue = e.target.value.toLowerCase();
+        setTimeout(() => {
+            if(searchValue === ''){
+                setUserList(saveUserList);
+            }
+            else{
+                setUserList(userList.filter(user => {
+                    return user.Name.toLowerCase().includes(searchValue) || user.id.toString().includes(searchValue);
+                }));
+            }
+        }, 500);
+    }
 
     useEffect(() => {
         fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/users/true`, {
@@ -46,6 +61,7 @@ function AdminUserList({isAdmin, setSnackBarInfo}){
               };
             });
             setUserList(userList);
+            setSaveUserList(userList);
           })
           .catch(err => {
             setSnackBarInfo({open: true, message: 'Error Fetching User List ' + err, severity: 'error'});
@@ -64,6 +80,7 @@ function AdminUserList({isAdmin, setSnackBarInfo}){
           .then(data => {
             if(data.error) return console.log(data.error);
             setUserList(userList.filter(user => user.id !== id));
+            setSaveUserList(saveUserList.filter(user => user.id !== id));
             setSnackBarInfo({open: true, message: 'User Deactivated', severity: 'success'});
           })
           .catch(err => {
@@ -118,7 +135,7 @@ function AdminUserList({isAdmin, setSnackBarInfo}){
     return(
         <div className="container mt-auto mb-auto text-center">
             <h2>Admin User List</h2>
-            <input type="text" placeholder="Search" className="form-control mt-3 mb-3"/>
+            <input type="text" placeholder="Search" className="form-control mt-3 mb-3" onChange={handleSearch}/>
             <AdminTable columns={columns} data={userList} rowButtons={buttons} onRowClick={openModal}/>
             <UserModal user={selectedUser} open={open} handleClose={handleClose} deactiveAccount={deactiveAccount}/>
             <ConfimDeleteDialog/>

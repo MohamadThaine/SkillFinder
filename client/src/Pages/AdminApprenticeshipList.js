@@ -44,12 +44,13 @@ function AdminApprenticeshipList({isAdmin, setSnackBarInfo}){
     const handleSearch = (e) => {
         const searchText = e.target.value;
         setSearchTerm(searchText);
-        setSearchTerm(e.target.value);
         setTimeout(() => {
             if(searchText === ''){
                 setApprenticeshipList(saveApprenticeship);
             }else{
-                setApprenticeshipList(apprenticeshipList.filter((apprenticeship) => apprenticeship.Name.toLowerCase().includes(searchText.toLowerCase())));
+                setApprenticeshipList(apprenticeshipList.filter((apprenticeship) => {
+                    return apprenticeship.Name.toLowerCase().includes(searchText.toLowerCase())|| apprenticeship.ID.toString().includes(searchText.toLowerCase());
+                }));
             }
         }
         , 500);
