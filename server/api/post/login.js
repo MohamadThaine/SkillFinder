@@ -64,7 +64,7 @@ const login = (req, res) => {
                     res.send({error: 'User not found'});
                 }
             }).catch(err => {
-                res.send({error: err.message});
+                res.send({error: 'Username Or Password is incorrect'});
             });
         }
     }).catch(err => {

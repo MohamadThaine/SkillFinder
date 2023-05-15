@@ -47,7 +47,7 @@ const User = sequelize.define('User', {
     },
     Deactivated: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: true
     }
 }, {
     tableName: 'user',
