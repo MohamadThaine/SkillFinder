@@ -69,6 +69,10 @@ const Owner = sequelize.define('Owner', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    CV: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
     isApproved: {
         type: DataTypes.BOOLEAN,
         allowNull: false

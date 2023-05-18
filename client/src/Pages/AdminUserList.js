@@ -88,10 +88,10 @@ function AdminUserList({isAdmin, setSnackBarInfo}){
           });
       }
 
-      const openConfirm = (e, id) => {
+      const openConfirm = (e, user) => {
         e.stopPropagation();
         setOpenDeleteModal(true);
-        setDeactiveUserID(id);
+        setDeactiveUserID(user.id);
       }
 
       const confirmDialogClose = () => {

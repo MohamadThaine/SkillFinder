@@ -3,6 +3,11 @@
     src: url(../Fonts/Shanti-Regular.ttf);
 }
 
+@font-face {
+    font-family: 'Poppins';
+    src: url(../Fonts/Poppins-Regular.ttf);
+}
+
 .about-us{
     font-family: 'Shanti';
     border-radius: 12px;
@@ -20,7 +25,7 @@
     padding: 10px;
     margin-right: auto;
     margin-left: auto;
-    font-family: 'Shanti';
+    font-family: 'Poppins';
     box-shadow: 0 0 50px #ccc;
     border-radius: 8px;
 }

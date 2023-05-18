@@ -30,6 +30,12 @@ const getAllUsers = async (req, res) => {
         ],
       },
     });
+    users.map((user) => {
+      if(user.User_Type === 2){
+        user.dataValues.Owner.dataValues.CV = `${req.protocol}://${req.get('host')}/${user.dataValues.Owner.dataValues.CV}`;
+        user.dataValues.Owner.dataValues.CVOpened = false;
+      }
+    });
     res.json(users);
   } catch (err) {
     res.status(500).json({ error: err });

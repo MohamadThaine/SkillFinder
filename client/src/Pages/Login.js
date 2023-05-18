@@ -53,13 +53,13 @@ function Login({ handleLogin }) {
             }
             if (res.user.Verify_Status == 0) {
                 setAlert({ message: 'Please verify your email first!', severity: 'warning', needed: true });
-                setEmail(res[0].Email);
-                setVerifyToken(res[0].Verify_Token);
-                document.getElementById('verify-account-btn').addEventListener('click', () => {
-                    sendEmailVerifying(res);
-                    document.querySelector('.verify-email-box').classList.add('verify-email-box-to-left');
-                    document.querySelector('.login-box').classList.add('login-box-to-left');
-                })
+                setEmail(res.user.Email);
+                setVerifyToken(res.user.Verify_Token);
+                sendEmailVerifying(res);
+                document.querySelector('.verify-email-box').classList.add('verify-email-box-to-left');
+                document.querySelector('.login-box').classList.add('login-box-to-left');
+                return;
+
             }
             else if (res.user.Deactivated == 1) {
                 setAlert({ message: 'Your account is deactivated!', severity: 'warning', needed: true });
@@ -72,13 +72,13 @@ function Login({ handleLogin }) {
                 }
             }
             setAlert({ message: 'Login Successfully!', severity: 'success', needed: true });
-            localStorage.setItem('user', JSON.stringify(res.user));
             if (res.owner) {
                 localStorage.setItem('otherInfo', JSON.stringify(res.owner));
             }
             else {
                 localStorage.setItem('otherInfo', JSON.stringify(res.apprentice));
             }
+            localStorage.setItem('user', JSON.stringify(res.user));
             localStorage.setItem('token', res.token);
             handleLogin();
         }
@@ -86,9 +86,9 @@ function Login({ handleLogin }) {
 
     const sendEmailVerifying = async (res) => {
         const EmailJsTemplateParams = {
-            to_name: res[0].Name,
-            email: res[0].Email,
-            code: res[0].Verify_Token
+            to_name: res.user.Name,
+            email: res.user.Email,
+            code: res.user.Verify_Token
         }
         emailjs.send(process.env.React_APP_EmailJsServiceID, process.env.React_APP_EmailJsVerifyEmailTemplateID, EmailJsTemplateParams, process.env.React_APP_EmailJs_API_KEY);
     }

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react"
+import { useState, useEffect } from "react"
 import useInput from '../Hooks/useInput'
 import '../Assets/Styles/Register.css'
 import { Link, useNavigate } from "react-router-dom";
@@ -7,10 +7,10 @@ import VerifyEmail from "../Component/VerifyEmail";
 import emailjs from '@emailjs/browser';
 import { Alert, ToggleButton, ToggleButtonGroup } from "@mui/material";
 
-function Register() {
+function Register({ setSnackBarInfo }) {
     const navigate = useNavigate();
     useEffect(() => {
-        if (localStorage.getItem('user') != null) {
+        if (localStorage.getItem('user') !== null) {
             navigate('/');
         }
     }, [])
@@ -28,16 +28,23 @@ function Register() {
     const [gender, setGender] = useState('');
     const [acceptedTerms, setAcceptedTerms] = useState(false);
     const [verifyToken, setVerifyToken] = useState(randomstring.generate(20));
+    const [cv, setCV] = useState(null);
     const [alert, setAlert] = useState({ message: '', severity: '', needed: false });
+
     const validate = () => {
         const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         const validPhone = /^[0-9]{10}$/.test(phoneNumber);
         const age = new Date().getFullYear() - new Date(birthDate).getFullYear();
-        if (firstName === '' || lastName === '' || phoneNumber === '' || otherInfo== '' || birthDate === '' || username === '' || email === '' || password === '' || rePassword === '', gender === '') {
+        if (firstName === '' || lastName === '' || phoneNumber === '' || otherInfo === '' || birthDate === '' || username === '' || email === '' || password === '' || rePassword === '', gender === '') {
             setFillInputClass('mt-2 shaking');
             setTimeout(() => {
                 setFillInputClass('mt-2');
             }, [500])
+            return false;
+        }
+
+        if(isOwner && !cv){
+            setAlert({ message: 'You must upload your CV', severity: 'error', needed: true });
             return false;
         }
 
@@ -70,6 +77,7 @@ function Register() {
     }
 
     const register = async () => {
+        const registerData = new FormData();
         if (!validate()) return;
         const data = {
             firstName,
@@ -82,14 +90,18 @@ function Register() {
             password,
             gender,
             isOwner,
-            verifyToken
+            verifyToken,
         }
+        if (isOwner) {
+            registerData.append('file', cv);
+        }
+        registerData.append('data', JSON.stringify(data));
         const response = await fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/register`, {
-            method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+                'username': username
+              },
+            method: 'POST',
+            body: registerData
         });
         const res = await response.json();
         if (res.error) {
@@ -206,6 +218,16 @@ function Register() {
                                 {rePasswordInput}
                             </div>
                         </div>
+                        {isOwner && <div className="row register-row">
+                            <div className="register-column d-flex flex-column">
+                                <input type="file" className="form-control defultInput register-input"
+                                 accept='text/plain, application/pdf, image/*, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                                 onChange={e => {
+                                    setCV(e.target.files[0]);
+                                    setSnackBarInfo({ severity: 'success', message: 'CV uploaded successfully', open:true });
+                                 }} />
+                            </div>
+                        </div>}
                         <div className="row register-row mt-3">
                             <div className="register-column d-flex">
                                 <input type="checkbox" className="form-check-input" id="accept-check"

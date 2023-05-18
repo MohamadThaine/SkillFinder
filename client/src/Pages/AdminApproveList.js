@@ -15,6 +15,7 @@ function AdminApproveList({ isAdmin, setSnackBarInfo }) {
         { id: 'Email', label: 'Email', minWidth: 50, align: 'center' },
         { id: 'Phone_Number', label: 'Phone', minWidth: 50, align: 'center' },
         { id: 'id', label: 'ID', minWidth: 50, align: 'center' },
+        { id: 'Open CV', label: 'Owner CV', minWidth: 50, align: 'center' },
         { id: 'Approve', label: 'Approve', minWidth: 50, align: 'center' },
         { id: 'Disapprove', label: 'Disapprove', minWidth: 50, align: 'center' }
     ];
@@ -76,9 +77,21 @@ function AdminApproveList({ isAdmin, setSnackBarInfo }) {
         }, 500);
     }
 
-    const approveApprenticeship = (e, ID) => {
+    const openCV = (e, user) => {
         e.stopPropagation();
-        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/approve/apprenticeship/${ID}`, {
+        const cv = user.Owner.CV;
+        const isCVOpened = window.open(cv, '_blank');
+        if (!isCVOpened) {
+            setSnackBarInfo({ severity: 'error', message: 'Please Allow Popups', open: true });
+        }
+        else{
+            user.Owner.CVOpened = true;
+        }
+    }
+
+    const approveApprenticeship = (e, app) => {
+        e.stopPropagation();
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/approve/apprenticeship/${app.ID}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -87,10 +100,10 @@ function AdminApproveList({ isAdmin, setSnackBarInfo }) {
         }).then(data => {
             if (!data.ok) return setSnackBarInfo({ severity: 'error', message: 'Erorr Approving', open: true });
             setApprenticeshipsList(list => {
-                return list.filter(apprenticeship => apprenticeship.ID !== ID);
+                return list.filter(apprenticeship => apprenticeship.ID !== app.ID);
             });
             setSaveApprenticeshipsList(list => {
-                return list.filter(apprenticeship => apprenticeship.ID !== ID);
+                return list.filter(apprenticeship => apprenticeship.ID !== app.ID);
             });
             setSnackBarInfo({ severity: 'success', message: 'Apprenticeship Approved Successfully', open: true });
         }).catch(err => {
@@ -98,9 +111,10 @@ function AdminApproveList({ isAdmin, setSnackBarInfo }) {
         });
     }
 
-    const approveOwner = (e, ID) => {
+    const approveOwner = (e, Owner) => {
         e.stopPropagation();
-        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/approve/owner/${ID}`, {
+        if(!Owner.Owner.CVOpened) return setSnackBarInfo({ severity: 'error', message: 'Please Open CV First', open: true });
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/approve/owner/${Owner.id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -109,10 +123,10 @@ function AdminApproveList({ isAdmin, setSnackBarInfo }) {
         }).then(data => {
             if (!data.ok) return setSnackBarInfo({ severity: 'error', message: 'Erorr Approving', open: true });
             setOwnersList(list => {
-                return list.filter(owner => owner.id !== ID);
+                return list.filter(owner => owner.id !== Owner.id);
             });
             setSaveOwnersList(list => {
-                return list.filter(owner => owner.id !== ID);
+                return list.filter(owner => owner.id !== Owner.id);
             });
             setSnackBarInfo({ severity: 'success', message: 'Owner Approved Successfully', open: true });
         }
@@ -121,9 +135,9 @@ function AdminApproveList({ isAdmin, setSnackBarInfo }) {
         });
     }
 
-    const disapproveApprenticeship = (e, ID) => {
+    const disapproveApprenticeship = (e, app) => {
         e.stopPropagation();
-        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/deleteApprenticeship/${ID}`, {
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/deleteApprenticeship/${app.ID}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -132,10 +146,10 @@ function AdminApproveList({ isAdmin, setSnackBarInfo }) {
         }).then(data => {
             if (!data.ok) return setSnackBarInfo({ severity: 'error', message: 'Erorr Disapproving', open: true });
             setApprenticeshipsList(list => {
-                return list.filter(apprenticeship => apprenticeship.ID !== ID);
+                return list.filter(apprenticeship => apprenticeship.ID !== app.ID);
             });
             setSaveApprenticeshipsList(list => {
-                return list.filter(apprenticeship => apprenticeship.ID !== ID);
+                return list.filter(apprenticeship => apprenticeship.ID !== app.ID);
             });
             setSnackBarInfo({ severity: 'success', message: 'Apprenticeship Disapproved Successfully', open: true });
         }
@@ -144,9 +158,10 @@ function AdminApproveList({ isAdmin, setSnackBarInfo }) {
         });
     }
 
-    const disapproveOwner = (e, ID) => {
+    const disapproveOwner = (e, Owner) => {
         e.stopPropagation();
-        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/rejectOwner/${ID}`, {
+        if(!Owner.Owner.CVOpened) return setSnackBarInfo({ severity: 'error', message: 'Please Open CV First', open: true });
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/rejectOwner/${Owner.id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -155,10 +170,10 @@ function AdminApproveList({ isAdmin, setSnackBarInfo }) {
         }).then(data => {
             if (!data.ok) return setSnackBarInfo({ severity: 'error', message: 'Erorr Disapproving', open: true });
             setOwnersList(list => {
-                return list.filter(owner => owner.User_ID !== ID);
+                return list.filter(owner => owner.id !== Owner.id);
             });
             setSaveOwnersList(list => {
-                return list.filter(owner => owner.User_ID !== ID);
+                return list.filter(owner => owner.id !== Owner.id);
             });
             setSnackBarInfo({ severity: 'success', message: 'Owner Disapproved Successfully', open: true });
         }
@@ -175,6 +190,7 @@ function AdminApproveList({ isAdmin, setSnackBarInfo }) {
         })
             .then(res => res.json())
             .then(data => {
+                console.log(data);
                 setOwnersList(data);
                 setSaveOwnersList(data);
             }).catch(err => console.log(err));
@@ -189,7 +205,7 @@ function AdminApproveList({ isAdmin, setSnackBarInfo }) {
             }).catch(err => console.log(err));
     }, [])
 
-    const [OwnerButtons, setButtons] = useState([{ text: 'Approve', color: 'success', onClick: approveOwner }, { text: 'Disapprove', color: 'error', onClick: disapproveOwner }]);
+    const [OwnerButtons, setButtons] = useState([{text: 'Open CV', color: 'info', onClick: openCV},{ text: 'Approve', color: 'success', onClick: approveOwner }, { text: 'Disapprove', color: 'error', onClick: disapproveOwner }]);
     const [ApprenticeshipButtons, setApprenticeshipButtons] = useState([{ text: 'Approve', color: 'success', onClick: approveApprenticeship }, { text: 'Disapprove', color: 'error', onClick: disapproveApprenticeship }]);
 
 

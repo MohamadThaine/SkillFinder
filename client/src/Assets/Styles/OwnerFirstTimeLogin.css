@@ -1,0 +1,69 @@
+.circle-number{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background-color: #dddddd85;
+    font-size: 20px;
+    font-weight: bold;
+    color: #000000;
+}
+
+.userPic{
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+}
+
+.get-started{
+    white-space: nowrap;
+}
+
+.first-time-img{
+    width: 6rem;
+}
+
+.check-mark-first-time{
+    width: 10rem;
+}
+
+.path {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 0;
+    &.circle {
+      -webkit-animation: dash 1s ease-in-out;
+      animation: dash 1s ease-in-out;
+    }
+    &.check {
+      stroke-dashoffset: -100;
+      -webkit-animation: dash-check 1s .35s ease-in-out forwards;
+      animation: dash-check 1s .35s ease-in-out forwards;
+    }
+  }
+
+  @keyframes dash {
+    0% {
+      stroke-dashoffset: 1000;
+    }
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes dash-check {
+    0% {
+      stroke-dashoffset: -100;
+    }
+    100% {
+      stroke-dashoffset: 900;
+    }
+  }
+
+@media screen and (max-width: 768px) {
+    .first-time-page > .row > .first-time-box{
+        margin-right: auto !important;
+        margin-left: auto !important;
+    }
+}

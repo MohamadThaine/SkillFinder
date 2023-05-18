@@ -46,9 +46,9 @@ function AdminCategoryEdit({ isAdmin, setSnackBarInfo }) {
             , 500);
     }
 
-    const deleteCategory = (e, id) => {
+    const deleteCategory = (e, Category) => {
         e.stopPropagation();
-        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/deleteCategory/${id}`, {
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/deleteCategory/${Category.ID}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -56,8 +56,8 @@ function AdminCategoryEdit({ isAdmin, setSnackBarInfo }) {
             },
         }).then(res => res.json())
             .then(data => {
-                setCategoryList(prevCategoryList => prevCategoryList.filter(category => category.ID !== id));
-                setSaveCategoryList(prevCategoryList => prevCategoryList.filter(category => category.ID !== id));
+                setCategoryList(prevCategoryList => prevCategoryList.filter(category => category.ID !== Category.ID));
+                setSaveCategoryList(prevCategoryList => prevCategoryList.filter(category => category.ID !== Category.ID));
                 setSnackBarInfo({ open: true, message: 'Category Deleted', severity: 'success' });
             }).catch(err => {
                 setSnackBarInfo({ open: true, message: 'Error Deleting Category ' + err, severity: 'error' });
@@ -157,8 +157,8 @@ const AddCategoryModal = ({ open, handleClose, setCategoryList, setSnackBarInfo 
     const addCategory = () => {
         fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/addCategory`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            authorization: localStorage.getItem('token'),
+            headers: { 'Content-Type': 'application/json',
+            authorization: localStorage.getItem('token') },
             body: JSON.stringify({ name: categoryName })
         }).then(res => res.json())
             .then(data => {

@@ -5,12 +5,14 @@ import '../Assets/Styles/NavBar.css'
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import ScrollToTop from './ScrollToTop';
 import defalutMalePic from '../Assets/Images/defaultMalePic.svg';
+import defalutFemalePic from '../Assets/Images/defaultFemalePic.svg';
 
-function NavBar({user , otherUserInfo, handleLogout}){
+function NavBar({user, otherUserInfo, handleLogout}){
   const currentLocation = useLocation();
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState('');
   const [searchKeyWords, setSearchKeyWords] = useState('');
+  const [userPicture , setUserPicture] = useState(null);
   const navRef = useRef();
   useEffect(() => {
     setCurrentPage(currentLocation.pathname);
@@ -31,6 +33,16 @@ function NavBar({user , otherUserInfo, handleLogout}){
       }
   }
 
+  useEffect(() => {
+    if(otherUserInfo === null) return;
+    setUserPicture((otherUserInfo.Picture) ? otherUserInfo.Picture :  user.Gender === 'Male'? defalutMalePic : defalutFemalePic);
+  },[user])
+
+  useEffect(() => {
+    if(otherUserInfo === null) return;
+    setUserPicture((otherUserInfo.Picture) ? otherUserInfo.Picture :  user.Gender === 'Male'? defalutMalePic : defalutFemalePic);
+  },[otherUserInfo])
+
     return(
      <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom" ref={navRef}>
@@ -39,7 +51,7 @@ function NavBar({user , otherUserInfo, handleLogout}){
           </Link>
           {user && <li className="nav-item dropdown user-menu">
                     <a className="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      <img src={defalutMalePic} className='nav-profile-pic'></img>
+                      <img src={userPicture} className='nav-profile-pic'></img>
                     </a>
                     <ul className="dropdown-menu">
                       <Link to='/Profile' className="dropdown-item">Profile</Link>

@@ -24,24 +24,28 @@ import AdminApproveList from './Pages/AdminApproveList';
 import AdminUserList from './Pages/AdminUserList';
 import AdminCategoryEdit from './Pages/AdminCategoryEdit';
 import { Alert, Snackbar } from '@mui/material';
+import OwnerHome from './Pages/OwnerHome';
 
 function App() {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-  const [otherUserInfo, setOtherUserInfo] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+  const [otherUserInfo, setOtherUserInfo] = useState(JSON.parse(localStorage.getItem('otherInfo')));
+  const [isAdmin, setIsAdmin] = useState(null);
   const [snackBarInfo, setSnackBarInfo] = useState({open: false, message: '', severity: ''});
   useEffect (() => {
     try
     {
-      if(localStorage.getItem('user') != null){
+      if(localStorage.getItem('user') !== null){
         setUser(JSON.parse(localStorage.getItem('user')));
         setOtherUserInfo(JSON.parse(localStorage.getItem('otherInfo')));
         if(JSON.parse(localStorage.getItem('otherInfo')).isAdmin){
           setIsAdmin(true);
           navigate('/Admin');
         }
-      }  
+        else if(JSON.parse(localStorage.getItem('otherInfo')).Major){
+          navigate('/Owner');
+        }
+      }
     }catch(e){}
   }, []);
 
@@ -52,6 +56,10 @@ function App() {
       setIsAdmin(true);
       navigate('/Admin');
     }
+    else if(JSON.parse(localStorage.getItem('otherInfo')).Major){
+      navigate('/Owner');
+    }
+    setSnackBarInfo({open: true, message: 'Login Successfully!', severity: 'success'});
   }
 
   const handleLogout = () => {
@@ -87,9 +95,10 @@ function App() {
         <Route path="/AboutUs" element={<AboutUs />} />
         <Route path="/ContactUs" element={<ContactUs />} />
         <Route path="/Login" element={<Login handleLogin={handleLogin}/>} />
-        <Route path="/Register" element={<Register />} />
+        <Route path="/Register" element={<Register setSnackBarInfo={setSnackBarInfo} />} />
         <Route path='/Search/:keyWords' element={<Search />} />
         <Route path='/Apprenticeship/:ID' element={<ApprenticeshipDetalis />} />
+        <Route path='/Owner' element={<OwnerHome user={user} ownerInfo={otherUserInfo} setOwnerInfo={setOtherUserInfo} setSnackBarInfo={setSnackBarInfo}/>} />
         <Route path='/Admin/Apprenticeship' element={<AdminApprenticeshipList isAdmin={isAdmin} setSnackBarInfo={setSnackBarInfo} />} />
         <Route path='/Admin/Approve' element={<AdminApproveList isAdmin={isAdmin} setSnackBarInfo={setSnackBarInfo} />} />
         <Route path='/Admin/User' element={<AdminUserList isAdmin={isAdmin} setSnackBarInfo={setSnackBarInfo} />} />

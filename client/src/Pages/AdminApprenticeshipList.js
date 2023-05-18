@@ -35,8 +35,8 @@ function AdminApprenticeshipList({isAdmin, setSnackBarInfo}){
         setApprenticeship(null);
     }
 
-    const deleteApprenticeship = (e,id) => {
-        setDeletedApprenticeshipID(id);
+    const deleteApprenticeship = (e,app) => {
+        setDeletedApprenticeshipID(app.ID);
         e.stopPropagation();
         setOpenDeleteModal(true);
     }

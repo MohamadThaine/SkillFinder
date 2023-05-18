@@ -11,7 +11,13 @@ const register = async (req, res) => {
         otherInfo,
         isOwner,
         gender,
-        verifyToken } = req.body;
+        verifyToken,
+        } = JSON.parse(req.body.data);
+    var cv = '';;
+
+    if (req.file) {
+        cv = req.file.path.replace('public\\', '');
+    }
     try {
         const passwordHash = bcryptjs.hashSync(password, 10);
         const user = await User.create({
@@ -30,6 +36,7 @@ const register = async (req, res) => {
             await Owner.create({
                 User_ID: user.id,
                 Major: otherInfo,
+                CV: cv,
                 isApproved: false
             });
         } else {
@@ -46,7 +53,6 @@ const register = async (req, res) => {
         }
         res.send({ data: data });
     } catch (err) {
-        console.log(err);
         if (err.parent.sqlMessage.includes(username)) {
             res.send({ error: 'Username already exists' });
         } else if (err.parent.sqlMessage.includes(email)) {
