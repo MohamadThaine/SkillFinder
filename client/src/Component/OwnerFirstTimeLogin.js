@@ -105,7 +105,7 @@ const OwnerFirstTimeLogin = ({ user, ownerInfo, setOwnerInfo, setSnackBarInfo })
                     <circle className="path circle" fill="none" stroke="#73AF55" strokeWidth="6" strokeMiterlimit="10" cx="65.1" cy="65.1" r="62.1" />
                     <polyline className="path check" fill="none" stroke="#73AF55" strokeWidth="6" strokeLinecap="round" strokeMiterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 " />
                 </svg>
-                <h3 className='mt-5'>Thanks For Joining Us!</h3>
+                <h3 className='mt-5'>Thanks You For Choosing Us!</h3>
                 <p className='mt-3'>You can now start using SkillFinder</p>
             </div>}
         </>

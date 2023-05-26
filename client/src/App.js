@@ -25,6 +25,7 @@ import AdminUserList from './Pages/AdminUserList';
 import AdminCategoryEdit from './Pages/AdminCategoryEdit';
 import { Alert, Snackbar } from '@mui/material';
 import OwnerHome from './Pages/OwnerHome';
+import Chats from './Component/Chats';
 
 function App() {
   const navigate = useNavigate();
@@ -106,6 +107,7 @@ function App() {
         <Route path='/Admin' element={<AdminHome isAdmin={isAdmin} />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
+      {user && !isAdmin && <Chats />}
       <Footer />
     </>
   );

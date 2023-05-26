@@ -1,0 +1,53 @@
+@font-face {
+    font-family: 'Poopins';
+    src: url('../Fonts/Poppins-Regular.ttf');
+}
+
+.owner-home{
+    overflow: hidden;
+}
+
+
+.app-list-header{
+    background-image: url(../Images/homepage.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 10rem;
+    box-shadow: inset 0 0 0 1000px #6260d954;
+}
+
+.review-list-header{
+    background-image: url(../Images/reviewBackGround.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 10rem;
+    box-shadow: inset 0 0 0 1000px #6260d954;
+}
+
+.list-sub-header{
+    padding: 0 !important;
+    box-shadow: #ccc 0px 0px 5px 0px;
+    background-color: #60A3D9 !important;  
+}
+
+.list-text > *{
+    font-size: 1.5rem !important;
+    color: rgb(255, 255, 255);
+    font-family: 'Poopins' !important;
+    
+}
+
+.list-text > :first-child{
+    font-weight: bolder !important;
+}
+
+.app-owner-home{ 
+    box-shadow: #00000069 0px 0px 5px 0px;
+    font-family: 'Poopins' !important;
+}
+
+.owner-home-col{
+    padding: 0 !important;
+}

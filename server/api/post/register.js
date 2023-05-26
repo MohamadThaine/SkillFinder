@@ -1,4 +1,5 @@
 const { User, Owner, Apprentice } = require('../../models/User');
+const  deleteFiles  = require('../../utils/deleteFiles');
 const bcryptjs = require('bcryptjs');
 const register = async (req, res) => {
     const { username,
@@ -53,6 +54,8 @@ const register = async (req, res) => {
         }
         res.send({ data: data });
     } catch (err) {
+        
+        deleteFiles(`public/OwnerCVs/${verifyToken}`, '');
         if (err.parent.sqlMessage.includes(username)) {
             res.send({ error: 'Username already exists' });
         } else if (err.parent.sqlMessage.includes(email)) {

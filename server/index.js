@@ -54,15 +54,17 @@ const OwnerPicturesStorage = multer.diskStorage({
 
 const OwnerCVStorage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const folderPath = `public/OwnerCVs/${req.headers.username}`;
+    if(req.headers.isowner === 'false') return cb(null, null);
+    const folderPath = `public/OwnerCVs/${req.headers.verifytoken}`;
     fs.mkdirSync(folderPath, { recursive: true });
     const fileExtension = file.originalname.split('.').pop();
     deleteFiles(folderPath, `${req.headers.username}.${fileExtension}`);
     cb(null, folderPath)
   },
   filename: function (req, file, cb) {
+    if(req.headers.isowner === 'false') return cb(null, null);
     const fileExtension = file.originalname.split('.').pop();
-    cb(null, `${req.headers.username}.${fileExtension}`)
+    cb(null, `${req.headers.verifytoken}.${fileExtension}`)
   }
 })
 

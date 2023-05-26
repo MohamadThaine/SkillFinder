@@ -33,7 +33,7 @@
 .desc .contact-us-btn{
     background-color: #36506C;
     border: none;
-    width: 20%;
+    width: 15rem;
     height: 3rem;
     color: white;
     font-family: 'Shanti';
@@ -49,4 +49,9 @@
 
 ul {
     list-style-position: inside;
+ }
+
+ .contact-us-link{
+    width: fit-content !important;
+    margin: auto;
  }

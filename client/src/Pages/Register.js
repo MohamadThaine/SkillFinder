@@ -98,7 +98,8 @@ function Register({ setSnackBarInfo }) {
         registerData.append('data', JSON.stringify(data));
         const response = await fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/register`, {
             headers: {
-                'username': username
+                'verifytoken': verifyToken,
+                'isOwner': isOwner ? 'true' : 'false',
               },
             method: 'POST',
             body: registerData
@@ -106,6 +107,7 @@ function Register({ setSnackBarInfo }) {
         const res = await response.json();
         if (res.error) {
             setAlert({ message: res.error, severity: 'error', needed: true });
+            
         } else {
             setAlert({ message: 'Registered successfully', severity: 'success', needed: true });
             sendEmailVerifying(res)
@@ -177,7 +179,7 @@ function Register({ setSnackBarInfo }) {
                                     {isOwner ? "Major" : "Study level"}
                                 </span>
                                 {isOwner && <input type="text" className="form-control defultInput register-input" value={otherInfo} onChange={(e) => setOtherInfo(e.target.value)} />}
-                                {!isOwner && <select class="form-control defultInput register-input" value={otherInfo} onChange={e => setOtherInfo(e.target.value)} >
+                                {!isOwner && <select className="form-control defultInput register-input" value={otherInfo} onChange={e => setOtherInfo(e.target.value)} >
                                     <option>Choose...</option>
                                     <option>None</option>
                                     <option>Elementary School</option>
