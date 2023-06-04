@@ -52,88 +52,88 @@ function Search(){
                         <h6>Category</h6>
                         <div>
                             <input type="checkbox" className="form-check-input" id="Carpenting" value='Carpenting'/>
-                            <label for="Carpenting" className="form-check-label ms-2">Carpenting</label>
+                            <label htmlFor="Carpenting" className="form-check-label ms-2">Carpenting</label>
                         </div>
                         <div className="mt-3">
                             <input type="checkbox" className="form-check-input" id="Graphic Design" value='Graphic Design'/>
-                            <label for="Graphic Design" className="form-check-label ms-2">Graphic Design</label>
+                            <label htmlFor="Graphic Design" className="form-check-label ms-2">Graphic Design</label>
                         </div>
                         <div className="mt-3">
                             <input type="checkbox" className="form-check-input" id="Fashion Design" value='Fashion Design'/>
-                            <label for="Fashion Design" className="form-check-label ms-2">Fashion Design</label>
+                            <label htmlFor="Fashion Design" className="form-check-label ms-2">Fashion Design</label>
                         </div>
                         <div className="mt-3">
                             <input type="checkbox" className="form-check-input" id="Networking" value='Networking'/>
-                            <label for="Networking" className="form-check-label ms-2">Networking</label>
+                            <label htmlFor="Networking" className="form-check-label ms-2">Networking</label>
                         </div>
                     </div>    
                     <div className="filter-category mt-4">
                         <h6>Duration</h6>
                         <div>
                             <input type="checkbox" className="form-check-input" id="LessThanMonth" value='LessThanMonth'/>
-                            <label for="LessThanMonth" className="form-check-label ms-2">0-1 Month</label>
+                            <label htmlFor="LessThanMonth" className="form-check-label ms-2">0-1 Month</label>
                         </div>
                         <div className="mt-3">
                             <input type="checkbox" className="form-check-input" id="OneToThreeMonths" value='OneToThreeMonths'/>
-                            <label for="OneToThreeMonths" className="form-check-label ms-2">1-3 Months</label>
+                            <label htmlFor="OneToThreeMonths" className="form-check-label ms-2">1-3 Months</label>
                         </div>
                         <div className="mt-3">
                             <input type="checkbox" className="form-check-input" id="FourToSix" value='FourToSix'/>
-                            <label for="FourToSix" className="form-check-label ms-2">4-6 Months</label>
+                            <label htmlFor="FourToSix" className="form-check-label ms-2">4-6 Months</label>
                         </div>
                         <div className="mt-3">
                             <input type="checkbox" className="form-check-input" id="MoreThanSixMonths" value='MoreThanSixMonths'/>
-                            <label for="MoreThanSixMonths" className="form-check-label ms-2">7+ Months</label>
+                            <label htmlFor="MoreThanSixMonths" className="form-check-label ms-2">7+ Months</label>
                         </div>
                     </div>  
                     <div className="filter-category mt-4">
                         <h6>Learning Method</h6>
                         <div>
                             <input type="radio" className="form-check-input" id="OnlineLearn" value='OnlineLearn' name="LearnMethod"/>
-                            <label for="OnlineLearn" className="form-check-label ms-2">Online</label>
+                            <label htmlFor="OnlineLearn" className="form-check-label ms-2">Online</label>
                         </div>
                         <div className="mt-3">
                             <input type="radio" className="form-check-input" id="OnSiteLearn" value='OnSiteLearn' name="LearnMethod"/>
-                            <label for="OnSiteLearn" className="form-check-label ms-2">On-site</label>
+                            <label htmlFor="OnSiteLearn" className="form-check-label ms-2">On-site</label>
                         </div>
                         <div className="mt-3">
                             <input type="radio" className="form-check-input" id="BothLearn" value='BothLearn' name="LearnMethod"/>
-                            <label for="BothLearn" className="form-check-label ms-2">Both</label>
+                            <label htmlFor="BothLearn" className="form-check-label ms-2">Both</label>
                         </div>
                     </div>  
                     <div className="filter-category mt-4">
                         <h6>Simulation</h6>
                         <div>
                             <input type="radio" className="form-check-input" id="YesSim" value='YesSim' name="Simulation"/>
-                            <label for="YesSim" className="form-check-label ms-2">Yes</label>
+                            <label htmlFor="YesSim" className="form-check-label ms-2">Yes</label>
                         </div>
                         <div className="mt-3">
                             <input type="radio" className="form-check-input" id="NoSim" value='NoSim' name="Simulation"/>
-                            <label for="NoSim" className="form-check-label ms-2">No</label>
+                            <label htmlFor="NoSim" className="form-check-label ms-2">No</label>
                         </div>
                         <div className="mt-3">
                             <input type="radio" className="form-check-input" id="BothSim" value='BothSim' name="Simulation"/>
-                            <label for="BothSim" className="form-check-label ms-2">Both</label>
+                            <label htmlFor="BothSim" className="form-check-label ms-2">Both</label>
                         </div>
                     </div>   
                     <div className="filter-category mt-4">
                         <h6>Paid</h6>
                         <div>
                             <input type="radio" className="form-check-input" id="YesPaid" value='YesPaid' name="Paid"/>
-                            <label for="YesPaid" className="form-check-label ms-2">Yes</label>
+                            <label htmlFor="YesPaid" className="form-check-label ms-2">Yes</label>
                         </div>
                         <div className="mt-3">
                             <input type="radio" className="form-check-input" id="NoPaid" value='NoPaid' name="Paid"/>
-                            <label for="NoPaid" className="form-check-label ms-2">No</label>
+                            <label htmlFor="NoPaid" className="form-check-label ms-2">No</label>
                         </div>
                         <div className="mt-3">
                             <input type="radio" className="form-check-input" id="BothPaid" value='BothPaid' name="Paid"/>
-                            <label for="BothPaid" className="form-check-label ms-2">Both</label>
+                            <label htmlFor="BothPaid" className="form-check-label ms-2">Both</label>
                         </div>
                     </div>   
                 </div>
                 <div className="col ms-3">
-                    <h3 className="text-center">{searchResults.length} Results Found for {decodeURIComponent(keyWords.replace('%', ' '))}</h3>
+                    <h3 className="text-center">{searchResults.length} Results Found: {decodeURIComponent(keyWords.replace('%', ' '))}</h3>
                     <SearchResult resultList={searchResults} />
                 </div>
             </div>

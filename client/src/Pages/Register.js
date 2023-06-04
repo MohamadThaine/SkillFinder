@@ -193,10 +193,10 @@ function Register({ setSnackBarInfo }) {
                                 <div>
                                     <input type="radio" className="form-check-input" id="male-radio" name="Gender"
                                         onChange={() => setGender('Male')} />
-                                    <label for="male-radio" className="ms-1">Male</label>
+                                    <label htmlFor="male-radio" className="ms-1">Male</label>
                                     <input className="ms-3 form-check-input" type="radio" id="female-radio" name="Gender"
                                         onChange={() => setGender('Female')} />
-                                    <label for="female-radio" className="ms-1">Female</label>
+                                    <label htmlFor="female-radio" className="ms-1">Female</label>
                                 </div>
                             </div>
                         </div>
@@ -222,6 +222,7 @@ function Register({ setSnackBarInfo }) {
                         </div>
                         {isOwner && <div className="row register-row">
                             <div className="register-column d-flex flex-column">
+                                <span className="ms-auto me-auto mb-1">Upload Your CV</span>
                                 <input type="file" className="form-control defultInput register-input"
                                  accept='text/plain, application/pdf, image/*, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document'
                                  onChange={e => {
@@ -240,7 +241,7 @@ function Register({ setSnackBarInfo }) {
                                             setAcceptedTerms(false);
                                     }}
                                     value={acceptedTerms} />
-                                <label for="accept-check" className="ms-1 mb-auto">I agree to <Link>Terms of Use and Privacy Policy</Link></label>
+                                <label htmlFor="accept-check" className="ms-1 mb-auto">I agree to <Link>Terms of Use and Privacy Policy</Link></label>
                             </div>
                         </div>
                         {alert.needed && <Alert severity={alert.severity}> {alert.message} </Alert>}

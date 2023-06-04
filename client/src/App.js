@@ -26,13 +26,15 @@ import AdminCategoryEdit from './Pages/AdminCategoryEdit';
 import { Alert, Snackbar } from '@mui/material';
 import OwnerHome from './Pages/OwnerHome';
 import Chats from './Component/Chats';
+import './Assets/Styles/loader.css'
+import Profile from './Pages/Profile';
 
 function App() {
   const navigate = useNavigate();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
   const [otherUserInfo, setOtherUserInfo] = useState(JSON.parse(localStorage.getItem('otherInfo')));
   const [isAdmin, setIsAdmin] = useState(null);
-  const [snackBarInfo, setSnackBarInfo] = useState({open: false, message: '', severity: ''});
+  const [snackBarInfo, setSnackBarInfo] = useState({open: false, message: '', severity: 'info'});
   useEffect (() => {
     try
     {
@@ -42,9 +44,6 @@ function App() {
         if(JSON.parse(localStorage.getItem('otherInfo')).isAdmin){
           setIsAdmin(true);
           navigate('/Admin');
-        }
-        else if(JSON.parse(localStorage.getItem('otherInfo')).Major){
-          navigate('/Owner');
         }
       }
     }catch(e){}
@@ -76,7 +75,7 @@ function App() {
   useEffect(() => {
     if(snackBarInfo.open === false) return;
     setTimeout(() => {
-      setSnackBarInfo({open: false, message: '', severity: ''});
+      setSnackBarInfo({open: false, message: '', severity: 'info'});
     }, 3000);
   }, [snackBarInfo]);
 
@@ -98,12 +97,13 @@ function App() {
         <Route path="/Login" element={<Login handleLogin={handleLogin}/>} />
         <Route path="/Register" element={<Register setSnackBarInfo={setSnackBarInfo} />} />
         <Route path='/Search/:keyWords' element={<Search />} />
-        <Route path='/Apprenticeship/:ID' element={<ApprenticeshipDetalis />} />
-        <Route path='/Owner' element={<OwnerHome user={user} ownerInfo={otherUserInfo} setOwnerInfo={setOtherUserInfo} setSnackBarInfo={setSnackBarInfo}/>} />
+        <Route path='/Apprenticeship/:ID' element={<ApprenticeshipDetalis setSnackBarInfo={setSnackBarInfo}/>} />
+        <Route path='/Owner' element={<OwnerHome user={user} ownerInfo={otherUserInfo} setOwnerInfo={setOtherUserInfo} setSnackBarInfo={setSnackBarInfo} />} />
+        <Route path='/Profile' element={<Profile user={user} setUser={setUser} otherInfo={otherUserInfo} setOtherInfo={setOtherUserInfo} setSnackBarInfo={setSnackBarInfo} />} />
         <Route path='/Admin/Apprenticeship' element={<AdminApprenticeshipList isAdmin={isAdmin} setSnackBarInfo={setSnackBarInfo} />} />
         <Route path='/Admin/Approve' element={<AdminApproveList isAdmin={isAdmin} setSnackBarInfo={setSnackBarInfo} />} />
         <Route path='/Admin/User' element={<AdminUserList isAdmin={isAdmin} setSnackBarInfo={setSnackBarInfo} />} />
-        <Route path='/Admin/Edit' element={<AdminCategoryEdit isAdmin={isAdmin} setSnackBarInfo={setSnackBarInfo}/>} />
+        <Route path='/Admin/Edit' element={<AdminCategoryEdit isAdmin={isAdmin} setSnackBarInfo={setSnackBarInfo} />} />
         <Route path='/Admin' element={<AdminHome isAdmin={isAdmin} />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>

@@ -8,6 +8,16 @@
     position: relative;
     background-size: cover;
     display: flex;
+    padding: 0 !important;
+}
+
+.full-width-image{
+    position: absolute;
+    width: 100%;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
 }
 
 .author{
@@ -90,10 +100,6 @@
     margin-right: 10px;
 }
 
-.overview-info{
-    font-size: 1.7vh !important;
-}
-
 .app-btn{
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 28px;
@@ -110,6 +116,10 @@
     align-items: center;
 }
 
+.app-btn:disabled{
+    opacity: 0.7;
+}
+
 .pics-row{
     margin-top: 1rem !important;
     width: 100%;
@@ -120,7 +130,7 @@
 
 .pics-row > img{
    width: 15% !important;
-   min-height: 10rem;
+   height: 10rem;
    margin: auto;
 }
 
@@ -166,6 +176,15 @@
 
 .fade-img{
     animation: fadeImg 1.5s ease;
+}
+
+.not-approved-app{
+    background-color: #36506C;
+    color: white;
+}
+
+.not-approved-text{
+    font-family: 'Poppins' !important;
 }
 
 @keyframes fadeImg {

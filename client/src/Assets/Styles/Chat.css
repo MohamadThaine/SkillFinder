@@ -21,6 +21,7 @@
 
 .chat-img {
     width: 4.5rem !important;
+    height: 3rem !important;
     border-radius: 50%;
     margin-left: 2rem !important;
 }

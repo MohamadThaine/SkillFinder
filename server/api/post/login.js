@@ -63,13 +63,13 @@ const login = (req, res) => {
             }).then(admin => {
                 const isMatch = bcryptjs.compareSync(password, admin.Password);
                 if (!isMatch) {
-                    return res.send({ error: 'Wrong password' });
+                    return res.send({ error: 'Username Or Password is incorrect' });
                 }
                 if (admin) {
                     const token = jwt.sign({ isAdmin: true }, sercetKey);
                     res.send({ token: token, admin: admin });
                 } else {
-                    res.send({ error: 'User not found' });
+                    res.send({ error: 'Username Or Password is incorrect' });
                 }
             }).catch(err => {
                 res.send({ error: 'Username Or Password is incorrect' });

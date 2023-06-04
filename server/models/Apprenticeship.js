@@ -1,20 +1,21 @@
 const sequelize = require('../sequelize');
 const { DataTypes } = require('sequelize');
-const { Owner, Apprentice, User } = require('./User');
+const { Owner, Apprentice } = require('./User');
 const Category = require('./Category');
 
 const Apprenticeship = sequelize.define('Apprenticeship', {
   ID: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    primaryKey: true
+    primaryKey: true,
+    autoIncrement: true
   },
   Owner_ID: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-        model: Owner,
-        key: 'User_ID'
+      model: Owner,
+      key: 'User_ID'
     }
   },
   Name: {
@@ -27,10 +28,15 @@ const Apprenticeship = sequelize.define('Apprenticeship', {
   },
   isApproved: {
     type: DataTypes.BOOLEAN,
-    allowNull: false
+    allowNull: false,
+    defaultValue: false
   },
   Duration: {
     type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  DurationType: {
+    type: DataTypes.STRING,
     allowNull: false
   },
   Start_Date: {
@@ -53,8 +59,8 @@ const Apprenticeship = sequelize.define('Apprenticeship', {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-        model: Category,
-        key: 'ID'
+      model: Category,
+      key: 'ID'
     }
   },
   Address_ID: {
@@ -65,9 +71,14 @@ const Apprenticeship = sequelize.define('Apprenticeship', {
     type: DataTypes.DOUBLE,
     allowNull: false
   },
-  FreeTrailAvaliable: {
+  FreeTrial: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0
+  },
+  Deactivated: {
     type: DataTypes.BOOLEAN,
-    allowNull: false
+    defaultValue: false
   }
 }, {
   tableName: 'apprenticeship',
@@ -90,6 +101,12 @@ const ApprenticeshipPicture = sequelize.define('ApprenticeshipPicture', {
 });
 
 const ApprenticeshipApprentice = sequelize.define('apprenticeship_apprentice', {
+  ID : {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    primaryKey: true,
+    autoIncrement: true
+  },
   Apprenticeship_ID: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -97,7 +114,6 @@ const ApprenticeshipApprentice = sequelize.define('apprenticeship_apprentice', {
       model: Apprenticeship,
       key: 'ID'
     },
-    primaryKey: true
   },
   Apperntice_ID: {
     type: DataTypes.INTEGER,
@@ -106,7 +122,6 @@ const ApprenticeshipApprentice = sequelize.define('apprenticeship_apprentice', {
       model: Apprentice,
       key: 'User_ID'
     },
-    primaryKey: true
   },
   Date: {
     type: DataTypes.DATE,
@@ -117,9 +132,14 @@ const ApprenticeshipApprentice = sequelize.define('apprenticeship_apprentice', {
     allowNull: false,
     defaultValue: false
   },
-  Payment_Info: {
+  Request_Description: {
     type: DataTypes.STRING,
     allowNull: false,
+  },
+  Rejected: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
   }
 }, {
   tableName: 'apprenticeship_apprentice',

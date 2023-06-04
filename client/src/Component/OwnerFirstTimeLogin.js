@@ -6,7 +6,6 @@ import logo from '../Assets/Images/SkillFinderLogoNoTitle.png'
 import { Button } from '@mui/material';
 
 const OwnerFirstTimeLogin = ({ user, ownerInfo, setOwnerInfo, setSnackBarInfo }) => {
-
     const [picture, setPicture] = useState(user.Gender === 'Male' ? defaultMalePic : defaultFemalePic);
     const [file, setFile] = useState(null);
     const [finshed, setFinshed] = useState(false);

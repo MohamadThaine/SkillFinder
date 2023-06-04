@@ -54,8 +54,10 @@ const register = async (req, res) => {
         }
         res.send({ data: data });
     } catch (err) {
-        
-        deleteFiles(`public/OwnerCVs/${verifyToken}`, '');
+        isOwner ? deleteFiles(`public/OwnerCVs/${verifyToken}`, '') : '';
+        if(!err.parent) {
+            res.send({ error: err.message });
+        }
         if (err.parent.sqlMessage.includes(username)) {
             res.send({ error: 'Username already exists' });
         } else if (err.parent.sqlMessage.includes(email)) {

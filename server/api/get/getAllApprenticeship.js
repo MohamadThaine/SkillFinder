@@ -2,7 +2,7 @@ const { Apprenticeship, ApprenticeshipApprentice } = require('../../models/Appre
 const Category = require('../../models/Category');
 const { User, Owner } = require('../../models/User');
 const sequelize = require('../../sequelize');
-const verifyToken = require('../../utils/verifyToken');
+const { Op } = require('sequelize');
 
 const getAllApprenticeship = async (req, res) => {
   try {
@@ -22,6 +22,7 @@ const getAllApprenticeship = async (req, res) => {
         'Description',
         'isApproved',
         'Duration',
+        'DurationType',
         'Start_Date',
         'End_Date',
         'LearningMethod',
@@ -29,11 +30,14 @@ const getAllApprenticeship = async (req, res) => {
         'Category_ID',
         'Address_ID',
         'Price',
-        'FreeTrailAvaliable',
+        'FreeTrial',
+        'Deactivated',
         [sequelize.fn('COUNT', sequelize.literal('apprenticeship_apprentices.Apprenticeship_ID')), 'enrolledStudentsCount'],
       ],
       where: {
-        isApproved: req.params.isApproved === 'true',
+        isApproved: req.params.isApproved !== 'all' ? (req.params.isApproved === 'true') : [true, false],
+        Owner_ID: req.params.id !== 'Admin' ? req.params.id : { [Op.ne]: null },
+        Deactivated: false,
       },
       group: [
         'Apprenticeship.id',

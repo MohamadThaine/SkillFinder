@@ -31,56 +31,61 @@ function Login({ handleLogin }) {
             username,
             password
         }
-        const respone = await fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(body)
-        })
-        const res = await respone.json();
-        if (res.error) {
-            setAlert({ message: res.error, severity: 'error', needed: true });
-        }
-        else {
-            if (res.admin) {
-                setAlert({ message: 'Login Successfully!', severity: 'success', needed: true });
-                localStorage.setItem('user', JSON.stringify(res.admin));
-                localStorage.setItem('otherInfo', JSON.stringify({ isAdmin: true }));
-                localStorage.setItem('token', res.token);
-                handleLogin();
-                return;
-            }
-            if (res.user.Verify_Status == 0) {
-                setAlert({ message: 'Please verify your email first!', severity: 'warning', needed: true });
-                setEmail(res.user.Email);
-                setVerifyToken(res.user.Verify_Token);
-                sendEmailVerifying(res);
-                document.querySelector('.verify-email-box').classList.add('verify-email-box-to-left');
-                document.querySelector('.login-box').classList.add('login-box-to-left');
-                return;
-
-            }
-            else if (res.user.Deactivated == 1) {
-                setAlert({ message: 'Your account is deactivated!', severity: 'warning', needed: true });
-                return;
-            }
-            else if (res.user.User_Type == 2) {
-                if (res.owner.isApproved == 0) {
-                    setAlert({ message: 'Your account is not approved yet!', severity: 'warning', needed: true });
-                    return;
-                }
-            }
-            setAlert({ message: 'Login Successfully!', severity: 'success', needed: true });
-            if (res.owner) {
-                localStorage.setItem('otherInfo', JSON.stringify(res.owner));
+        try {
+            const respone = await fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(body)
+            })
+            const res = await respone.json();
+            if (res.error) {
+                setAlert({ message: res.error, severity: 'error', needed: true });
             }
             else {
-                localStorage.setItem('otherInfo', JSON.stringify(res.apprentice));
+                if (res.admin) {
+                    setAlert({ message: 'Login Successfully!', severity: 'success', needed: true });
+                    localStorage.setItem('user', JSON.stringify(res.admin));
+                    localStorage.setItem('otherInfo', JSON.stringify({ isAdmin: true }));
+                    localStorage.setItem('token', res.token);
+                    handleLogin();
+                    return;
+                }
+                if (res.user.Verify_Status == 0) {
+                    setAlert({ message: 'Please verify your email first!', severity: 'warning', needed: true });
+                    setEmail(res.user.Email);
+                    setVerifyToken(res.user.Verify_Token);
+                    sendEmailVerifying(res);
+                    document.querySelector('.verify-email-box').classList.add('verify-email-box-to-left');
+                    document.querySelector('.login-box').classList.add('login-box-to-left');
+                    return;
+
+                }
+                else if (res.user.Deactivated == 1) {
+                    setAlert({ message: 'Your account is deactivated!', severity: 'warning', needed: true });
+                    return;
+                }
+                else if (res.user.User_Type == 2) {
+                    if (res.owner.isApproved == 0) {
+                        setAlert({ message: 'Your account is not approved yet!', severity: 'warning', needed: true });
+                        return;
+                    }
+                }
+                setAlert({ message: 'Login Successfully!', severity: 'success', needed: true });
+                if (res.owner) {
+                    localStorage.setItem('otherInfo', JSON.stringify(res.owner));
+                }
+                else {
+                    localStorage.setItem('otherInfo', JSON.stringify(res.apprentice));
+                }
+                localStorage.setItem('user', JSON.stringify(res.user));
+                localStorage.setItem('token', res.token);
+                handleLogin();
             }
-            localStorage.setItem('user', JSON.stringify(res.user));
-            localStorage.setItem('token', res.token);
-            handleLogin();
+        }
+        catch (err) {
+            setAlert({ message: 'Something went wrong try again later!', severity: 'error', needed: true });
         }
     }
 

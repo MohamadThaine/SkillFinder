@@ -1,0 +1,24 @@
+.is-deleting {
+    animation: removed-item-animation .9s cubic-bezier(.55, -0.04, .91, .94) forwards;
+}
+
+@keyframes removed-item-animation {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    99.99% {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0);
+        display: none;
+        height: 0;
+        margin: 0;
+        padding: 0;
+    }
+}

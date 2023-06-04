@@ -1,5 +1,4 @@
-const {User , Apprentice, Owner} = require('../../models/User');
-const { Apprenticeship } = require('../../models/Apprenticeship');
+const {User} = require('../../models/User');
 const verifyToken = require('../../utils/verifyToken');
 
 

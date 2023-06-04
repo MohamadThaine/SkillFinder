@@ -47,7 +47,7 @@ function AdminNavBar({isAdmin, handleLogout}){
       </li>
     </ul>
     <hr/>
-    <li>
+    <li style={{listStyle: 'none'}}>
         <Button variant="contained" onClick={handleLogout} className='ms-5'>Logout</Button>
     </li>
   </div>

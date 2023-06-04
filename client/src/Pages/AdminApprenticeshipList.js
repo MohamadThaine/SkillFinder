@@ -119,7 +119,7 @@ function AdminApprenticeshipList({isAdmin, setSnackBarInfo}){
     }
 
     useEffect(() => {
-        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/apprenticeships/true`)
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/apprenticeships/true/Admin`)
         .then(res => res.json())
         .then(data => {
             setApprenticeshipList(data);

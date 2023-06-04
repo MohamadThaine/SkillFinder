@@ -15,7 +15,6 @@ const getApprenticeshipPics = async (req, res) => {
                     return pictureUrl;
                 });
                 res.send(pictures);
-                console.log(pictures);
             }
         }
     );

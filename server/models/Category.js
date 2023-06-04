@@ -11,7 +11,14 @@ const Category = sequelize.define('Category', {
     },
     Name: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true,
+        validate: {
+            len: [1, 50],
+            notNull: {
+                msg: 'Please enter a name'
+            }
+        }
     }
 }, {
     tableName: 'category',

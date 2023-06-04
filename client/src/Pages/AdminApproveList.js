@@ -60,7 +60,7 @@ function AdminApproveList({ isAdmin, setSnackBarInfo }) {
                 }
                 else {
                     setOwnersList(saveOwnersList.filter(owner => {
-                        return owner.Name.toLowerCase().includes(searchValue) || owner.Email.toLowerCase().includes(searchValue) || owner.Phone_Number.toLowerCase().includes(searchValue) || owner.id.toLowerCase().includes(searchValue);
+                        return owner.Name.toLowerCase().includes(searchValue) || owner.Email.toLowerCase().includes(searchValue) || owner.Phone_Number.toLowerCase().includes(searchValue) || owner.id.toString().includes(searchValue);
                     }));
                 }
             }
@@ -197,7 +197,7 @@ function AdminApproveList({ isAdmin, setSnackBarInfo }) {
     }, [])
 
     useEffect(() => {
-        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/apprenticeships/false`)
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/apprenticeships/false/Admin`)
             .then(res => res.json())
             .then(data => {
                 setApprenticeshipsList(data);
