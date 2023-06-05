@@ -165,7 +165,6 @@ const Apprentice = sequelize.define('apprentice', {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            is: /^[a-zA-Z]+$/i,
             len: [3, 100],
             notNull: {
                 msg: 'Please enter your study level'

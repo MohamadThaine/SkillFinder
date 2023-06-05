@@ -1,26 +1,12 @@
 import { Modal, Box, Typography, Button, Alert, Dialog, DialogContent, DialogContentText } from "@mui/material"
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import RequestLogin from "./RequestLogin";
 
 const EnrollToApprenticeship = ({ open, handleClose, appID, owner, setSnackBarInfo, setStudent }) => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
     const [description, setDescription] = useState('');
-    if (user === null) return (
-        <Dialog open={open} onClose={handleClose}>
-            <DialogContentText>
-                <Typography variant="h5" className="mt-3 mb-3 ms-3 me-3">You need to login to enroll to apprenticeship!</Typography>
-            </DialogContentText>
-            <DialogContent className="text-center">
-                <Link to="/Login">
-                    <Button variant="contained" color="primary" onClick={() => setSnackBarInfo({ open: true, message: 'Login to enroll!', severity: 'info' })}>Login</Button>
-                </Link>
-                <Link to="/Register" className="ms-3">
-                    <Button variant="contained" color="warning" onClick={() => setSnackBarInfo({ open: true, message: 'Register as apprentice to enroll!', severity: 'info' })}>Register</Button>
-                </Link>
-                <Button variant="contained" color="error" className="ms-3" onClick={handleClose}>Cancel</Button>
-            </DialogContent>
-        </Dialog>
-    );
+    if (user === null) return <RequestLogin open={open} handleClose={handleClose} setSnackBarInfo={setSnackBarInfo} />
     if (user.id === owner.id) return (
         <Dialog open={open} onClose={handleClose} style={{ padding: '10px' }}>
             <DialogContentText>

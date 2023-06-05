@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom'
-import Networking from '../Assets/Images/NetworkingExample.png';
-import GrahpicDesign from '../Assets/Images/GraphicDesignExample.png';
-import Carpenters from '../Assets/Images/CarpentersExample.png';
+import randomstring from 'randomstring';
 import Apprenticeship from "../Component/Apprenticeship";
 
 import '../Assets/Styles/Search.css'
@@ -15,19 +13,12 @@ const range = (start, end) => {
 function Search(){
     const { keyWords } = useParams();
     const [searchKeyWords, setSearchKeyWords] = useState(decodeURIComponent(keyWords.replace('%', ' ')));
-    const [searchResults, setSearchResults] = useState([{title:'Networking', img:Networking, rating:"4.5 (100 Rating)",price: '60$', category: 'Networking'}
-                                                        ,{title:'Graphic Design', img:GrahpicDesign, rating:"4.5 (100 Rating)",price: '60$', category: 'Graphic Design'}
-                                                        ,{title:'Carpenters', img:Carpenters, rating:"4.5 (100 Rating)",price: '60$', category: 'Carpenters'}
-                                                        ,{title:'Networking', img:Networking, rating:"4.5 (100 Rating)",price: '60$'}
-                                                        ,{title:'Graphic Design', img:GrahpicDesign, rating:"4.5 (100 Rating)",price: '60$', category: 'Graphic Design'}
-                                                        ,{title:'Carpenters', img:Carpenters, rating:"4.5 (100 Rating)",price: '60$', category: 'Carpenters'}
-                                                        ,{title:'Networking', img:Networking, rating:"4.5 (100 Rating)",price: '60$', category: 'Networking'}
-                                                        ,{title:'Graphic Design', img:GrahpicDesign, rating:"4.5 (100 Rating)",price: '60$', category: 'Graphic Design'}
-                                                        ,{title:'Carpenters', img:Carpenters, rating:"4.5 (100 Rating)",price: '60$', category: 'Carpenters'}]);
+    const [searchResults, setSearchResults] = useState([]);
     const navigate = useNavigate();
     const search = () =>{
         if(searchKeyWords === '') return;
         navigate('/Search/' + searchKeyWords);
+
     }
 
     onkeyup = (e) => {
@@ -39,6 +30,20 @@ function Search(){
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [])
+
+    useEffect(() => {
+        searchInDatabase();
+    }, [keyWords])
+
+    const searchInDatabase = () => {
+        const decodedKeyWords = decodeURIComponent(keyWords.replace('%', ' '));
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/searchApprenticeships/${decodedKeyWords}`)
+            .then(res => res.json())
+            .then(data => {
+                setSearchResults(data.apprenticeshipsWithImg);
+            })
+            .catch(err => console.log(err));
+    }
 
     return(
         <div className='container-fluid searchPage'>
@@ -146,9 +151,9 @@ const SearchResult = ({resultList}) => {
     const rowLength = range(1, Math.ceil(resultList.length/4));
     return(
         rowLength.map((row) => (
-            <div className="row result-row">
+            <div key={randomstring.generate(5)} className="row result-row">
                 {resultList.slice((row - 1)*4, row*4).map((result) => (
-                    <Apprenticeship app={result} />
+                    <Apprenticeship key={result.ID} app={result} />
                 ))}
             </div>
         ))

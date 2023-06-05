@@ -190,7 +190,6 @@ function AdminApproveList({ isAdmin, setSnackBarInfo }) {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
                 setOwnersList(data);
                 setSaveOwnersList(data);
             }).catch(err => console.log(err));

@@ -2,7 +2,7 @@ const { Apprenticeship, ApprenticeshipApprentice } = require('../../models/Appre
 const Category = require('../../models/Category');
 const { User, Owner } = require('../../models/User');
 const sequelize = require('../../sequelize');
-const { Op } = require('sequelize');
+const { Op, where } = require('sequelize');
 
 const getAllApprenticeship = async (req, res) => {
   try {
@@ -13,6 +13,8 @@ const getAllApprenticeship = async (req, res) => {
         {
           model: ApprenticeshipApprentice,
           attributes: [],
+          where: { isApproved: true },
+          required: false,
         },
       ],
       attributes: [

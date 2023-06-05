@@ -16,13 +16,13 @@ const updateUserData = async (req, res) => {
         {
             const ownerToUpdate = await Owner.findByPk(userToUpdate.id);
             if(!ownerToUpdate) return res.status(404).json({error: 'Owner not found'});
-            const updatedOwner = await ownerToUpdate.update(otherInfo);
+            const updatedOwner = await ownerToUpdate.update({Major: otherInfo});
             if(!updatedOwner) return res.status(500).json({error: 'Internal server error'});
         }
         else{
             const apprenticeToUpdate = await Apprentice.findByPk(userToUpdate.id);
             if(!apprenticeToUpdate) return res.status(404).json({error: 'Apprentice not found'});
-            const updatedApprentice = await apprenticeToUpdate.update(otherInfo);
+            const updatedApprentice = await apprenticeToUpdate.update({Study_Level: otherInfo});
             if(!updatedApprentice) return res.status(500).json({error: 'Internal server error'});
         }
         return res.status(200).json({message: 'User updated successfully'});

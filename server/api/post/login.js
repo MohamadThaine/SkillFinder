@@ -14,7 +14,7 @@ const login = (req, res) => {
         if (user) {
             const isMatch = bcryptjs.compareSync(password, user.Password);
             if (!isMatch) {
-                return res.send({ error: 'Wrong password' });
+                return res.send({ error: 'Username Or Password is incorrect ' });
             }
             if (user.User_Type === 1) {
                 Apprentice.findOne({

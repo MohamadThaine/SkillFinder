@@ -13,10 +13,13 @@ import arrowLeft from '../Assets/Images/arrow-left-solid.svg';
 import HtmlContent from '../Component/HtmlContent';
 import htmlToDraft from 'html-to-draftjs';
 import EnrollToApprenticeship from '../Component/EnrollToApprenticeship';
+import ContactOwner from '../Component/ContactOwner';
+import ApprenticeshipReviews from '../Component/ApprenticeshipReviews';
 
 
 function ApprenticeshipDetalis({ setSnackBarInfo }) {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+    const [apprenticeshipMainInfo, setApprenticeshipMainInfo] = useState({});
     const [student, setStudent] = useState();
     const [isApproved, setIsApproved] = useState(false);
     const { ID } = useParams();
@@ -29,7 +32,7 @@ function ApprenticeshipDetalis({ setSnackBarInfo }) {
     const [learningMethod, setLearningMethod] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
-    const [rating, setRating] = useState('');
+    const [reviewsList, setReviewsList] = useState([]);
     const [freeTrail, setFreeTrail] = useState('');
     const [authorName, setAuthorName] = useState('');
     const [authorPic, setAuthorPic] = useState();
@@ -43,6 +46,8 @@ function ApprenticeshipDetalis({ setSnackBarInfo }) {
     const [address, setAddress] = useState({});
     const [openAddress, setOpenAddress] = useState(false);
     const [openEnroll, setOpenEnroll] = useState(false);
+    const [openContact, setOpenContact] = useState(false);
+    const [openReviews, setOpenReviews] = useState(false);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const navigate = useNavigate();
     useEffect(() => {
@@ -79,7 +84,12 @@ function ApprenticeshipDetalis({ setSnackBarInfo }) {
                 if (data.enrolledStudents.enrolledStudentsCount != "0") setEntrolledStudents(data.enrolledStudents.enrolledStudentsCount);
                 else setEntrolledStudents(0);
                 setOwner({ name: data.author.Name, picture: data.authorPic, id: data.author.ID });
+                setApprenticeshipMainInfo({
+                    ID: data.apprenticeship.ID,
+                    name: data.apprenticeship.Name,
+                });
                 setAddress(data.address);
+                setReviewsList(data.reviews);
             })
     }, [])
 
@@ -181,16 +191,15 @@ function ApprenticeshipDetalis({ setSnackBarInfo }) {
                         <div className='row mt-5'>
                             <div className='row app-btn-container'>
                                 {student === undefined && <button className='app-btn' onClick={() => handleModal(setOpenEnroll, openEnroll)}>Enroll Now</button>}
-                                {student && student.isApproved === 0 && <button className='app-btn' disabled>Enroll Request Sent</button>}
+                                {student && student.isApproved === 0 && <button className='app-btn' disabled>Request Sent</button>}
                                 {student && student.isApproved === 1 && <button className='app-btn' disabled>Enrolled</button>}
-                                <button className='app-btn'>Reviews</button>
+                                <button className='app-btn' onClick={() => handleModal(setOpenReviews, openReviews)}>Reviews</button>
                             </div>
                             <div className='row app-btn-container'>
                                 <button className='app-btn' onClick={() => handleModal(setOpenPictureModal, openPictureModal)}>Picture</button>
-                                <button className='app-btn'>Contact</button>
+                                <button className='app-btn' onClick={() => handleModal(setOpenContact, openContact)}>Contact</button>
                             </div>
                             <div className='row app-btn-container'>
-                                <button className='app-btn'>More Info</button>
                                 {freeTrail > 0 && <button className='app-btn'>Free Trail</button>}
                             </div>
                         </div>
@@ -201,6 +210,9 @@ function ApprenticeshipDetalis({ setSnackBarInfo }) {
             {openPictureModal && <PicturesModal open={openPictureModal} handleClose={() => handleModal(setOpenPictureModal, openPictureModal)} pictures={pictures} />}
             {openAddress && <Address open={openAddress} handleClose={() => handleModal(setOpenAddress, openAddress)} address={address} />}
             {openEnroll && <EnrollToApprenticeship open={openEnroll} handleClose={() => handleModal(setOpenEnroll, openEnroll)} appID={ID} owner={owner} setSnackBarInfo={setSnackBarInfo} setStudent={setStudent} />}
+            {openContact && <ContactOwner open={openContact} handleClose={() => handleModal(setOpenContact, openContact)} owner={owner} setSnackBarInfo={setSnackBarInfo} />}
+            {openReviews && <ApprenticeshipReviews open={openReviews} handleClose={() => handleModal(setOpenReviews, openReviews)} apprenticeship={apprenticeshipMainInfo} owner={owner} setSnackBarInfo={setSnackBarInfo}
+            reviewsList={reviewsList} setReviewsList={setReviewsList} windowWidth={windowWidth} student={student} />}
         </>
     )
 }

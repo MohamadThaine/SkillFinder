@@ -17,13 +17,14 @@ const getApprenticeshipInfo = async (req, res) => {
       );
     });
 
-    const [address, category, author, authorPic, enrolledStudents, student] = await Promise.all([
+    const [address, category, author, authorPic, enrolledStudents, student, reviews] = await Promise.all([
       apprenticeshipResult.Address_ID !== null ? getAddress(apprenticeshipResult.Address_ID) : null,
       getCategory(apprenticeshipResult.Category_ID),
       getAuthor(apprenticeshipResult.Owner_ID),
       getAuthorPic(req, apprenticeshipResult.Owner_ID),
       getEntrolledStudentCount(apprenticeshipResult.ID),
-      userID !== 'guest' ? getStudent(apprenticeshipResult.ID, userID) : null
+      userID !== 'guest' ? getStudent(apprenticeshipResult.ID, userID) : null,
+      getReviews(apprenticeshipResult.ID)
     ]);
 
     const data = {
@@ -33,7 +34,8 @@ const getApprenticeshipInfo = async (req, res) => {
       author,
       authorPic,
       enrolledStudents,
-      student
+      student,
+      reviews 
     };
     res.send(data);
   } catch (err) {
@@ -145,6 +147,23 @@ const getAddress = (ID) => {
       }
     );
   });
+}
+
+const getReviews = (ID) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      'SELECT review.*, user.Name, user.Gender FROM review JOIN user ON review.Apprentice_ID = user.ID WHERE Apprenticeship_ID = ? ORDER BY review.Date DESC',
+      [ID],
+      (err, result) => {
+        if (err) {
+          reject(err);
+          console.log(err);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+    });
 }
 
 

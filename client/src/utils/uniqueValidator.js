@@ -7,5 +7,6 @@ export const checkUniqueEmail = async (email) => {
 export const checkUniquePhone = async (phone) => {
     const response = await fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/checkUniquePhone/${phone}`);
     const data = await response.json();
+    console.log(data);
     return data.unique;
 }

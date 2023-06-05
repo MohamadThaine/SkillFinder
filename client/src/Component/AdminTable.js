@@ -22,7 +22,7 @@ const AdminTable = ({ columns, data, rowButtons, onRowClick }) => {
           <TableBody>
             {data.map((row) => (
               <TableRow
-                key={row.id}
+                key={row.ID? row.ID : row.id}
                 onClick={() => onRowClick(row)}
                 hover
                 tabIndex={-1}

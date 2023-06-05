@@ -56,7 +56,7 @@ function NavBar({user, otherUserInfo, handleLogout}){
                     <ul className="dropdown-menu">
                       <Link to='/Profile' className="dropdown-item">Profile</Link>
                       {user.User_Type === 2 && <Link to='/Owner' className="dropdown-item">Dashboard</Link>}
-                      <Link to='/MyApprenticeships' className="dropdown-item">My Apprenticeships</Link>
+                      {user.User_Type === 1 && <Link to='/MyApprenticeships' className="dropdown-item">My Apprenticeships</Link>}
                       <span className="dropdown-item" onClick={handleLogout}>Logout</span>
                     </ul>
                   </li>}
