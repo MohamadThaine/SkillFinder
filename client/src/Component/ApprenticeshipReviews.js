@@ -115,7 +115,7 @@ const ApprenticeshipReviews = ({ open, handleClose, apprenticeship, reviewsList,
                         </div>
                     </div>
                     <div className='app-reviews-list row'>
-                        {user && student && student.isApproved === 1  && <div className={'add-review mt-4 text-center ' + (windowWidth > 990 ? 'col-3 ms-2' : 'col-12')}>
+                        {user && student && student.isApproved === 1 && !hasReviewed  && <div className={'add-review mt-4 text-center ' + (windowWidth > 990 ? 'col-3 ms-2' : 'col-12')}>
                             <div className='rating'>
                                 <Rating value={rating} precision={0.5} onChange={(event, newValue) => {
                                     setRating(newValue);
