@@ -120,6 +120,7 @@ const AddApprenticeship = ({ open, handleClose, setSnackBarInfo, setAppList }) =
             Start_Date: appStartDate,
             End_Date: appEndDate,
             FreeTrial: freeTrial ? appFreeTrial : 0,
+            enrolledStudentsCount: 0,
         }
         const appData = new FormData();
         appData.append('apprenticeship', JSON.stringify(apprenticeship));
@@ -139,7 +140,7 @@ const AddApprenticeship = ({ open, handleClose, setSnackBarInfo, setAppList }) =
                     setSnackBarInfo({ severity: 'success', message: data.message, open });
                     setSuccess(true);
                     setId(data.ID);
-                    setAppList(prevList => [...prevList, { apprenticeship }]);
+                    setAppList(prevList => [...prevList,  apprenticeship ]);
                     setTimeout(() => {
                         setSuccess(false);
                         modalClosed();

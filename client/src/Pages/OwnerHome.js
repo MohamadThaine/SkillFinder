@@ -96,11 +96,6 @@ function OwnerHome({ user, ownerInfo, setOwnerInfo, setSnackBarInfo }) {
                                 <Typography variant="h6" >Add New Address</Typography>
                             </Button>
                         </div>
-                        <div className="mt-2 text-center">
-                            <Button variant="contained" color="warning" onClick={() => setAddAppOpen(true)} style={{ width: '20rem' }}>
-                                <Typography variant="h6" >View Request</Typography>
-                            </Button>
-                        </div>
                     </div>
                 </div>
             </div>}

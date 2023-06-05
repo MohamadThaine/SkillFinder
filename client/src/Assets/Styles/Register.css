@@ -91,6 +91,12 @@ input[type="date"]{
     }
 }
 
+@media screen and (max-width:1920px) {
+    .register-page-boxes{
+        height: 90vh;
+    }
+}
+
 @media screen and (max-width:1200px) {
     .register-page-boxes{
         height: 110vh;
