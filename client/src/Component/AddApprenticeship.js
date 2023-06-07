@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Checkbox, FormControl, FormControlLabel, Modal, Typography } from "@mui/material";
+import { Alert, Box, Button, Checkbox, FormControl, FormControlLabel, Modal, Typography, duration } from "@mui/material";
 import { useEffect, useState } from "react";
 import { EditorState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
@@ -12,8 +12,8 @@ const AddApprenticeship = ({ open, handleClose, setSnackBarInfo, setAppList }) =
     const [appTitle, setAppTitle] = useState('');
     const [appDescription, setAppDescription] = useState(() => EditorState.createEmpty());
     const [appPrice, setAppPrice] = useState('');
-    const [appDuration, setAppDuration] = useState('');
-    const [appDurationType, setAppDurationType] = useState(null);
+    const [appDuration, setAppDuration] = useState();
+    const [appDurationType, setAppDurationType] = useState('Type');
     const [appStartDate, setAppStartDate] = useState('');
     const [appEndDate, setAppEndDate] = useState('');
     const [freeTrial, setFreeTrial] = useState(false);
@@ -83,10 +83,13 @@ const AddApprenticeship = ({ open, handleClose, setSnackBarInfo, setAppList }) =
             { condition: appPrice < 0, message: 'Price cannot be negative' },
             { condition: appDuration === '', message: 'Please enter a duration' },
             { condition: appDurationType === null, message: 'Please select a duration type' },
+            { condition: appDuration < 1, message: 'Duration cannot be negative Or 0'},
+            { condition: appDurationType === 'Type', message: 'Please enter a start date' },
             { condition: appStartDate === '', message: 'Please enter a start date' },
             { condition: appEndDate === '', message: 'Please enter an end date' },
             { condition: freeTrial && appFreeTrial === '', message: 'Please enter a free trial duration' },
             { condition: freeTrial && appFreeTrial < 1, message: 'Free Trial duration cannot be negative Or 0' },
+            { condition: freeTrial && appFreeTrial > 7, message: 'Maxmimum free trial duration is 7 days' },
             { condition: learningMethod === '', message: 'Please enter a learning method' },
             { condition: selectedCategory === null, message: 'Please select a category' },
             { condition: appPictures.length === 0, message: 'Please upload at least one picture' },
@@ -102,11 +105,31 @@ const AddApprenticeship = ({ open, handleClose, setSnackBarInfo, setAppList }) =
         return true;
     }
 
+    const setStartAndEndDate = (date) => {
+        if(date === null || date === '') return;
+        const startDate = new Date(date);
+        const endDate = new Date(date);
+        const duration = appDurationType === 'Weeks' ? appDuration * 7 : appDurationType === 'Months' ? appDuration * 30 : appDuration * 365;
+        endDate.setDate(startDate.getDate() + duration);
+        setAppStartDate(startDate.toISOString().split('T')[0]);
+        setAppEndDate(endDate.toISOString().split('T')[0]);
+    }
+
+    const countDays = (startDate, endDate) => {
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        const diffTime = Math.abs(end - start);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        const duration = appDurationType === 'Weeks' ? appDuration * 7 : appDurationType === 'Months' ? appDuration * 30 : appDuration * 365;
+        return diffDays === duration;
+    }
+
     const addApprenticeship = () => {
         if (!verifyData()) return;
+        if(!countDays(appStartDate, appEndDate)) return setSnackBarInfo({ severity: 'error', message: 'Start date and End date do not match the duration', open });
         const appDescriptionHTML = draftToHtml(convertToRaw(appDescription.getCurrentContent()));
         const Method = learningMethod === 'Online' ? 1 : learningMethod === 'On-Site' ? 2 : 3;
-        const apprenticeship = {
+        var apprenticeship = {
             Name: appTitle,
             Price: appPrice,
             Description: appDescriptionHTML,
@@ -140,6 +163,7 @@ const AddApprenticeship = ({ open, handleClose, setSnackBarInfo, setAppList }) =
                     setSnackBarInfo({ severity: 'success', message: data.message, open });
                     setSuccess(true);
                     setId(data.ID);
+                    apprenticeship.ID = data.ID;
                     setAppList(prevList => [...prevList,  apprenticeship ]);
                     setTimeout(() => {
                         setSuccess(false);
@@ -186,11 +210,12 @@ const AddApprenticeship = ({ open, handleClose, setSnackBarInfo, setAppList }) =
                         <input type="number" placeholder="Apprenticeship Price(USD)" className={"form-control mb-3 " + (windowWidth > 990 ? 'mt-3' : '')} value={appPrice} onChange={(e) => setAppPrice(e.target.value)} />
                         <div className="row mb-3">
                             <div className="col-8">
-                                <input type="number" placeholder="Apprenticeship Duration" className="form-control" value={appDuration} onChange={(e) => setAppDuration(e.target.value)} />
+                                <input type="number" placeholder="Apprenticeship Duration" className="form-control" value={appDuration} onChange={(e) => setAppDuration(e.target.value)}
+                                onBlur={() => setStartAndEndDate(appStartDate)} />
                             </div>
                             <div className="col">
-                                <select id="duration" className="form-control" onChange={(e) => setAppDurationType(e.target.value)}>
-                                    <option>Type</option>
+                                <select id="duration" className="form-control" onChange={(e) => setAppDurationType(e.target.value)} onBlur={() => setStartAndEndDate(appStartDate)}>
+                                    <option value='Type'>Type</option>
                                     <option value="Weeks">Weeks</option>
                                     <option value="Months">Months</option>
                                     <option value="Years">Years</option>
@@ -198,9 +223,9 @@ const AddApprenticeship = ({ open, handleClose, setSnackBarInfo, setAppList }) =
                             </div>
                         </div>
                         <h6 className="mb-2">Apprenticeship Start Date</h6>
-                        <input type="date" className="form-control mb-3" value={appStartDate} onChange={(e) => setAppStartDate(e.target.value)} />
+                        <input type="date" className="form-control mb-3" value={appStartDate} onChange={(e) => setStartAndEndDate(e.target.value)} disabled={appDuration === undefined? true : appDurationType === 'Type'? true : false} />
                         <h6 className="mb-2">Apprenticeship End Date</h6>
-                        <input type="date" className="form-control mb-3" value={appEndDate} onChange={(e) => setAppEndDate(e.target.value)} />
+                        <input type="date" className="form-control mb-3" value={appEndDate} disabled />
                         <select className="form-control mb-3" onChange={(e) => setLearningMethod(e.target.value)}>
                             <option value="">Select Learning Method</option>
                             <option value="Online">Online</option>

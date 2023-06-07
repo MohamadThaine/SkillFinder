@@ -240,7 +240,7 @@ function Profile({ user, setUser, otherInfo, setOtherInfo, setSnackBarInfo }) {
                                 </FormControl>}
                             {otherInfo && userCopy.User_Type === 1 && <TextField label='Apprenticeships Taken' variant='outlined' className='col ms-3 mb-3' value={otherInfoCopy.No_Of_Courses} disabled />}
                         </div>
-                        <div className={'row mt-3 ' + (windowWidth > 990 ? 'ms-5' : 'm-auto')}>
+                        <div className={'row mt-3 ' + (windowWidth > 990 ? 'd-flex justify-content-center' : 'm-auto')}>
                             <TextField label='Password' type='Password' variant='outlined' className='col-5 mb-3 ms-5' value='***********' disabled />
                             <Button variant='outlined' className='col-3 ms-3 mb-3' onClick={() => setIsEditingPassword(!isEditingPassword)}>
                                 Change Password

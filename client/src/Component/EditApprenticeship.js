@@ -97,6 +97,7 @@ const EditApprenticeship = ({ open, handleClose, apprenticeship, setApprenticesh
             { condition: apprenticeshipCopy.End_Date === '', message: 'Please enter an end date' },
             { condition: freeTrial && apprenticeshipCopy.FreeTrial === '', message: 'Please enter a free trial duration' },
             { condition: freeTrial && apprenticeshipCopy.FreeTrial < 1, message: 'Free Trial duration cannot be negative Or 0' },
+            { condition: freeTrial && apprenticeshipCopy.FreeTrial > 7, message: 'Free Trial Duration cant be more than 7 days' },
             { condition: apprenticeshipCopy.LearningMethod === '', message: 'Please enter a learning method' },
             { condition: apprenticeshipCopy.Category_ID === '', message: 'Please select a category' },
             { condition: appPictures.length === 0, message: 'Please upload at least one picture' },
@@ -111,9 +112,30 @@ const EditApprenticeship = ({ open, handleClose, apprenticeship, setApprenticesh
         return true;
     }
 
+    const setStartAndEndDate = (date) => {
+        if(date === null || date === '') return;
+        const startDate = new Date(date);
+        const endDate = new Date(date);
+        const duration = apprenticeshipCopy.DurationType === 'Weeks' ? apprenticeshipCopy.Duration * 7 : apprenticeshipCopy.DurationType === 'Months' ? apprenticeshipCopy.Duration * 30 : apprenticeshipCopy.Duration * 365;
+        endDate.setDate(startDate.getDate() + duration);
+        handleInputChange('Start_Date', startDate.toISOString().split('T')[0]);
+        handleInputChange('End_Date', endDate.toISOString().split('T')[0]);
+    }
+
+    const countDays = (startDate, endDate) => {
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        const diffTime = Math.abs(end - start);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        const duration = apprenticeshipCopy.DurationType === 'Weeks' ? apprenticeshipCopy.Duration * 7 : apprenticeshipCopy.DurationType === 'Months' ? apprenticeshipCopy.Duration * 30 : apprenticeshipCopy.Duration * 365;
+        return duration - diffDays < 5;
+    }
+
     const handleSave = () => {
         if (!verifyData()) return;
+        if(!countDays(apprenticeshipCopy.Start_Date, apprenticeshipCopy.End_Date)) return setSnackBarInfo({ severity: 'error', message: 'Start date and End date do not match the duration', open });
         const EditedApprenticeship = {
+            ID: apprenticeshipCopy.ID,
             Name: apprenticeshipCopy.Name,
             Price: apprenticeshipCopy.Price,
             Description: draftToHtml(convertToRaw(appDescription.getCurrentContent())),
@@ -211,6 +233,7 @@ const EditApprenticeship = ({ open, handleClose, apprenticeship, setApprenticesh
                                     placeholder="Apprenticeship Duration"
                                     className="form-control"
                                     value={apprenticeshipCopy.Duration}
+                                    onBlur={() => setStartAndEndDate(apprenticeshipCopy.Start_Date)}
                                     onChange={(e) => handleInputChange('Duration', e.target.value)}
                                 />
                             </div>
@@ -219,9 +242,10 @@ const EditApprenticeship = ({ open, handleClose, apprenticeship, setApprenticesh
                                     id="duration"
                                     className="form-control"
                                     onChange={(e) => handleInputChange('DurationType', e.target.value)}
+                                    onBlur={() => setStartAndEndDate(apprenticeshipCopy.Start_Date)}
                                     value={apprenticeship.DurationType === null ? '' : apprenticeship.DurationType}
                                 >
-                                    <option value="">Type</option>
+                                    <option value="Type">Type</option>
                                     <option value="Weeks">Weeks</option>
                                     <option value="Months">Months</option>
                                     <option value="Years">Years</option>
@@ -233,7 +257,8 @@ const EditApprenticeship = ({ open, handleClose, apprenticeship, setApprenticesh
                             type="date"
                             className="form-control mb-3"
                             value={apprenticeshipCopy.Start_Date}
-                            onChange={(e) => handleInputChange('Start_Date', e.target.value)}
+                            onChange={(e) => setStartAndEndDate(e.target.value)}
+                            disabled={apprenticeshipCopy.Duration === undefined? true : apprenticeshipCopy.DurationType === 'Type'? true : false}
                         />
                         <h6 className="mb-2">Apprenticeship End Date</h6>
                         <input
@@ -241,6 +266,7 @@ const EditApprenticeship = ({ open, handleClose, apprenticeship, setApprenticesh
                             className="form-control mb-3"
                             value={apprenticeshipCopy.End_Date}
                             onChange={(e) => handleInputChange('End_Date', e.target.value)}
+                            disabled
                         />
                         <select
                             className="form-control mb-3"
@@ -256,7 +282,7 @@ const EditApprenticeship = ({ open, handleClose, apprenticeship, setApprenticesh
                             <select
                                 className="form-control mb-3"
                                 onChange={(e) => handleInputChange('Address_ID', e.target.value)}
-                                value={apprenticeshipCopy.Address_ID === null ? '' : apprenticeshipCopy.Address_ID}
+                                value={apprenticeshipCopy.Address_ID === null ? '' : apprenticeshipCopy.LearningMethod === 1 ? '' : apprenticeshipCopy.Address_ID}
                             >
                                 <option value="">Select Address</option>
                                 {addresses.length > 0 &&

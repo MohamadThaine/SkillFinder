@@ -20,7 +20,6 @@ const addApprenticeship = async (req, res) => {
         res.status(200).json({ message: 'Apprenticeship added successfully', success: true, ID: newApprenticeship.ID });
     } catch (error) {
         res.status(500).json({ message: 'Something went wrong' });
-        console.log(error);
     }
 }
 

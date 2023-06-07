@@ -3,6 +3,7 @@ import { Typography } from "@mui/material";
 import defalutMaleIcon from '../Assets/Images/defaultMalePic.svg'
 import defalutFemaleIcon from '../Assets/Images/defaultFemalePic.svg'
 import '../Assets/Styles/Chat.css'
+import OpenedChat from './OpenedChat';
 
 const Chats = () => {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -11,6 +12,7 @@ const Chats = () => {
     const [ownerInfo, setOtherInfo] = useState(JSON.parse(localStorage.getItem('otherInfo')));
     const [userTry, setUserTry] = useState({ Name: "Ahmad", Gender: "Female" });
     const [otherInfoTry, setOtherInfoTry] = useState({ Study_Leve: "idk" });
+    const [openedChat, setOpenedChat] = useState(null);
     const [chats, setChats] = useState([{ user: user, otherInfo: ownerInfo, lastMessage: "Hello" },
     { user: user, otherInfo: ownerInfo, lastMessage: "Hello" },
     { user: user, otherInfo: ownerInfo, lastMessage: "Hello" },
@@ -66,33 +68,40 @@ const Chats = () => {
                     <path d="M2.678 11.894a1 1 0 0 1 .287.801 10.97 10.97 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8.06 8.06 0 0 0 8 14c3.996 0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894zm-.493 3.905a21.682 21.682 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a9.68 9.68 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105z" />
                 </svg>}
             </div>
-            <div className={"chats-elements p-2 " + (windowWidth > 768? 'desc': '')}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className={"close-chat bi bi-x " + (showChat? '': 'd-none')} viewBox="0 0 16 16" onClick={() => setShowChat(false)}>
-                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-                </svg>
-                <div className="row me-4 ms-4">
-                    <input type="text" className="form-control mt-3" placeholder="Search" />
-                </div>
-                <div className="row chat pb-3 desc mt-3 ms-4 me-4">
-                    <img src={ownerInfo.Picture ? ownerInfo.Picture : user.Gender === "Male" ? defalutMaleIcon : defalutFemaleIcon} alt="profile" className="chat-img mt-1 mb-auto" />
-                    <Typography variant="p" className="col mt-auto mb-auto">{user.Name}</Typography>
-                </div>
-                <Typography variant="h6" className="row desc mt-3">Chats</Typography>
-                {chats.length === 0 && <Typography variant="h5" className="mt-5 text-center">No chats yet</Typography>}
-                <div className="row desc chats-list mt-4 mb-auto ms-1 me-1">
-                    {chats.map((chat, index) => {
-                        return <Chat key={index} chat={chat} user={chat.user} otherInfo={chat.otherInfo} />
-                    })}
-                </div>
+            <div className={"chats-elements p-2 " + (windowWidth > 768 ? 'desc' : '')}>
+                {openedChat === null && <>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className={"close-chat bi bi-x " + (showChat ? '' : 'd-none')} viewBox="0 0 16 16" onClick={() => setShowChat(false)}>
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                    </svg>
+                    <div className="row me-4 ms-4">
+                        <input type="text" className="form-control mt-3" placeholder="Search" />
+                    </div>
+                    <div className="row chat pb-3 desc mt-3 ms-4 me-4">
+                        <img src={ownerInfo.Picture ? ownerInfo.Picture : user.Gender === "Male" ? defalutMaleIcon : defalutFemaleIcon} alt="profile" className="chat-img mt-1 mb-auto" />
+                        <Typography variant="p" className="col mt-auto mb-auto">{user.Name}</Typography>
+                    </div>
+                    <Typography variant="h6" className="row desc mt-3">Chats</Typography>
+                    {chats.length === 0 && <Typography variant="h5" className="mt-5 text-center">No chats yet</Typography>}
+                    <div className="row desc chats-list mt-4 mb-auto ms-1 me-1">
+                        {chats.map((chat, index) => {
+                            return <Chat key={index} chat={chat} user={chat.user} otherInfo={chat.otherInfo} setOpenedChat={setOpenedChat} />
+                        })}
+                    </div>
+                </>}
+                {openedChat !== null && <OpenedChat chat={openedChat.chat} pic={openedChat.pic} user={openedChat.user} otherInfo={openedChat.otherInfo} setOpenedChat={setOpenedChat} />}
             </div>
+
         </div>
     )
 
 }
 
-const Chat = ({ chat, user, otherInfo }) => {
+const Chat = ({ chat, user, otherInfo,setOpenedChat }) => {
+    const [picture, setPicture] = useState(otherInfo.Picture ? otherInfo.Picture : user.Gender === "Male" ? defalutMaleIcon : defalutFemaleIcon);
     return (
-        <div className="row chat border-bottom">
+        <div className="row chat border-bottom" onClick={() => {
+            setOpenedChat({ chat: chat, pic: picture, user: user, otherInfo: otherInfo});
+        }}>
             <img src={otherInfo.Picture ? otherInfo.Picture : user.Gender === "Male" ? defalutMaleIcon : defalutFemaleIcon} alt="profile" className="chat-img mt-1 mb-auto" />
             <div className="col mt-auto mb-auto">
                 <Typography variant="p" className="row">{user.Name}</Typography>

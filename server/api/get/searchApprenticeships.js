@@ -11,7 +11,8 @@ const searchApprenticeships = async (req, res) => {
                     { Description: { [Op.like]: `%${search}%` } }
                 ],
                 [Op.and]: [
-                    { isApproved: 1 }
+                    { isApproved: 1 },
+                    { Deactivated: 0 }
                 ]
             }
         });
@@ -31,8 +32,7 @@ const searchApprenticeships = async (req, res) => {
             };
 
           }));
-        console.log(apprenticeshipsWithImg);
-        return res.status(200).json({ apprenticeshipsWithImg });
+        return res.status(200).json({ apprenticeshipsWithImg, success: true });
     }
     catch (err) {
         console.log(err);
