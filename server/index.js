@@ -35,6 +35,10 @@ const checkuniquePhone = require('./api/get/checkuUniqePhone');
 const updateUserPassword = require('./api/put/updateUserPassword');
 const searchApprenticeships = require('./api/get/searchApprenticeships');
 const addReview = require('./api/post/addReview');
+const createChat = require('./api/post/createChat');
+const getChats = require('./api/get/getChats');
+const getMessages = require('./api/get/getMessages');
+const sendMessage = require('./api/post/sendMessage');
 const app = express();
 
 app.use(express.static('public'));
@@ -115,6 +119,8 @@ app.post('/addApprenticeship', uploadAppImgs, addApprenticeship);
 app.post('/addAddress', addAddress);
 app.post('/sendEnrollRequest', sendEnrollRequest);
 app.post('/addReview', addReview);
+app.post('/createChat', createChat);
+app.post('/sendMessage', sendMessage);
 app.put('/verify-email', verifyEmail);
 app.put('/approve/apprenticeship/:id', approve.approveApprenticeship);
 app.put('/approve/owner/:id', approve.approveOwner);
@@ -136,6 +142,8 @@ app.get('/enrollRequests/:apprenticeshipId/:userID/:isApproved', getEnrollReques
 app.get('/checkUniqueEmail/:Email', checkUniqueEmail);
 app.get('/checkUniquePhone/:Phone_Number', checkuniquePhone);
 app.get('/searchApprenticeships/:search', searchApprenticeships);
+app.get('/getChats/:id/:isOwner', getChats);
+app.get('/getMessages/:userID/:chatID', getMessages);
 app.delete('/deleteApprenticeship/:id', deleteApprenticeship);
 app.delete('/rejectOwner/:id', rejectOwner);
 app.delete('/deactiveUser/:id', deactiveUser);

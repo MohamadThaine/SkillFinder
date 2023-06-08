@@ -63,24 +63,19 @@
 }
 
 .sent-msg {
-    position: relative;
     margin: 10px 0;
     background-color: #e0e0e0;
     width: fit-content;
-    margin-left: auto;
+
     --_d: 100%;
     border-right: var(--t) solid #ffffff00;
     margin-left: var(--t);
     place-self: end;
 }
 
-.send-msg::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-top: 10px solid transparent;
-    border-bottom: 10px solid transparent;
+.right-message{
+    margin-left: auto;
+    align-items: flex-end;
 }
 
 .message-tools {

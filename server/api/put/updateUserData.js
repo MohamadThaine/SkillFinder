@@ -5,7 +5,6 @@ const updateUserData = async (req, res) => {
     const {user, otherInfo} = req.body;
     if(!verifyToken(req)) return res.status(401).json({error: 'Unauthorized'});
     if(user.id !== req.user.id) return res.status(401).json({error: 'Unauthorized'});
-    console.log(user, otherInfo);
     try{
         const userToUpdate = await User.findOne({where: {id}});
         if(!userToUpdate) return res.status(404).json({error: 'User not found'});

@@ -13,21 +13,7 @@ const Chats = () => {
     const [userTry, setUserTry] = useState({ Name: "Ahmad", Gender: "Female" });
     const [otherInfoTry, setOtherInfoTry] = useState({ Study_Leve: "idk" });
     const [openedChat, setOpenedChat] = useState(null);
-    const [chats, setChats] = useState([{ user: user, otherInfo: ownerInfo, lastMessage: "Hello" },
-    { user: user, otherInfo: ownerInfo, lastMessage: "Hello" },
-    { user: user, otherInfo: ownerInfo, lastMessage: "Hello" },
-    { user: user, otherInfo: ownerInfo, lastMessage: "Hello" },
-    { user: userTry, otherInfo: otherInfoTry, lastMessage: "Hello" },
-    { user: user, otherInfo: ownerInfo, lastMessage: "Hello" },
-    { user: user, otherInfo: ownerInfo, lastMessage: "Hello" },
-    { user: user, otherInfo: ownerInfo, lastMessage: "Hello" },
-    { user: user, otherInfo: ownerInfo, lastMessage: "Hello" },
-    { user: userTry, otherInfo: otherInfoTry, lastMessage: "Hello" },
-    { user: user, otherInfo: ownerInfo, lastMessage: "Hello" },
-    { user: user, otherInfo: ownerInfo, lastMessage: "Hello" },
-    { user: user, otherInfo: ownerInfo, lastMessage: "Hello" },
-    { user: user, otherInfo: ownerInfo, lastMessage: "Hello" },
-    { user: userTry, otherInfo: otherInfoTry, lastMessage: "Hello" },]);
+    const [chats, setChats] = useState([]);
     const touchStartX = useRef(0);
     const touchEndX = useRef(0);
 
@@ -52,6 +38,26 @@ const Chats = () => {
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, [])
+
+    const getChats = async () => {
+        const response = await fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/getChats/${user.id}/${user.User_Type === 2}`, {
+            method: 'GET',
+            headers: {
+                authorization: localStorage.getItem('token'),
+            }
+        });
+        const data = await response.json();
+        if (data.success) {
+            setChats(data.chats);
+        }
+    }
+
+    useEffect(() => {
+        if (user) {
+            getChats();
+        }
+    }, [user])
+
 
     return (
         <div className={"chats " + (showChat ? '' : 'hideChats')} onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
@@ -96,16 +102,16 @@ const Chats = () => {
 
 }
 
-const Chat = ({ chat, user, otherInfo,setOpenedChat }) => {
-    const [picture, setPicture] = useState(otherInfo.Picture ? otherInfo.Picture : user.Gender === "Male" ? defalutMaleIcon : defalutFemaleIcon);
+const Chat = ({ chat, setOpenedChat }) => {
+    const [picture, setPicture] = useState(chat.Picture ? chat.Picture : chat.Gender === "Male" ? defalutMaleIcon : defalutFemaleIcon);
     return (
         <div className="row chat border-bottom" onClick={() => {
-            setOpenedChat({ chat: chat, pic: picture, user: user, otherInfo: otherInfo});
+            setOpenedChat({ chat: chat, pic: picture });
         }}>
-            <img src={otherInfo.Picture ? otherInfo.Picture : user.Gender === "Male" ? defalutMaleIcon : defalutFemaleIcon} alt="profile" className="chat-img mt-1 mb-auto" />
+            <img src={picture} alt="profile" className="chat-img mt-1 mb-auto" />
             <div className="col mt-auto mb-auto">
-                <Typography variant="p" className="row">{user.Name}</Typography>
-                <Typography variant="p" className="row">{chat.lastMessage}</Typography>
+                <Typography variant="p" className="row">{chat.Name}</Typography>
+                <Typography variant="p" className="row last-message">{chat.content}</Typography>
             </div>
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="bi bi-chevron-right chat-arrow" viewBox="0 0 16 16">
                 <path fillRule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
