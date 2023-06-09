@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
 const fs = require('fs');
+const socket = require('socket.io')
 const register = require('./api/post/register');
 const login = require('./api/post/login');
 const addCategory = require('./api/post/addCategory');
@@ -105,8 +106,41 @@ const uploadOwnerCV = multer({
   storage: OwnerCVStorage
 }).single('file');
 
-app.listen(5000, () => {
+const server = app.listen(5000, () => {
   console.log(`Server is running on port 5000.`);
+});
+
+const io = socket(server, {
+  cors: {
+    origin: '*',
+    credential:true
+  }
+});
+
+global.onlineUsers = new Map();
+
+io.on('connection', (socket) => {
+  socket.on('join', (userID) => {
+    onlineUsers.set(userID, socket.id);
+    console.log(onlineUsers);
+  });
+
+  socket.on('disconnect', () => {
+    onlineUsers.forEach((value, key) => {
+      if (value === socket.id) {
+        onlineUsers.delete(key);
+      }
+    });
+  });
+
+  socket.on('sendMessage', (message) => {
+    const reciverID = message.Receiver_ID;
+    const reciverSocketID = onlineUsers.get(reciverID);
+    if (reciverSocketID) {
+      socket.to(reciverSocketID).emit('reciveMessage', message);
+    }
+  });
+
 });
 
 

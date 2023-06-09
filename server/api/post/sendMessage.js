@@ -11,7 +11,7 @@ const sendMessage = async (req, res) => {
         Content: Content,
         Date_Of_Creation: new Date()
     });
-    res.status(200).json({ message, success: true });
+    res.status(200).json({ ID: message.ID, success: true });
 }
 
 module.exports = sendMessage;

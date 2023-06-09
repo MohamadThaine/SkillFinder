@@ -2,10 +2,15 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Typography } from "@mui/material";
 import defalutMaleIcon from '../Assets/Images/defaultMalePic.svg'
 import defalutFemaleIcon from '../Assets/Images/defaultFemalePic.svg'
+import notificationSound from '../Assets/Sounds/NotificationSound.wav'
 import '../Assets/Styles/Chat.css'
 import OpenedChat from './OpenedChat';
+import { io } from "socket.io-client"
+
 
 const Chats = () => {
+    const socket = useRef(null);
+    const notificationSoundPlayer = useRef(null);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const [showChat, setShowChat] = useState(false);
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
@@ -55,6 +60,24 @@ const Chats = () => {
     useEffect(() => {
         if (user) {
             getChats();
+            socket.current = io(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}`, { transports: ['websocket'] });
+            socket.current.emit('join', user.id);
+            socket.current.on('reciveMessage', (message) => {
+                setChats((prevChats) => {
+                    const newChats = [...prevChats];
+                    const index = newChats.findIndex((chat) => chat.ID === message.Chat_ID);
+                    if (index === -1) {
+                        newChats.unshift(message);
+                    } else {
+                        newChats[index].Content = message.Content;
+                        const temp = newChats[index];
+                        newChats.splice(index, 1);
+                        newChats.unshift(temp);
+                    }
+                    return newChats;
+                });
+                notificationSoundPlayer.current.play();
+            });
         }
     }, [user])
 
@@ -94,9 +117,9 @@ const Chats = () => {
                         })}
                     </div>
                 </>}
-                {openedChat !== null && <OpenedChat chat={openedChat.chat} pic={openedChat.pic} user={openedChat.user} otherInfo={openedChat.otherInfo} setOpenedChat={setOpenedChat} />}
+                {openedChat !== null && <OpenedChat chat={openedChat.chat} pic={openedChat.pic} user={openedChat.user} otherInfo={openedChat.otherInfo} setOpenedChat={setOpenedChat} socket={socket} />}
+                <audio ref={notificationSoundPlayer} src={notificationSound} />
             </div>
-
         </div>
     )
 
@@ -111,7 +134,7 @@ const Chat = ({ chat, setOpenedChat }) => {
             <img src={picture} alt="profile" className="chat-img mt-1 mb-auto" />
             <div className="col mt-auto mb-auto">
                 <Typography variant="p" className="row">{chat.Name}</Typography>
-                <Typography variant="p" className="row last-message">{chat.content}</Typography>
+                <Typography variant="p" className="row" style={{color: 'darkgray'}}>{chat.Content.slice(0,10)}{chat.Content.length > 10? '...' : ''}</Typography>
             </div>
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="bi bi-chevron-right chat-arrow" viewBox="0 0 16 16">
                 <path fillRule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
