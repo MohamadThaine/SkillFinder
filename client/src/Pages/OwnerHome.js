@@ -8,6 +8,7 @@ import AddAddress from "../Component/AddAddress";
 import "../Assets/Styles/OwnerHome.css";
 import EditApprenticeship from "../Component/EditApprenticeship";
 import OwnerList from "../Component/OwnerList";
+import AddAnnoucment from "../Component/AddAnnoucment";
 
 function OwnerHome({ user, ownerInfo, setOwnerInfo, setSnackBarInfo }) {
     const [loading, setLoading] = useState(true);
@@ -38,6 +39,7 @@ function OwnerHome({ user, ownerInfo, setOwnerInfo, setSnackBarInfo }) {
     const [requestsOpen, setRequestsOpen] = useState(windowWidth > 768 ? true : false);
     const [addAppOpen, setAddAppOpen] = useState(false);
     const [addAddressOpen, setAddAddressOpen] = useState(false);
+    const [AddAnnoucmentOpen, setAddAnnoucmentOpen] = useState(false);
     const [appList, setAppList] = useState([]);
     const [lastReviews, setLastReviews] = useState([{ ID: 1, user: 'Mohamad', course: 'Networking', rating: 3, price: '60$', category: 'Networking' }
         , { ID: 2, user: 'Mohamad', course: 'Graphic Design', rating: 3, price: '60$', category: 'Graphic Design' }
@@ -96,12 +98,18 @@ function OwnerHome({ user, ownerInfo, setOwnerInfo, setSnackBarInfo }) {
                                 <Typography variant="h6" >Add New Address</Typography>
                             </Button>
                         </div>
+                        <div className="mt-2 text-center">
+                            <Button variant="contained" color="warning" onClick={() => setAddAnnoucmentOpen(true)} style={{ width: '20rem' }}>
+                                <Typography variant="h6" >Add New Announcement</Typography>
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </div>}
             {user && (ownerInfo.Picture !== null && ownerInfo.Picture !== '') && addAppOpen && <AddApprenticeship open={addAppOpen} handleClose={() => setAddAppOpen(false)} setSnackBarInfo={setSnackBarInfo} setAppList={setAppList} />}
             {user && (ownerInfo.Picture === null || ownerInfo.Picture === '') && <OwnerFirstTimeLogin user={user} ownerInfo={ownerInfo} setOwnerInfo={setOwnerInfo} setSnackBarInfo={setSnackBarInfo} />}
             {user && (ownerInfo.Picture !== null && ownerInfo.Picture !== '') && addAddressOpen && <AddAddress open={addAddressOpen} handleClose={() => setAddAddressOpen(false)} setSnackBarInfo={setSnackBarInfo} />}
+            {user && (ownerInfo.Picture !== null && ownerInfo.Picture !== '') && AddAnnoucmentOpen && <AddAnnoucment open={AddAnnoucmentOpen} handleClose={() => setAddAnnoucmentOpen(false)} setSnackBarInfo={setSnackBarInfo} appList={appList} />}
         </>
     )
 }

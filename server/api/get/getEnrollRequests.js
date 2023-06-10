@@ -23,13 +23,7 @@ const getEnrollRequests = async (req, res) => {
             {
                 replacements: { apprenticeshipId },
                 type: QueryTypes.SELECT,
-            }
-        );
-
-        if (enrollRequests.length === 0) {
-            return res.status(404).json({ error: 'Not found' });
-        }
-
+            });
         res.json(enrollRequests);
     } catch (error) {
         console.log(error);
