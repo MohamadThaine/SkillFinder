@@ -2,6 +2,7 @@ const sequelize = require('../sequelize');
 const { DataTypes } = require('sequelize');
 const { Owner, Apprentice } = require('./User');
 const Category = require('./Category');
+const Review = require('./Review');
 
 const Apprenticeship = sequelize.define('Apprenticeship', {
   ID: {
@@ -148,7 +149,7 @@ const ApprenticeshipApprentice = sequelize.define('apprenticeship_apprentice', {
 
 Apprenticeship.belongsTo(Category, { foreignKey: 'Category_ID' });
 Category.hasMany(Apprenticeship, { foreignKey: 'Category_ID' });
-
+Apprenticeship.hasMany(Review, { foreignKey: 'Apprenticeship_ID' });
 
 
 

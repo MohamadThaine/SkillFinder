@@ -160,7 +160,7 @@ const SearchResult = ({ resultList }) => {
         rowLength.map((row) => (
             <div key={randomstring.generate(5)} className="row result-row">
                 {resultList.slice((row - 1) * 4, row * 4).map((result) => (
-                    <Apprenticeship key={result.ID} app={result} />
+                    <Apprenticeship key={result.ID} app={result} page='search' />
                 ))}
             </div>
         ))

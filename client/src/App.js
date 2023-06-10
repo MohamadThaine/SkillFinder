@@ -28,6 +28,7 @@ import OwnerHome from './Pages/OwnerHome';
 import Chats from './Component/Chats';
 import './Assets/Styles/loader.css'
 import Profile from './Pages/Profile';
+import UserApprenticeships from './Pages/UserApprenticeships';
 
 function App() {
   const navigate = useNavigate();
@@ -58,6 +59,14 @@ function App() {
     }
     else if(JSON.parse(localStorage.getItem('otherInfo')).Major){
       navigate('/Owner');
+    }
+    else{
+      if(JSON.parse(localStorage.getItem('otherInfo')).No_Of_Courses <= 0){
+        navigate('/');
+      }
+      else{
+        navigate('/Profile');
+      }
     }
     setSnackBarInfo({open: true, message: 'Login Successfully!', severity: 'success'});
   }
@@ -100,6 +109,7 @@ function App() {
         <Route path='/Apprenticeship/:ID' element={<ApprenticeshipDetalis setSnackBarInfo={setSnackBarInfo}/>} />
         <Route path='/Owner' element={<OwnerHome user={user} ownerInfo={otherUserInfo} setOwnerInfo={setOtherUserInfo} setSnackBarInfo={setSnackBarInfo} />} />
         <Route path='/Profile' element={<Profile user={user} setUser={setUser} otherInfo={otherUserInfo} setOtherInfo={setOtherUserInfo} setSnackBarInfo={setSnackBarInfo} />} />
+        <Route path='/MyApprenticeships' element={<UserApprenticeships user={user} />} />
         <Route path='/Admin/Apprenticeship' element={<AdminApprenticeshipList isAdmin={isAdmin} setSnackBarInfo={setSnackBarInfo} />} />
         <Route path='/Admin/Approve' element={<AdminApproveList isAdmin={isAdmin} setSnackBarInfo={setSnackBarInfo} />} />
         <Route path='/Admin/User' element={<AdminUserList isAdmin={isAdmin} setSnackBarInfo={setSnackBarInfo} />} />
