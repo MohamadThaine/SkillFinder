@@ -41,6 +41,7 @@ const getChats = require('./api/get/getChats');
 const getMessages = require('./api/get/getMessages');
 const sendMessage = require('./api/post/sendMessage');
 const getUserApprenticeships = require('./api/get/getUserApprenticeships');
+const getAnnouncements = require('./api/get/getAnnouncements');
 const app = express();
 
 app.use(express.static('public'));
@@ -180,6 +181,7 @@ app.get('/searchApprenticeships/:search', searchApprenticeships);
 app.get('/getChats/:id/:isOwner', getChats);
 app.get('/getMessages/:userID/:chatID', getMessages);
 app.get('/getUserApprenticeships/:id', getUserApprenticeships);
+app.get('/getAnnouncements/:id', getAnnouncements);
 app.delete('/deleteApprenticeship/:id', deleteApprenticeship);
 app.delete('/rejectOwner/:id', rejectOwner);
 app.delete('/deactiveUser/:id', deactiveUser);

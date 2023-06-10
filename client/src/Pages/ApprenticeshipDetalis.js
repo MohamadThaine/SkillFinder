@@ -15,6 +15,7 @@ import htmlToDraft from 'html-to-draftjs';
 import EnrollToApprenticeship from '../Component/EnrollToApprenticeship';
 import ContactOwner from '../Component/ContactOwner';
 import ApprenticeshipReviews from '../Component/ApprenticeshipReviews';
+import ApprenticeshipContent from '../Component/ApprenticeshipContent';
 
 
 function ApprenticeshipDetalis({ setSnackBarInfo }) {
@@ -213,6 +214,7 @@ function ApprenticeshipDetalis({ setSnackBarInfo }) {
             {openContact && <ContactOwner open={openContact} handleClose={() => handleModal(setOpenContact, openContact)} owner={owner} setSnackBarInfo={setSnackBarInfo} />}
             {openReviews && <ApprenticeshipReviews open={openReviews} handleClose={() => handleModal(setOpenReviews, openReviews)} apprenticeship={apprenticeshipMainInfo} owner={owner} setSnackBarInfo={setSnackBarInfo}
             reviewsList={reviewsList} setReviewsList={setReviewsList} windowWidth={windowWidth} student={student} />}
+            {student && student.isApproved === 1 && <ApprenticeshipContent app={apprenticeshipMainInfo} />}
         </>
     )
 }
