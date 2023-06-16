@@ -106,7 +106,7 @@ const Chats = () => {
                         <input type="text" className="form-control mt-3" placeholder="Search" />
                     </div>
                     <div className="row chat pb-3 desc mt-3 ms-4 me-4">
-                        <img src={ownerInfo.Picture ? ownerInfo.Picture : user.Gender === "Male" ? defalutMaleIcon : defalutFemaleIcon} alt="profile" className="chat-img mt-1 mb-auto" />
+                        <img src={user && ownerInfo && ownerInfo.Picture ? ownerInfo.Picture : user.Gender === "Male" ? defalutMaleIcon : defalutFemaleIcon} alt="profile" className="chat-img mt-1 mb-auto" />
                         <Typography variant="p" className="col mt-auto mb-auto">{user.Name}</Typography>
                     </div>
                     <Typography variant="h6" className="row desc mt-3">Chats</Typography>

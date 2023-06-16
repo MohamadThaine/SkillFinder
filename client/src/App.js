@@ -65,7 +65,7 @@ function App() {
         navigate('/');
       }
       else{
-        navigate('/Profile');
+        navigate('/MyApprenticeships');
       }
     }
     setSnackBarInfo({open: true, message: 'Login Successfully!', severity: 'success'});

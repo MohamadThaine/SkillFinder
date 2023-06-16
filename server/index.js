@@ -42,6 +42,7 @@ const getMessages = require('./api/get/getMessages');
 const sendMessage = require('./api/post/sendMessage');
 const getUserApprenticeships = require('./api/get/getUserApprenticeships');
 const getAnnouncements = require('./api/get/getAnnouncements');
+const addAnnouncement = require('./api/post/addAnnouncement');
 const app = express();
 
 app.use(express.static('public'));
@@ -157,6 +158,7 @@ app.post('/sendEnrollRequest', sendEnrollRequest);
 app.post('/addReview', addReview);
 app.post('/createChat', createChat);
 app.post('/sendMessage', sendMessage);
+app.post('/addAnnouncement', addAnnouncement);
 app.put('/verify-email', verifyEmail);
 app.put('/approve/apprenticeship/:id', approve.approveApprenticeship);
 app.put('/approve/owner/:id', approve.approveOwner);

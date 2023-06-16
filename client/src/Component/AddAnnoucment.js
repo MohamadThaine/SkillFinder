@@ -1,13 +1,17 @@
 import { Modal, Box, Select, MenuItem, InputLabel, FormControl, Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { EditorState } from "draft-js";
+import { EditorState, convertToRaw } from "draft-js";
 import { Editor } from 'react-draft-wysiwyg';
+import draftToHtml from 'draftjs-to-html';
 import '../Assets/Styles/AddAnnouncement.css'
-const AddAnnoucment = ({ open, handleClose, appList }) => {
+const AddAnnoucment = ({ open, handleClose, appList, setSnackBarInfo }) => {
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
     const [content, setContent] = useState(() => EditorState.createEmpty());
+    const [subject, setSubject] = useState('');
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const [apprenticeship, setApprenticeship] = useState(appList[0].ID);
     const [annoucmentContantOpen, setAnnoucmentContantOpen] = useState(false);
+
     useEffect(() => {
         window.addEventListener('resize', () => {
             setWindowWidth(window.innerWidth);
@@ -16,6 +20,53 @@ const AddAnnoucment = ({ open, handleClose, appList }) => {
             setWindowWidth(window.innerWidth);
         });
     }, []);
+
+    const verifyInput = () => {
+        if (apprenticeship === '') {
+            setSnackBarInfo({ severity: 'error', message: 'Please select apprenticeship', open });
+            return false;
+        }
+
+        if (subject === '') {
+            setSnackBarInfo({ severity: 'error', message: 'Please enter subject', open });
+            return false;
+        }
+
+        if (content.getCurrentContent().getPlainText() === '') {
+            setSnackBarInfo({ severity: 'error', message: 'Please enter content', open });
+            return false;
+        }
+        return true;
+    }
+
+    const handleAddAnnoucment = (e) => {
+        e.preventDefault();
+        if (!verifyInput()) return;
+        const data = {
+            Apprenticeship_ID: apprenticeship,
+            Subject: subject,
+            Content: draftToHtml(convertToRaw(content.getCurrentContent())),
+            Date_Of_Creation: new Date(),
+            Owner_ID: user.id
+        }
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/addAnnouncement`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: localStorage.getItem('token')
+            },
+            body: JSON.stringify(data),
+        }).then(res => res.json()).then(data => {
+            if (data.success) {
+                setSnackBarInfo({ severity: 'success', message: 'Annoucment added successfully', open });
+                handleClose();
+            } else {
+                setSnackBarInfo({ severity: 'error', message: 'Failed to add annoucment', open });
+            }
+        }).catch(err => {
+            setSnackBarInfo({ severity: 'error', message: err.message, open });
+        });
+    }
 
     return (
         <Modal open={open} onClose={handleClose}>
@@ -32,7 +83,7 @@ const AddAnnoucment = ({ open, handleClose, appList }) => {
                     </FormControl>
                     <div className="mb-3">
                         <label htmlFor="subject" className="form-label">Subject</label>
-                        <input type="text" className="form-control" id="subject" />
+                        <input type="text" className="form-control" id="subject" onChange={e => setSubject(e.target.value)} />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="content" className="form-label">Content</label>
@@ -45,7 +96,7 @@ const AddAnnoucment = ({ open, handleClose, appList }) => {
                         <Button variant="contained" className={windowWidth > 990 ? 'd-none' : 'mb-3 text-center'} sx={{ width: '100%' }} onClick={() => setAnnoucmentContantOpen(true)}>Add Contant</Button>
                     </div>
                     <div className="text-center">
-                        <button type="submit" className="btn btn-primary">Add</button>
+                        <button type="submit" className="btn btn-primary" onClick={handleAddAnnoucment}>Add</button>
                         <button type="button" className="btn btn-secondary ms-3" onClick={handleClose}>Close</button>
                     </div>
                 </form>

@@ -12,7 +12,7 @@ import { checkUniqueEmail, checkUniquePhone } from '../utils/uniqueValidator';
 function Profile({ user, setUser, otherInfo, setOtherInfo, setSnackBarInfo }) {
     const [userCopy, setUserCopy] = useState(JSON.parse(localStorage.getItem('user')))
     const [otherInfoCopy, setOtherInfoCopy] = useState(JSON.parse(localStorage.getItem('otherInfo')))
-    const [picture, setPicture] = useState(userCopy && otherInfo.Picture ? otherInfo.Picture : (userCopy && user.Gender === 'Male') ? defalutMalePic : defalutFemalePic)
+    const [picture, setPicture] = useState(userCopy && otherInfo && otherInfo.Picture ? otherInfo.Picture : (userCopy && user.Gender === 'Male') ? defalutMalePic : defalutFemalePic)
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const [isEdtining, setIsEditing] = useState(false)
     const [isEditingPassword, setIsEditingPassword] = useState(false)

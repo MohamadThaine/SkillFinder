@@ -9,6 +9,14 @@
     overflow-y: auto;
 }
 
+.close-announ{
+    position: absolute;
+    width: 2.5rem;
+    right: 1%;
+    top: 7%;
+    cursor: pointer;
+}
+
 @media screen and (max-width: 768px) {
     .annoucments-modal{
         min-width: 90%;

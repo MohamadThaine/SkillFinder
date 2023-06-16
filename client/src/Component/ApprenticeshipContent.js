@@ -4,7 +4,7 @@ import Announcements from './Announcements';
 const ApprenticeshipContent = ({ app }) => {
     const [openAnnouncements, setOpenAnnouncements] = useState(false);
     return (
-        <div className="border-top">
+        <div className="border-top mb-3">
             <div className='mt-5 desc annoucments-container ms-5' onClick={() => setOpenAnnouncements(true)}>
                 <div className='announcment-icon'>
                     <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="currentColor" className="bi bi-megaphone-fill" viewBox="0 0 16 16">
