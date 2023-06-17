@@ -187,6 +187,29 @@
     font-family: 'Poppins' !important;
 }
 
+.add-content-app{
+    position: fixed;
+    top: 5%;
+    left: 1%;
+}
+
+.add-content-btn{
+    background-color: #36506C !important;
+    padding: 17px !important;
+    cursor: pointer;
+}
+
+.text-app-editor{
+    min-height: 30rem !important;
+    width: 60rem !important;
+    overflow-x: auto;
+    padding: 0 0.5rem;
+}
+
+.text-app-editor::-webkit-scrollbar{
+    width: 0px !important;
+}
+
 @keyframes fadeImg {
     0% {
         opacity: 0.1;

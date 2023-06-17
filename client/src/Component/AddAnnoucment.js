@@ -4,12 +4,12 @@ import { EditorState, convertToRaw } from "draft-js";
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 import '../Assets/Styles/AddAnnouncement.css'
-const AddAnnoucment = ({ open, handleClose, appList, setSnackBarInfo }) => {
+const AddAnnoucment = ({ open, handleClose, appList, setSnackBarInfo, appID, appName }) => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
     const [content, setContent] = useState(() => EditorState.createEmpty());
     const [subject, setSubject] = useState('');
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-    const [apprenticeship, setApprenticeship] = useState(appList[0].ID);
+    const [apprenticeship, setApprenticeship] = useState(appID === null? appList[0].ID : appID);
     const [annoucmentContantOpen, setAnnoucmentContantOpen] = useState(false);
 
     useEffect(() => {
@@ -61,6 +61,7 @@ const AddAnnoucment = ({ open, handleClose, appList, setSnackBarInfo }) => {
                 setSnackBarInfo({ severity: 'success', message: 'Annoucment added successfully', open });
                 handleClose();
             } else {
+                console.log(data);
                 setSnackBarInfo({ severity: 'error', message: 'Failed to add annoucment', open });
             }
         }).catch(err => {
@@ -75,10 +76,11 @@ const AddAnnoucment = ({ open, handleClose, appList, setSnackBarInfo }) => {
                 <form className="p-3">
                     <FormControl className="mb-3 form-control">
                         <InputLabel id='ApprenticeshipListLebal'>Apprenticeship</InputLabel>
-                        <Select labelId="ApprenticeshipListLebal" label="Apprenticeship" variant='outlined'
+                        <Select labelId="ApprenticeshipListLebal" label="Apprenticeship" variant='outlined' disabled={appID !== null}
                             value={apprenticeship}
                             onChange={e => setApprenticeship(e.target.value)}>
                             {appList && appList.map(app => <MenuItem key={app.ID} value={app.ID}>{app.Name}</MenuItem >)}
+                            {appID && <MenuItem key={appID} value={appID}>{appName}</MenuItem >}
                         </Select>
                     </FormControl>
                     <div className="mb-3">
@@ -91,7 +93,7 @@ const AddAnnoucment = ({ open, handleClose, appList, setSnackBarInfo }) => {
                             editorState={content}
                             placeholder="Apprenticeship Description"
                             wrapperClassName={windowWidth > 990 ? '' : 'd-none'}
-                            editorClassName="border editor-text-editor annoucment-editor"
+                            editorClassName="border annoucment-editor"
                             onEditorStateChange={setContent} />
                         <Button variant="contained" className={windowWidth > 990 ? 'd-none' : 'mb-3 text-center'} sx={{ width: '100%' }} onClick={() => setAnnoucmentContantOpen(true)}>Add Contant</Button>
                     </div>

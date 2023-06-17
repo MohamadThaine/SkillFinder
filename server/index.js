@@ -43,6 +43,9 @@ const sendMessage = require('./api/post/sendMessage');
 const getUserApprenticeships = require('./api/get/getUserApprenticeships');
 const getAnnouncements = require('./api/get/getAnnouncements');
 const addAnnouncement = require('./api/post/addAnnouncement');
+const addText = require('./api/post/addContent/addText');
+const addLink = require('./api/post/addContent/addLink');
+const addResource = require('./api/post/addContent/addResource');
 const app = express();
 
 app.use(express.static('public'));
@@ -58,7 +61,19 @@ const ApprenticeshipPictureStorage = multer.diskStorage({
     cb(null, folderPath);
   },
   filename: function (req, file, cb) {
-    deleteFile(`public/ApprinticeshipPictures/${req.headers.foldername}`, file.originalname);
+    cb(null, file.originalname);
+  }
+});
+
+const ApprenticeshipResourceStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const folderPath = `public/ApprenticeshipResources/${req.headers.foldername}`;
+    if (!fs.existsSync(folderPath)) {
+      fs.mkdirSync(folderPath, { recursive: true });
+    }
+    cb(null, folderPath);
+  },
+  filename: function (req, file, cb) {
     cb(null, file.originalname);
   }
 });
@@ -98,6 +113,11 @@ const uploadAppImgs = multer({
   limits: { fieldSize: 1024 * 1024 * 5 },
   storage: ApprenticeshipPictureStorage
 }).array('pictures')
+
+const uploadAppResource = multer({
+  limits: { fieldSize: 1024 * 1024 * 1000 },
+  storage: ApprenticeshipResourceStorage
+}).single('resource')
 
 const uploadOwnerImgs = multer({
   limits: { fieldSize: 1024 * 1024 * 5 },
@@ -159,6 +179,9 @@ app.post('/addReview', addReview);
 app.post('/createChat', createChat);
 app.post('/sendMessage', sendMessage);
 app.post('/addAnnouncement', addAnnouncement);
+app.post('/addText', addText)
+app.post('/addLink', addLink);
+app.post('/addResource', uploadAppResource, addResource);
 app.put('/verify-email', verifyEmail);
 app.put('/approve/apprenticeship/:id', approve.approveApprenticeship);
 app.put('/approve/owner/:id', approve.approveOwner);

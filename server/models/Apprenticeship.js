@@ -147,14 +147,54 @@ const ApprenticeshipApprentice = sequelize.define('apprenticeship_apprentice', {
   timestamps: false
 });
 
+const ApprenticeshipResources = sequelize.define('apprenticeship_resources', {
+  ID : {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  Apprenticeship_ID: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: Apprenticeship,
+      key: 'ID'
+    },
+  },
+  Name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  Type: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  Resource: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  Date_Of_Creation: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW
+  }
+}, {
+  tableName: 'apprenticeship_resources',
+  timestamps: false
+});
+
+
 Apprenticeship.belongsTo(Category, { foreignKey: 'Category_ID' });
 Category.hasMany(Apprenticeship, { foreignKey: 'Category_ID' });
 Apprenticeship.hasMany(Review, { foreignKey: 'Apprenticeship_ID' });
+Apprenticeship.hasMany(ApprenticeshipResources, { foreignKey: 'Apprenticeship_ID' });
 
 
 
 module.exports = {
   Apprenticeship,
   ApprenticeshipPicture,
-  ApprenticeshipApprentice
+  ApprenticeshipApprentice,
+  ApprenticeshipResources
 };

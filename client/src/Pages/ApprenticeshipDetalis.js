@@ -7,7 +7,7 @@ import locationIcon from '../Assets/Images/location-icon.svg';
 import calender from '../Assets/Images/calender.svg';
 import calenderCheck from '../Assets/Images/calender-check.svg';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, Modal, Typography } from '@mui/material';
+import { Box, Button, Fab, Modal, Typography } from '@mui/material';
 import arrowRight from '../Assets/Images/arrow-right-solid.svg';
 import arrowLeft from '../Assets/Images/arrow-left-solid.svg';
 import HtmlContent from '../Component/HtmlContent';
@@ -16,7 +16,7 @@ import EnrollToApprenticeship from '../Component/EnrollToApprenticeship';
 import ContactOwner from '../Component/ContactOwner';
 import ApprenticeshipReviews from '../Component/ApprenticeshipReviews';
 import ApprenticeshipContent from '../Component/ApprenticeshipContent';
-
+import AddContent from '../Component/AddContent';
 
 function ApprenticeshipDetalis({ setSnackBarInfo }) {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
@@ -213,8 +213,9 @@ function ApprenticeshipDetalis({ setSnackBarInfo }) {
             {openEnroll && <EnrollToApprenticeship open={openEnroll} handleClose={() => handleModal(setOpenEnroll, openEnroll)} appID={ID} owner={owner} setSnackBarInfo={setSnackBarInfo} setStudent={setStudent} />}
             {openContact && <ContactOwner open={openContact} handleClose={() => handleModal(setOpenContact, openContact)} owner={owner} setSnackBarInfo={setSnackBarInfo} />}
             {openReviews && <ApprenticeshipReviews open={openReviews} handleClose={() => handleModal(setOpenReviews, openReviews)} apprenticeship={apprenticeshipMainInfo} owner={owner} setSnackBarInfo={setSnackBarInfo}
-            reviewsList={reviewsList} setReviewsList={setReviewsList} windowWidth={windowWidth} student={student} />}
-            {student && student.isApproved === 1 && <ApprenticeshipContent app={apprenticeshipMainInfo} />}
+                reviewsList={reviewsList} setReviewsList={setReviewsList} windowWidth={windowWidth} student={student} />}
+            {((student && student.isApproved === 1) || (user && authorID === user.id)) && <ApprenticeshipContent app={apprenticeshipMainInfo} />}
+            {user && authorID === user.id && <AddContent setSnackBarInfo={setSnackBarInfo} appID={ID} appName={name} />}
         </>
     )
 }

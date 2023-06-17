@@ -109,7 +109,7 @@ function OwnerHome({ user, ownerInfo, setOwnerInfo, setSnackBarInfo }) {
             {user && (ownerInfo.Picture !== null && ownerInfo.Picture !== '') && addAppOpen && <AddApprenticeship open={addAppOpen} handleClose={() => setAddAppOpen(false)} setSnackBarInfo={setSnackBarInfo} setAppList={setAppList} />}
             {user && (ownerInfo.Picture === null || ownerInfo.Picture === '') && <OwnerFirstTimeLogin user={user} ownerInfo={ownerInfo} setOwnerInfo={setOwnerInfo} setSnackBarInfo={setSnackBarInfo} />}
             {user && (ownerInfo.Picture !== null && ownerInfo.Picture !== '') && addAddressOpen && <AddAddress open={addAddressOpen} handleClose={() => setAddAddressOpen(false)} setSnackBarInfo={setSnackBarInfo} />}
-            {user && (ownerInfo.Picture !== null && ownerInfo.Picture !== '') && AddAnnoucmentOpen && <AddAnnoucment open={AddAnnoucmentOpen} handleClose={() => setAddAnnoucmentOpen(false)} setSnackBarInfo={setSnackBarInfo} appList={appList} />}
+            {user && (ownerInfo.Picture !== null && ownerInfo.Picture !== '') && AddAnnoucmentOpen && <AddAnnoucment open={AddAnnoucmentOpen} handleClose={() => setAddAnnoucmentOpen(false)} setSnackBarInfo={setSnackBarInfo} appList={appList} appID={null} />}
         </>
     )
 }
