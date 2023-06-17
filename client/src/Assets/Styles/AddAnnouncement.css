@@ -1,4 +1,6 @@
 .annoucment-editor{
-    min-height: 30rem !important;
-    width: 60rem !important;
+    min-height: 20rem !important;
+    padding: 0 0.5rem !important;
+    width: 63rem !important;
+    max-width: 63rem !important;
 }
