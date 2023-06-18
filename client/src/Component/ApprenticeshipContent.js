@@ -1,8 +1,41 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../Assets/Styles/ApprenticeshipContent.css'
 import Announcements from './Announcements';
-const ApprenticeshipContent = ({ app }) => {
+import Resource from './ContentComponents/Resource';
+const ApprenticeshipContent = ({ app, setSnackBarInfo }) => {
     const [openAnnouncements, setOpenAnnouncements] = useState(false);
+    const [resources, setResources] = useState([]);    
+    useEffect(() => {
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/getResources/${app.ID}` , {
+            method: 'GET',
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    setResources(data.proccessedResources.reduce((r, a) => {
+                        const date = a.Date_Of_Creation.split('T')[0];
+                        const resource = { ...a, Date_Of_Creation: date };
+                        r[date] = [...r[date] || [], resource];
+                      
+                        return r;
+                      }, {}));
+                      
+                }
+                else {
+                    setSnackBarInfo({ severity: 'error', message: data.message, open:true });
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                setSnackBarInfo({ severity: 'error', message: 'Error while getting resources', open:true });
+            });
+    }, []);
+
+
+
     return (
         <div className="border-top mb-3">
             <div className='mt-5 desc annoucments-container ms-5' onClick={() => setOpenAnnouncements(true)}>
@@ -13,7 +46,22 @@ const ApprenticeshipContent = ({ app }) => {
                 </div>
                 <h5 className='ms-3'>Announcements</h5>
             </div>
-        {openAnnouncements && <Announcements app={app} open={openAnnouncements} handleClose={() => setOpenAnnouncements(false)} />}
+            {openAnnouncements && <Announcements app={app} open={openAnnouncements} handleClose={() => setOpenAnnouncements(false)} />}
+            <div className='mt-5 resources-container ms-5'>
+                <h2 className='ms-3 text-center'>Resources</h2>
+                <div className='resources'>
+                    {Object.keys(resources).map((date, index) => {
+                        return (
+                            <div key={index} className='mb-3 mt-3'>
+                                <h3>{date}</h3>
+                                {resources[date].map((resource, index) => {
+                                    return <Resource key={index} resource={resource} />
+                                })}
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
         </div>
     );
 }

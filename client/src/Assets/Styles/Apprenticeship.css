@@ -201,13 +201,18 @@
 
 .text-app-editor{
     min-height: 30rem !important;
-    width: 60rem !important;
+    width: 100% !important;
     overflow-x: auto;
     padding: 0 0.5rem;
 }
 
 .text-app-editor::-webkit-scrollbar{
     width: 0px !important;
+}
+
+.file-link > svg{
+    width: 1.5rem !important;
+    height: 1.5rem !important;
 }
 
 @keyframes fadeImg {
