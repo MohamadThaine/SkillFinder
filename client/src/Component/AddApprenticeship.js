@@ -194,7 +194,7 @@ const AddApprenticeship = ({ open, handleClose, setSnackBarInfo, setAppList }) =
 
     return (
         <Modal open={open} onClose={modalClosed}>
-            <Box className={windowWidth > 768 ? 'center-modal' : 'container p-3 add-app-mobile scroll-add-app'} sx={{ background: 'white', borderRadius: '8px' }}>
+            <Box className={windowWidth > 768 ? 'center-modal landscape-app' : 'container p-3 add-app-mobile scroll-add-app'} sx={{ background: 'white', borderRadius: '8px' }}>
                 <Typography variant="h4" className="text-center mb-3 mt-2 ps-2 pe-2">Add Apprenticeship</Typography>
                 <div className={windowWidth > 990 ? 'row' : ''}>
                     <div className="col">

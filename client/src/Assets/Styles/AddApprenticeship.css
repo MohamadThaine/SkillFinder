@@ -1,16 +1,16 @@
-.add-app-mobile{
+.add-app-mobile {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 
-.scroll-add-app{
+.scroll-add-app {
     height: 100vh !important;
     overflow-y: scroll;
 }
 
-.upload-app-pic{
+.upload-app-pic {
     background-color: rgba(0, 0, 0, 0.089);
     display: flex;
     align-items: center;
@@ -18,7 +18,7 @@
     border-radius: 10px;
 }
 
-.remove-upload-img{
+.remove-upload-img {
     height: 1.5rem;
     width: 1.5rem;
     margin-left: auto;
@@ -29,28 +29,28 @@
     border-radius: 10px;
 }
 
-.editor-text-editor{
+.editor-text-editor {
     width: 30vw !important;
     height: 22rem !important;
     max-height: 22rem !important;
     padding-left: 5px;
 }
 
-.editor-text-editor::-webkit-scrollbar{
+.editor-text-editor::-webkit-scrollbar {
     display: none;
 }
 
-.mobile-text-editor{
+.mobile-text-editor {
     height: 22rem !important;
     max-height: 22rem !important;
     padding-left: 5px;
 }
 
-.mobile-text-editor::-webkit-scrollbar{
+.mobile-text-editor::-webkit-scrollbar {
     display: none;
 }
 
-.show-img{
+.show-img {
     height: 1.5rem;
     width: 1.5rem;
     margin-right: 2rem;
@@ -58,7 +58,18 @@
 }
 
 @media screen and (max-width: 1500px) {
-    .editor-text-editor{
+    .editor-text-editor {
         width: unset !important;
+    }
+}
+
+@media screen and (orientation:landscape) {
+    .landscape-app {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        height: 100vh !important;
+        overflow-y: scroll;
     }
 }

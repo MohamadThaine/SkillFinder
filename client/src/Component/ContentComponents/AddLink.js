@@ -52,7 +52,7 @@ const AddLink = ({open, handleClose, setSnackBarInfo, appID}) => {
 
     return (
         <Modal open={open} onClose={handleClose}>
-            <Box className='center-modal text-center' sx={{background: 'white'}}>
+            <Box className='center-modal text-center add-content' sx={{background: 'white'}}>
                 <h5>Add Link</h5>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-3">

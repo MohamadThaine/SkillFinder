@@ -215,6 +215,15 @@
     height: 1.5rem !important;
 }
 
+.resources{
+    padding: 20px;
+}
+
+.resource-video{
+    width: 100% !important;
+    height: 100% !important;
+}
+
 @keyframes fadeImg {
     0% {
         opacity: 0.1;
@@ -269,6 +278,15 @@
     .main-pic{
         width: 100%;
         height: 100%;
+    }
+
+    .resource-video{
+        width: 20rem !important;
+        height: 100% !important;
+    }
+
+    .add-content{
+        width: 98%;
     }
 
 }

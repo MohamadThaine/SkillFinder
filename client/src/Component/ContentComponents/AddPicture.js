@@ -36,7 +36,7 @@ const AddPicture = ({open, handleClose, setSnackBarInfo, appID, submitResource})
 
     return (
         <Modal open={open} onClose={handleClose}>
-            <Box className='center-modal text-center' sx={{background: 'white'}}>
+            <Box className='center-modal text-center add-content' sx={{background: 'white'}}>
                 <h5>Add Picture</h5>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-3">

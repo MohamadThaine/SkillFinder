@@ -36,7 +36,7 @@ export const UtilApprenticeshipDescription = ({ description, setDescription, ope
             setDescription(editorState);
             handleClose();
         }}>
-            <Box className="mb-3 text-center container p-3 add-app-mobile" style={{ background: 'white' }}>
+            <Box className="mb-3 landscape-app text-center container p-3 add-app-mobile" style={{ background: 'white' }}>
                 <h4 className="mt-2">Enter Apprenticeship Description</h4>
                 <Editor
                     editorState={editorState}

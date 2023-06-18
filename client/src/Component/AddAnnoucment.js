@@ -115,7 +115,7 @@ const AnnoucmentEditor = ({ open, handleClose, setContent, content }) => {
             setContentCopy(content);
             handleClose();
         }}>
-            <Box className='mb-3 text-center container p-3 add-app-mobile' sx={{ background: 'white' }}>
+            <Box className='mb-3 text-center container p-3 add-app-mobile landscape-app' sx={{ background: 'white' }}>
                 <h3 className="text-center p-3">Add Content</h3>
                 <Editor
                     editorState={contentCopy}

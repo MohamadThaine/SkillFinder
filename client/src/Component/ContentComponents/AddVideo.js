@@ -1,5 +1,5 @@
 import { Alert, Box, Modal } from '@mui/material';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 const AddVideo = ({open, handleClose, setSnackBarInfo, appID, submitResource}) => {
     const [video, setVideo] = useState(null);
@@ -40,7 +40,7 @@ const AddVideo = ({open, handleClose, setSnackBarInfo, appID, submitResource}) =
 
     return (
         <Modal open={open} onClose={handleClose}>
-            <Box className='center-modal text-center' sx={{background: 'white'}}>
+            <Box className='center-modal text-center add-content' sx={{background: 'white'}}>
                 <h5>Add Video</h5>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-3">
