@@ -27,7 +27,7 @@ const OpenVideoResource = ({ video, open, handleClose }) => {
                 <div className="row">
                     <div className="col-12">
                         <video controls>
-                            <source src='http://localhost:5000/ApprenticeshipResources/9/[Witanime.com]%20JI%20EP%2009%20FHD.mp4' />
+                            <source src={video.Resource} />
                         </video>
                     </div>
                 </div>

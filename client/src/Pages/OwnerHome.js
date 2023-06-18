@@ -41,13 +41,11 @@ function OwnerHome({ user, ownerInfo, setOwnerInfo, setSnackBarInfo }) {
     const [addAddressOpen, setAddAddressOpen] = useState(false);
     const [AddAnnoucmentOpen, setAddAnnoucmentOpen] = useState(false);
     const [appList, setAppList] = useState([]);
-    const [lastReviews, setLastReviews] = useState([{ ID: 1, user: 'Mohamad', course: 'Networking', rating: 3, price: '60$', category: 'Networking' }
-        , { ID: 2, user: 'Mohamad', course: 'Graphic Design', rating: 3, price: '60$', category: 'Graphic Design' }
-        , { ID: 3, user: 'Mohamad', course: 'Carpenters', rating: 3, price: '60$', category: 'Carpenters' }
-        , { ID: 3, user: 'Mohamad', course: 'Networking', rating: 3, price: '60$', category: 'Networking' }]);
+    const [lastReviews, setLastReviews] = useState([]);
     const [requests, setRequests] = useState([]);
 
     useEffect(() => {
+        setLoading(true);
         fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/apprenticeships/all/${user.id}`)
             .then(response => response.json())
             .then(data => {
@@ -57,6 +55,7 @@ function OwnerHome({ user, ownerInfo, setOwnerInfo, setSnackBarInfo }) {
     }, []);
 
     useEffect(() => {
+        setLoading(true);
         fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/enrollRequests/all/${user.id}/0`, {
             method: 'GET',
             headers: {
@@ -65,6 +64,21 @@ function OwnerHome({ user, ownerInfo, setOwnerInfo, setSnackBarInfo }) {
             .then(response => response.json())
             .then(data => {
                 setRequests(data);
+                setLoading  (false);
+            });
+    }, []);
+
+    useEffect(() => {
+        setLoading(true);
+        fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/getLastWeekReviews/${user.id}`, {
+            method: 'GET',
+            headers: {
+                authorization: localStorage.getItem('token'),
+            }})
+            .then(response => response.json())
+            .then(data => {
+                setLastReviews(data);
+                setLoading(false);
             });
     }, []);
 

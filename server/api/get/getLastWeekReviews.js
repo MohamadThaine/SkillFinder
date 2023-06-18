@@ -14,11 +14,11 @@ const getLastWeekReviews = async (req, res) => {
                 Owner_ID: req.user.id
             }
         });
-        const apprenticeshipIDs = apprenticeships.map(apprenticeship => apprenticeship.id);
+        const apprenticeshipIDs = apprenticeships.map(apprenticeship => apprenticeship.ID);
         const reviews = await Review.findAll({
             where: {
                 Apprenticeship_ID: apprenticeshipIDs,
-                Date_Of_Creation: {
+                Date: {
                     [Op.gte]: lastWeek,
                     [Op.lte]: today
                 }
@@ -29,13 +29,17 @@ const getLastWeekReviews = async (req, res) => {
                     include: [
                         {
                             model: User,
-                            attributes: ['ID', Name]
+                            attributes: ['ID', 'Name']
                         }
                     ]
+                },
+                {
+                    model: Apprenticeship,
+                    attributes: ['ID', 'Name']
                 }
             ]
         });
-        return res.json({ reviews, success: true });
+        return res.json(reviews);
     } catch (err) {
         console.log(err);
         return res.status(500).json({ message: err.message, success: false });

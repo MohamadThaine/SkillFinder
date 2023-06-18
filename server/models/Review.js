@@ -57,4 +57,5 @@ const Review = sequelize.define('review', {
 
 
 
+
 module.exports = Review;

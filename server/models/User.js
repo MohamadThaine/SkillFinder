@@ -1,6 +1,7 @@
 const sequelize = require('../sequelize');
 const { DataTypes } = require('sequelize');
 const { Apprenticeship, ApprenticeshipApprentice } = require('./Apprenticeship');
+const Review = require('./Review');
 
 const User = sequelize.define('User', {
     Username: {
@@ -205,6 +206,8 @@ Apprentice.hasMany(ApprenticeshipApprentice, { foreignKey: 'Apperntice_ID' });
 ApprenticeshipApprentice.belongsTo(Apprentice, { foreignKey: 'Apperntice_ID' });
 Apprenticeship.hasMany(ApprenticeshipApprentice, { foreignKey: 'Apprenticeship_ID' });
 ApprenticeshipApprentice.belongsTo(Apprenticeship, { foreignKey: 'Apprenticeship_ID' });
+Apprentice.hasMany(Review, { foreignKey: 'Apprentice_ID' });
+Review.belongsTo(Apprentice, { foreignKey: 'Apprentice_ID' });
 
 module.exports = {
     User,

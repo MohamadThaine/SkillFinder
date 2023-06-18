@@ -1,9 +1,10 @@
-import { Box, Button, Collapse, List, ListItemButton, ListItemText, ListSubheader, Modal, Rating, Typography } from "@mui/material";
+import { Box, Button, Collapse, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, List, ListItemButton, ListItemText, ListSubheader, Modal, Rating, Typography } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import EditApprenticeship from "./EditApprenticeship";
 import DeleteApprenticeship from "./DeleteApprenticeship";
 import '../Assets/Styles/DeleteApprenticeship.css';
+import ContactApprentice from "./ContactApprentice";
 const OwnerList = ({ title, list, setList, listType, setSnackBarInfo, headerClassName, listOpen, setListOpen, listClassName, windowWidth }) => {
     return (
         <List className={listClassName}
@@ -23,7 +24,7 @@ const OwnerList = ({ title, list, setList, listType, setSnackBarInfo, headerClas
         >
             <Collapse in={listOpen} timeout="auto" unmountOnExit className="border pb-3">
                 {listType === 'app' && list.length > 0 && list.map((app, index) => <OwnerApprenticeship key={index} app={app} setSnackBarInfo={setSnackBarInfo} setAppList={setList} />)}
-                {listType === 'review' && list.length > 0 && list.map((review, index) => <Review key={index} review={review} windowWidth={windowWidth} />)}
+                {listType === 'review' && list.length > 0 && list.map((review, index) => <Review key={index} review={review} windowWidth={windowWidth} setSnackBarInfo={setSnackBarInfo} />)}
                 {listType === 'request' && list.length > 0 && list.map((request, index) => <Request key={index} request={request} setSnackBarInfo={setSnackBarInfo} setRequestList={setList} />)}
             </Collapse>
         </List>
@@ -65,21 +66,47 @@ const OwnerApprenticeship = ({ app, setSnackBarInfo, setAppList }) => {
     )
 }
 
-const Review = ({ review, windowWidth }) => {
+const Review = ({ review, windowWidth, setSnackBarInfo }) => {
+    const [openReview, setOpenReview] = useState(false);
     return (
         <>
-            {review !== null && <ListItemButton className="me-2 ms-2 mt-3 app-owner-home border-bottom">
+            {review !== null && <ListItemButton className="me-2 ms-2 mt-3 app-owner-home border-bottom" onClick={() => setOpenReview(true)}>
                 <ListItemText primary={
-                    windowWidth < 768 ? review.user.split(' ')[0] : review.user
+                    windowWidth < 768 ? `${review.apprentice.User.Name.split(' ')[0]}..` : review.apprentice.User.Name
                 } />
-                <ListItemText primary="Networking (part 1)" className="ms-1 me-1" />
-                <Rating name="read-only" value={review.rating} readOnly className="ms-auto" precision={0.5} />
-                <ListItemText primary={review.rating} className="ms-1" />
+                <ListItemText primary={
+                    windowWidth < 768 ? `${review.Apprenticeship.Name.split(' ')[0]}..` : review.Apprenticeship.Name
+                } className="ms-1 me-1" />
+                <Rating name="read-only" value={review.Rating_Value} readOnly className="ms-auto" precision={0.5} />
+                <ListItemText primary={review.Rating_Value} className="ms-1" />
             </ListItemButton>
             }
+            {openReview && <OpenedReview review={review} open={openReview} handleClose={() => setOpenReview(false)} setSnackBarInfo={setSnackBarInfo} />}
         </>
     )
 }
+
+const OpenedReview = ({ review, open, handleClose, setSnackBarInfo }) => {
+    const [openSendMessage, setOpenSendMessage] = useState(false);
+    return (
+        <>
+            <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>Review</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        {review.Content}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpenSendMessage(true)}>Send A Message</Button>
+                    <Button onClick={handleClose}>Close</Button>
+                </DialogActions>
+            </Dialog>
+            {openSendMessage && <ContactApprentice open={openSendMessage} handleClose={() => setOpenSendMessage(false)} user={review.apprentice.User} setSnackBarInfo={setSnackBarInfo} closeReivew={handleClose} />}
+        </>
+    )
+}
+
 
 const Request = ({ request, setSnackBarInfo, setRequestList }) => {
     const [showDescription, setShowDescription] = useState(false)
