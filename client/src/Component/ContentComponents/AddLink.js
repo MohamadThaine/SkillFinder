@@ -1,7 +1,7 @@
 import { Box, Modal } from '@mui/material';
 import {useState} from 'react';
 
-const AddLink = ({open, handleClose, setSnackBarInfo, appID}) => {
+const AddLink = ({open, handleClose, setSnackBarInfo, appID, setResourceList}) => {
     const [link, setLink] = useState('');
     const [linkName, setLinkName] = useState('');
 
@@ -41,6 +41,13 @@ const AddLink = ({open, handleClose, setSnackBarInfo, appID}) => {
             if (data.success) {
                 setSnackBarInfo({ severity: 'success', message: 'Link added successfully', open });
                 handleClose();
+                setResourceList(prevState => {
+                    const date = data.apprenticeshipResource.Date_Of_Creation.split('T')[0];
+                    return {
+                        ...prevState,
+                        [date]: [...(prevState[date] || []), data.apprenticeshipResource]
+                    };
+                });
             } else {
                 setSnackBarInfo({ severity: 'error', message: data.message, open });
             }

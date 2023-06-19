@@ -8,6 +8,7 @@ const addText = async (req, res) => {
         if (apprenticeship) {
             console.log(apprenticeship.Owner_ID, req.user.id);
             if (apprenticeship.Owner_ID !== req.user.id) return res.status(401).send({ message: 'Unauthorized' });
+            if(!apprenticeship.isApproved) return res.status(401).send({ message: 'Cant add content to non approved apprenticeship' });
             const apprenticeshipResource = await ApprenticeshipResources.create({
                 Apprenticeship_ID,
                 Name,

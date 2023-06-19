@@ -6,8 +6,8 @@ const addLink = async (req, res) => {
         const { Name, Link, Apprenticeship_ID } = req.body;
         const apprenticeship = await Apprenticeship.findByPk(Apprenticeship_ID);
         if (apprenticeship) {
-            console.log(apprenticeship.Owner_ID, req.user.id);
             if (apprenticeship.Owner_ID !== req.user.id) return res.status(401).send({ message: 'Unauthorized' });
+            if(!apprenticeship.isApproved) return res.status(401).send({ message: 'Cant add content to non approved apprenticeship' });
             const apprenticeshipResource = await ApprenticeshipResources.create({
                 Apprenticeship_ID,
                 Name,

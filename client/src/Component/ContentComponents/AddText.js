@@ -4,7 +4,7 @@ import { EditorState, convertToRaw } from "draft-js";
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 
-const AddText = ({ open, handleClose, setSnackBarInfo, appID }) => {
+const AddText = ({ open, handleClose, setSnackBarInfo, appID, setResourceList }) => {
     const [content, setContent] = useState(() => EditorState.createEmpty());
     const [title, setTitle] = useState('');
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -49,6 +49,13 @@ const AddText = ({ open, handleClose, setSnackBarInfo, appID }) => {
             if (data.success) {
                 setSnackBarInfo({ severity: 'success', message: 'Text added successfully', open });
                 handleClose();
+                setResourceList(prevState => {
+                    const date = data.apprenticeshipResource.Date_Of_Creation.split('T')[0];
+                    return {
+                        ...prevState,
+                        [date]: [...(prevState[date] || []), data.apprenticeshipResource]
+                    };
+                });
             } else {
                 setSnackBarInfo({ severity: 'error', message: data.message, open });
             }

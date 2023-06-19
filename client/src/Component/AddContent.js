@@ -14,7 +14,7 @@ import AddPicture from './ContentComponents/AddPicture';
 import AddFile from './ContentComponents/AddFile';
 import AddText from './ContentComponents/AddText';
 
-const AddContent = ({ setSnackBarInfo, appID, appName }) => {
+const AddContent = ({ setSnackBarInfo, appID, appName, setResourceList }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const [openAddAnnouncement, setOpenAddAnnouncement] = useState(false);
@@ -31,7 +31,6 @@ const AddContent = ({ setSnackBarInfo, appID, appName }) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
-
     const handleSubmitResource = (data, type, handleClose) => {
         setIsUploading(true);
         const xhr = new XMLHttpRequest();
@@ -43,6 +42,7 @@ const AddContent = ({ setSnackBarInfo, appID, appName }) => {
             if (event.lengthComputable) {
                 const progress = Math.round((event.loaded / event.total) * 100);
                 setProgress(progress);
+
             }
         });
         xhr.onreadystatechange = () => {
@@ -52,6 +52,13 @@ const AddContent = ({ setSnackBarInfo, appID, appName }) => {
                     if (response.success) {
                         setSnackBarInfo({ severity: 'success', message: `${type} added successfully`, open: true });
                         setIsUploading(false);
+                        setResourceList(prevState => {
+                            const date = response.data.Date_Of_Creation.split('T')[0];
+                            return {
+                                ...prevState,
+                                [date]: [...(prevState[date] || []), response.data]
+                            };
+                        });
                     } else {
                         setSnackBarInfo({ severity: 'error', message: `Failed to add ${type}`, open: true });
                     }
@@ -88,7 +95,7 @@ const AddContent = ({ setSnackBarInfo, appID, appName }) => {
                     <ListItemText primary="Link" />
                 </MenuItem>
                 <MenuItem onClick={() => {
-                    if(isUplaoding) return setSnackBarInfo({ severity: 'error', message: 'Please wait for the current upload to finish', open: true });
+                    if (isUplaoding) return setSnackBarInfo({ severity: 'error', message: 'Please wait for the current upload to finish', open: true });
                     setOpenAddVideo(true);
                     handleClose();
                 }}>
@@ -98,7 +105,7 @@ const AddContent = ({ setSnackBarInfo, appID, appName }) => {
                     <ListItemText primary="Video" />
                 </MenuItem>
                 <MenuItem onClick={() => {
-                    if(isUplaoding) return setSnackBarInfo({ severity: 'error', message: 'Please wait for the current upload to finish', open: true });
+                    if (isUplaoding) return setSnackBarInfo({ severity: 'error', message: 'Please wait for the current upload to finish', open: true });
                     setOpenAddPicture(true);
                     handleClose();
                 }}>
@@ -108,7 +115,7 @@ const AddContent = ({ setSnackBarInfo, appID, appName }) => {
                     <ListItemText primary="Picture" />
                 </MenuItem>
                 <MenuItem onClick={() => {
-                    if(isUplaoding) return setSnackBarInfo({ severity: 'error', message: 'Please wait for the current upload to finish', open: true });
+                    if (isUplaoding) return setSnackBarInfo({ severity: 'error', message: 'Please wait for the current upload to finish', open: true });
                     setOpenAddFile(true);
                     handleClose();
                 }}>
@@ -129,16 +136,16 @@ const AddContent = ({ setSnackBarInfo, appID, appName }) => {
             </Menu>
             {openAddAnnouncement && <AddAnnoucment open={openAddAnnouncement} handleClose={() => setOpenAddAnnouncement(false)} setSnackBarInfo={setSnackBarInfo}
                 appID={appID} appName={appName} />}
-            {openAddLink && <AddLink open={openAddLink} handleClose={() => setOpenAddLink(false)} setSnackBarInfo={setSnackBarInfo} appID={appID} />}
+            {openAddLink && <AddLink open={openAddLink} handleClose={() => setOpenAddLink(false)} setSnackBarInfo={setSnackBarInfo} appID={appID} setResourceList={setResourceList} />}
             {openAddVideo && <AddVideo open={openAddVideo} handleClose={() => setOpenAddVideo(false)} setSnackBarInfo={setSnackBarInfo} appID={appID}
                 submitResource={handleSubmitResource} />}
             {openAddPicture && <AddPicture open={openAddPicture} handleClose={() => setOpenAddPicture(false)} setSnackBarInfo={setSnackBarInfo} appID={appID}
                 submitResource={handleSubmitResource} />}
             {openAddFile && <AddFile open={openAddFile} handleClose={() => setOpenAddFile(false)} setSnackBarInfo={setSnackBarInfo} appID={appID}
                 submitResource={handleSubmitResource} />}
-            {openAddText && <AddText open={openAddText} handleClose={() => setOpenAddText(false)} setSnackBarInfo={setSnackBarInfo} appID={appID} />}
+            {openAddText && <AddText open={openAddText} handleClose={() => setOpenAddText(false)} setSnackBarInfo={setSnackBarInfo} appID={appID} setResourceList={setResourceList} />}
             {isUplaoding && <CircularProgress
-             variant='determinate' className='ms-3' value={progress} style={{background: 'lightGray', borderRadius: '90px', width: '5rem', height: '5rem'}} />}
+                variant='determinate' className='ms-3' value={progress} style={{ background: 'lightGray', borderRadius: '90px', width: '5rem', height: '5rem' }} />}
         </div>
     )
 }

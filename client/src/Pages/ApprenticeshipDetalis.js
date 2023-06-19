@@ -49,6 +49,7 @@ function ApprenticeshipDetalis({ setSnackBarInfo }) {
     const [openEnroll, setOpenEnroll] = useState(false);
     const [openContact, setOpenContact] = useState(false);
     const [openReviews, setOpenReviews] = useState(false);
+    const [resources, setResources] = useState([]);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const navigate = useNavigate();
     useEffect(() => {
@@ -214,8 +215,8 @@ function ApprenticeshipDetalis({ setSnackBarInfo }) {
             {openContact && <ContactOwner open={openContact} handleClose={() => handleModal(setOpenContact, openContact)} owner={owner} setSnackBarInfo={setSnackBarInfo} />}
             {openReviews && <ApprenticeshipReviews open={openReviews} handleClose={() => handleModal(setOpenReviews, openReviews)} apprenticeship={apprenticeshipMainInfo} owner={owner} setSnackBarInfo={setSnackBarInfo}
                 reviewsList={reviewsList} setReviewsList={setReviewsList} windowWidth={windowWidth} student={student} />}
-            {((student && student.isApproved === 1) || (user && authorID === user.id)) && <ApprenticeshipContent app={apprenticeshipMainInfo} setSnackBarInfo={setSnackBarInfo} />}
-            {user && authorID === user.id && <AddContent setSnackBarInfo={setSnackBarInfo} appID={ID} appName={name} />}
+            {((student && student.isApproved === 1) || (user && authorID === user.id)) && <ApprenticeshipContent app={apprenticeshipMainInfo} setSnackBarInfo={setSnackBarInfo} setResources={setResources} resources={resources} />}
+            {user && authorID === user.id && isApproved && <AddContent setSnackBarInfo={setSnackBarInfo} appID={ID} appName={name} setResourceList={setResources} />}
         </>
     )
 }
