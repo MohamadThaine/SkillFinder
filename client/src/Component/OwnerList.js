@@ -111,7 +111,11 @@ const OpenedReview = ({ review, open, handleClose, setSnackBarInfo }) => {
 const Request = ({ request, setSnackBarInfo, setRequestList }) => {
     const [showDescription, setShowDescription] = useState(false)
     const [open, setOpen] = useState(false);
-
+    const [openSendMessage, setOpenSendMessage] = useState(false);
+    const [user, setUser] = useState({
+        ID: request.Apperntice_ID,
+        Name: request.Name,
+    });
     const acceptRequest = () => {
         fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/acceptRequest/${request.ID}/${request.Apprenticeship_ID}`, {
             method: 'PUT',
@@ -165,9 +169,11 @@ const Request = ({ request, setSnackBarInfo, setRequestList }) => {
                     }}>View Description</Button>
                     <Button variant="contained" color="success" className="mt-1" onClick={acceptRequest}>Accept</Button>
                     <Button variant="contained" color="error" className="ms-3 mt-1" onClick={rejectRequest}>Reject</Button>
+                    <Button variant="contained" className="ms-3 mt-1" color="warning" onClick={() => setOpenSendMessage(true)}>Send A Message</Button>
                 </List>
             </Collapse>}
             {request && <RequestDescription description={request.Request_Description} open={showDescription} handleClose={() => setShowDescription(false)} />}
+            {openSendMessage && <ContactApprentice open={openSendMessage} handleClose={() => setOpenSendMessage(false)} user={user} setSnackBarInfo={setSnackBarInfo} />}
         </>
     )
 }

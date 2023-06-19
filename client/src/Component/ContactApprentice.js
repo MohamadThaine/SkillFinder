@@ -31,7 +31,7 @@ const ContactApprentice = ({ open, handleClose, user, setSnackBarInfo, closeReiv
         const result = await response.json();
         if (result.success) {
             handleClose();
-            closeReivew();
+            if(closeReivew) closeReivew();
             setSnackBarInfo({ severity: 'success', message: 'Message sent successfully', open: true });
         }
         else return setSnackBarInfo({ severity: 'error', message: result.message, open: true });
