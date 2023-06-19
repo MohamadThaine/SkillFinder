@@ -5,11 +5,9 @@ import defalutFemaleIcon from '../Assets/Images/defaultFemalePic.svg'
 import notificationSound from '../Assets/Sounds/NotificationSound.wav'
 import '../Assets/Styles/Chat.css'
 import OpenedChat from './OpenedChat';
-import { io } from "socket.io-client"
 
 
-const Chats = () => {
-    const socket = useRef(null);
+const Chats = ({ socket }) => {
     const notificationSoundPlayer = useRef(null);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const [showChat, setShowChat] = useState(false);
@@ -60,8 +58,11 @@ const Chats = () => {
     useEffect(() => {
         if (user) {
             getChats();
-            socket.current = io(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}`, { transports: ['websocket'] });
-            socket.current.emit('join', user.id);
+        }
+    }, [user])
+
+    useEffect(() => {
+        if (socket.current) {
             socket.current.on('reciveMessage', (message) => {
                 setChats((prevChats) => {
                     const newChats = [...prevChats];
@@ -79,7 +80,7 @@ const Chats = () => {
                 notificationSoundPlayer.current.play();
             });
         }
-    }, [user])
+    }, [socket])
 
 
     return (
@@ -134,7 +135,7 @@ const Chat = ({ chat, setOpenedChat }) => {
             <img src={picture} alt="profile" className="chat-img mt-1 mb-auto" />
             <div className="col mt-auto mb-auto">
                 <Typography variant="p" className="row">{chat.Name}</Typography>
-                <Typography variant="p" className="row" style={{color: 'darkgray'}}>{chat.Content.slice(0,10)}{chat.Content.length > 10? '...' : ''}</Typography>
+                <Typography variant="p" className="row" style={{ color: 'darkgray' }}>{chat.Content.slice(0, 10)}{chat.Content.length > 10 ? '...' : ''}</Typography>
             </div>
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="bi bi-chevron-right chat-arrow" viewBox="0 0 16 16">
                 <path fillRule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />

@@ -11,7 +11,7 @@ import Register from "./Pages/Register";
 import Search from './Pages/Search';
 import ApprenticeshipDetalis from './Pages/ApprenticeshipDetalis';
 import PageNotFound from './Pages/PageNotFound';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -29,9 +29,11 @@ import Chats from './Component/Chats';
 import './Assets/Styles/loader.css'
 import Profile from './Pages/Profile';
 import UserApprenticeships from './Pages/UserApprenticeships';
+import { io } from "socket.io-client"
 
 function App() {
   const navigate = useNavigate();
+  const socket = useRef(null);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
   const [otherUserInfo, setOtherUserInfo] = useState(JSON.parse(localStorage.getItem('otherInfo')));
   const [isAdmin, setIsAdmin] = useState(null);
@@ -39,9 +41,11 @@ function App() {
   useEffect (() => {
     try
     {
+      socket.current = io(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}`, { transports: ['websocket'] });
       if(localStorage.getItem('user') !== null){
         setUser(JSON.parse(localStorage.getItem('user')));
         setOtherUserInfo(JSON.parse(localStorage.getItem('otherInfo')));
+        socket.current.emit('join', JSON.parse(localStorage.getItem('user')).id);
         if(JSON.parse(localStorage.getItem('otherInfo')).isAdmin){
           setIsAdmin(true);
           navigate('/Admin');
@@ -53,6 +57,7 @@ function App() {
   const handleLogin = () => {
     setUser(JSON.parse(localStorage.getItem('user')));
     setOtherUserInfo(JSON.parse(localStorage.getItem('otherInfo')));
+    socket.current.emit('join', JSON.parse(localStorage.getItem('user')).id);
     if(JSON.parse(localStorage.getItem('otherInfo')).isAdmin){
       setIsAdmin(true);
       navigate('/Admin');
@@ -117,7 +122,7 @@ function App() {
         <Route path='/Admin' element={<AdminHome isAdmin={isAdmin} />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
-      {user && !isAdmin && <Chats />}
+      {user && !isAdmin && <Chats socket={socket} />}
       <Footer />
     </>
   );
