@@ -189,12 +189,14 @@ Apprenticeship.belongsTo(Category, { foreignKey: 'Category_ID' });
 Category.hasMany(Apprenticeship, { foreignKey: 'Category_ID' });
 Apprenticeship.hasMany(Review, { foreignKey: 'Apprenticeship_ID' });
 Apprenticeship.hasMany(ApprenticeshipResources, { foreignKey: 'Apprenticeship_ID' });
+ApprenticeshipResources.belongsTo(Apprenticeship, { foreignKey: 'Apprenticeship_ID' });
 Apprenticeship.hasMany(Review, {
   foreignKey: 'Apprenticeship_ID'
 });
 Review.belongsTo(Apprenticeship, {
   foreignKey: 'Apprenticeship_ID'
 });
+
 
 
 module.exports = {

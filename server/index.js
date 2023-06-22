@@ -48,6 +48,7 @@ const addLink = require('./api/post/addContent/addLink');
 const addResource = require('./api/post/addContent/addResource');
 const getApprenticeshipContent = require('./api/get/getApprenticeshipContent');
 const getLastWeekReviews = require('./api/get/getLastWeekReviews');
+const getStudentNotifications = require('./api/get/getStudentNotifications');
 const app = express();
 
 app.use(express.static('public'));
@@ -166,6 +167,16 @@ io.on('connection', (socket) => {
     }
   });
 
+  socket.on('sendResource', (appID, resource, enrolledStudents) => {
+    if(!enrolledStudents) return;
+    enrolledStudents.map((student) => {
+      const reciverSocketID = onlineUsers.get(student.Apperntice_ID);
+      if (reciverSocketID) {
+        socket.to(reciverSocketID).emit('reciveResource', appID, resource);
+        console.log('resource sent');
+      }
+    });
+  });
 });
 
 
@@ -211,6 +222,7 @@ app.get('/getUserApprenticeships/:id', getUserApprenticeships);
 app.get('/getAnnouncements/:id', getAnnouncements);
 app.get('/getResources/:id', getApprenticeshipContent);
 app.get('/getLastWeekReviews/:id', getLastWeekReviews);
+app.get('/getStudentNotifications/:id', getStudentNotifications);
 app.delete('/deleteApprenticeship/:id', deleteApprenticeship);
 app.delete('/rejectOwner/:id', rejectOwner);
 app.delete('/deactiveUser/:id', deactiveUser);

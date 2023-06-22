@@ -111,7 +111,7 @@ function App() {
         <Route path="/Login" element={<Login handleLogin={handleLogin}/>} />
         <Route path="/Register" element={<Register setSnackBarInfo={setSnackBarInfo} />} />
         <Route path='/Search/:keyWords' element={<Search />} />
-        <Route path='/Apprenticeship/:ID' element={<ApprenticeshipDetalis setSnackBarInfo={setSnackBarInfo}/>} />
+        <Route path='/Apprenticeship/:ID' element={<ApprenticeshipDetalis setSnackBarInfo={setSnackBarInfo} socket={socket} />} />
         <Route path='/Owner' element={<OwnerHome user={user} ownerInfo={otherUserInfo} setOwnerInfo={setOtherUserInfo} setSnackBarInfo={setSnackBarInfo} />} />
         <Route path='/Profile' element={<Profile user={user} setUser={setUser} otherInfo={otherUserInfo} setOtherInfo={setOtherUserInfo} setSnackBarInfo={setSnackBarInfo} />} />
         <Route path='/MyApprenticeships' element={<UserApprenticeships user={user} />} />

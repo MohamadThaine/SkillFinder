@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../Assets/Styles/ApprenticeshipContent.css'
 import Announcements from './Announcements';
 import Resource from './ContentComponents/Resource';
-const ApprenticeshipContent = ({ app, setSnackBarInfo, resources, setResources }) => {
+const ApprenticeshipContent = ({ app, setSnackBarInfo, resources, setResources, socket }) => {
     const [openAnnouncements, setOpenAnnouncements] = useState(false);
     useEffect(() => {
         fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/getResources/${app.ID}`, {
@@ -31,6 +31,23 @@ const ApprenticeshipContent = ({ app, setSnackBarInfo, resources, setResources }
             });
     }, []);
 
+    useEffect(() => {
+        if (socket.current) {
+            socket.current.on('reciveResource', (appID, resource) => {
+                if (parseInt(appID) === app.ID) {
+                    const date = resource.Date_Of_Creation.split('T')[0];
+                    setResources(prevState => {
+                        return {
+                            ...prevState,
+                            [date]: [...(prevState[date] || []), resource]
+                        };
+                    }
+                    );
+                }
+            });
+        }
+    }, [socket.current]);
+
 
 
     return (
@@ -50,7 +67,7 @@ const ApprenticeshipContent = ({ app, setSnackBarInfo, resources, setResources }
                     {Object.keys(resources).map((date, index) => {
                         return (
                             <div key={index} className='mb-3 mt-3'>
-                                <h3 style={{color: 'grey'}}>{date}</h3>
+                                <h3 style={{ color: 'grey' }}>{date}</h3>
                                 {resources[date].map((resource, index) => {
                                     return <Resource key={index} resource={resource} />
                                 })}

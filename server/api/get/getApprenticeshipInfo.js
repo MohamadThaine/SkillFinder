@@ -17,12 +17,13 @@ const getApprenticeshipInfo = async (req, res) => {
       );
     });
 
-    const [address, category, author, authorPic, enrolledStudents, student, reviews] = await Promise.all([
+    const [address, category, author, authorPic, enrolledStudents, enrolledStudentsList, student, reviews] = await Promise.all([
       apprenticeshipResult.Address_ID !== null ? getAddress(apprenticeshipResult.Address_ID) : null,
       getCategory(apprenticeshipResult.Category_ID),
       getAuthor(apprenticeshipResult.Owner_ID),
       getAuthorPic(req, apprenticeshipResult.Owner_ID),
       getEntrolledStudentCount(apprenticeshipResult.ID),
+      getEnrolledStudentIDs(apprenticeshipResult.ID),
       userID !== 'guest' ? getStudent(apprenticeshipResult.ID, userID) : null,
       getReviews(apprenticeshipResult.ID)
     ]);
@@ -35,7 +36,8 @@ const getApprenticeshipInfo = async (req, res) => {
       authorPic,
       enrolledStudents,
       student,
-      reviews 
+      reviews,
+      enrolledStudentsList
     };
     res.send(data);
   } catch (err) {
@@ -109,6 +111,23 @@ const getEntrolledStudentCount = (ID) => {
           console.log(err);
         } else {
           resolve(result[0]);
+        }
+      }
+    );
+  });
+}
+
+const getEnrolledStudentIDs = (ID) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      'SELECT Apperntice_ID FROM apprenticeship_apprentice WHERE Apprenticeship_ID = ? AND isApproved = 1',
+      [ID],
+      (err, result) => {
+        if (err) {
+          reject(err);
+          console.log(err);
+        } else {
+          resolve(result);
         }
       }
     );

@@ -9,7 +9,7 @@
     border-radius: 90px;
     height: 5rem;
     width: 5rem;
-    z-index: 1000;
+    z-index: 500;
     box-shadow: 3px 3px 99px #0000009D;
     transition: 300ms ease-in-out;
     align-items: center;

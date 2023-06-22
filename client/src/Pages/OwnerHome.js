@@ -64,7 +64,7 @@ function OwnerHome({ user, ownerInfo, setOwnerInfo, setSnackBarInfo }) {
             .then(response => response.json())
             .then(data => {
                 setRequests(data);
-                setLoading  (false);
+                setLoading(false);
             });
     }, []);
 

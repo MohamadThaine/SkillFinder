@@ -172,7 +172,7 @@ const Request = ({ request, setSnackBarInfo, setRequestList }) => {
                     <Button variant="contained" className="ms-3 mt-1" color="warning" onClick={() => setOpenSendMessage(true)}>Send A Message</Button>
                 </List>
             </Collapse>}
-            {request && <RequestDescription description={request.Request_Description} open={showDescription} handleClose={() => setShowDescription(false)} />}
+            {request && showDescription && <RequestDescription description={request.Request_Description} open={showDescription} handleClose={() => setShowDescription(false)} />}
             {openSendMessage && <ContactApprentice open={openSendMessage} handleClose={() => setOpenSendMessage(false)} user={user} setSnackBarInfo={setSnackBarInfo} />}
         </>
     )

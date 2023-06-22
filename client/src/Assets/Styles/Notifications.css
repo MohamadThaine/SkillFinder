@@ -1,0 +1,47 @@
+.notifications{
+    position: relative;
+}
+
+.notifications-popup{
+    position: absolute;
+    background-color: #fff;
+    width: 45rem;
+    z-index: 1000;
+}
+
+.notifications__popup__body{
+    height: fit-content !important;
+    max-height: 30rem;
+    overflow-y: auto;
+}
+
+.notifications__popup__body::-webkit-scrollbar {
+    width: 0.4rem;  
+}
+
+.notifications__popup__body::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #36506C;
+}
+
+.file-icon-notification > svg{
+    width: 1.3rem !important;
+    height: 1.3rem !important;
+}
+
+.notification{
+    cursor: pointer;
+}
+
+@media screen and (max-width: 990px) {
+    .notifications-popup{
+        width: 100vw;
+        right: 0%;
+        position: fixed;
+        margin-top: 4%;
+    }
+    .notifications__popup__body{
+        height: 100vh;
+        overflow-y: auto;
+    }
+}

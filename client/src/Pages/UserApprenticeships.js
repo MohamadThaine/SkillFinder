@@ -33,7 +33,7 @@ const UserApprenticeships = ({ user }) => {
             <h1 className="text-center">Your Apprenticeships</h1>
             <div className="row result-row ms-3 mb-3">
                 {apprenticeships && apprenticeships.map(apprenticeship => {
-                    return <Apprenticeship key={apprenticeship.id} app={apprenticeship} page='userApp' />
+                    return <Apprenticeship key={apprenticeship.ID} app={apprenticeship} page='userApp' />
                 })}
                 {!apprenticeships && <h3 className="text-center mt-3">You have no apprenticeships</h3>}
             </div>

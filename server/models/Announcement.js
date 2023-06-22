@@ -34,5 +34,8 @@ const Announcement = sequelize.define('announcement', {
 });
 
 Apprenticeship.hasMany(Announcement, { foreignKey: 'Apprenticeship_ID' });
+Announcement.belongsTo(Apprenticeship, {
+    foreignKey: 'Apprenticeship_ID'
+  });
 
 module.exports = Announcement;

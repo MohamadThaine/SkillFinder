@@ -7,7 +7,7 @@ import locationIcon from '../Assets/Images/location-icon.svg';
 import calender from '../Assets/Images/calender.svg';
 import calenderCheck from '../Assets/Images/calender-check.svg';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, Fab, Modal, Typography } from '@mui/material';
+import { Box, Button, Modal, Typography } from '@mui/material';
 import arrowRight from '../Assets/Images/arrow-right-solid.svg';
 import arrowLeft from '../Assets/Images/arrow-left-solid.svg';
 import HtmlContent from '../Component/HtmlContent';
@@ -18,7 +18,7 @@ import ApprenticeshipReviews from '../Component/ApprenticeshipReviews';
 import ApprenticeshipContent from '../Component/ApprenticeshipContent';
 import AddContent from '../Component/AddContent';
 
-function ApprenticeshipDetalis({ setSnackBarInfo }) {
+function ApprenticeshipDetalis({ setSnackBarInfo, socket }) {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
     const [apprenticeshipMainInfo, setApprenticeshipMainInfo] = useState({});
     const [student, setStudent] = useState();
@@ -39,6 +39,7 @@ function ApprenticeshipDetalis({ setSnackBarInfo }) {
     const [authorPic, setAuthorPic] = useState();
     const [authorID, setAuthorID] = useState('');
     const [entrolledStudents, setEntrolledStudents] = useState('');
+    const [enrolledStudentsList, setEnrolledStudentsList] = useState([]);
     const [openPictureModal, setOpenPictureModal] = useState(false);
     const [openReadMore, setOpenReadMore] = useState(false);
     const [owner, setOwner] = useState({ name: authorName, picture: authorPic, id: authorID });
@@ -92,8 +93,9 @@ function ApprenticeshipDetalis({ setSnackBarInfo }) {
                 });
                 setAddress(data.address);
                 setReviewsList(data.reviews);
+                setEnrolledStudentsList(data.enrolledStudentsList);
             })
-    }, [])
+    }, [ID])
 
     useEffect(() => {
         fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/apprenticeship-pics/` + ID)
@@ -102,7 +104,7 @@ function ApprenticeshipDetalis({ setSnackBarInfo }) {
                 setPictures(data);
                 setMainPicture(data[0])
             })
-    }, [])
+    }, [ID])
 
     const handleModal = (setOpened, opened) => {
         setOpened(!opened);
@@ -215,8 +217,8 @@ function ApprenticeshipDetalis({ setSnackBarInfo }) {
             {openContact && <ContactOwner open={openContact} handleClose={() => handleModal(setOpenContact, openContact)} owner={owner} setSnackBarInfo={setSnackBarInfo} />}
             {openReviews && <ApprenticeshipReviews open={openReviews} handleClose={() => handleModal(setOpenReviews, openReviews)} apprenticeship={apprenticeshipMainInfo} owner={owner} setSnackBarInfo={setSnackBarInfo}
                 reviewsList={reviewsList} setReviewsList={setReviewsList} windowWidth={windowWidth} student={student} />}
-            {((student && student.isApproved === 1) || (user && authorID === user.id)) && <ApprenticeshipContent app={apprenticeshipMainInfo} setSnackBarInfo={setSnackBarInfo} setResources={setResources} resources={resources} />}
-            {user && authorID === user.id && isApproved && <AddContent setSnackBarInfo={setSnackBarInfo} appID={ID} appName={name} setResourceList={setResources} />}
+            {((student && student.isApproved === 1) || (user && authorID === user.id)) && <ApprenticeshipContent app={apprenticeshipMainInfo} setSnackBarInfo={setSnackBarInfo} setResources={setResources} resources={resources} socket={socket} />}
+            {user && authorID === user.id && isApproved && <AddContent setSnackBarInfo={setSnackBarInfo} appID={ID} appName={name} setResourceList={setResources} socket={socket} enrolledStudents={enrolledStudentsList} />}
         </>
     )
 }

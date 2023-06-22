@@ -1,7 +1,7 @@
 import { Box, Modal } from '@mui/material';
 import {useState} from 'react';
 
-const AddLink = ({open, handleClose, setSnackBarInfo, appID, setResourceList}) => {
+const AddLink = ({open, handleClose, setSnackBarInfo, appID, setResourceList, socket, enrolledStudents}) => {
     const [link, setLink] = useState('');
     const [linkName, setLinkName] = useState('');
 
@@ -48,6 +48,8 @@ const AddLink = ({open, handleClose, setSnackBarInfo, appID, setResourceList}) =
                         [date]: [...(prevState[date] || []), data.apprenticeshipResource]
                     };
                 });
+                console.log(enrolledStudents);
+                socket.current.emit('sendResource', appID, data.apprenticeshipResource, enrolledStudents);
             } else {
                 setSnackBarInfo({ severity: 'error', message: data.message, open });
             }

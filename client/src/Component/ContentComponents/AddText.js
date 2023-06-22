@@ -4,7 +4,7 @@ import { EditorState, convertToRaw } from "draft-js";
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 
-const AddText = ({ open, handleClose, setSnackBarInfo, appID, setResourceList }) => {
+const AddText = ({ open, handleClose, setSnackBarInfo, appID, setResourceList, socket,  enrolledStudents }) => {
     const [content, setContent] = useState(() => EditorState.createEmpty());
     const [title, setTitle] = useState('');
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -56,6 +56,7 @@ const AddText = ({ open, handleClose, setSnackBarInfo, appID, setResourceList })
                         [date]: [...(prevState[date] || []), data.apprenticeshipResource]
                     };
                 });
+                socket.current.emit('sendResource', appID, data.apprenticeshipResource, enrolledStudents);
             } else {
                 setSnackBarInfo({ severity: 'error', message: data.message, open });
             }
