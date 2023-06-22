@@ -5,6 +5,8 @@ import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import htmlToDraft from 'html-to-draftjs';
 import draftToHtml from 'draftjs-to-html';
 import { ActionSuccessfully, UtilApprenticeshipDescription, UtilApprenticeshipPicture } from './ApprenticeshipUtils';
+import { isMobile } from 'react-device-detect';
+
 
 const EditApprenticeship = ({ open, handleClose, apprenticeship, setApprenticeshipList, setSnackBarInfo }) => {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -18,6 +20,13 @@ const EditApprenticeship = ({ open, handleClose, apprenticeship, setApprenticesh
     const [success, setSuccess] = useState(false);
     const [appDescriptionModalOpen, setAppDescriptionModalOpen] = useState(false);
     const [folderName, setFolderName] = useState('');
+    const [landscape, setLandscape] = useState(() => {
+        if(isMobile)
+            return 'landscape-app';
+        else
+            return '';
+    });
+    
     useEffect(() => {
         if (user) {
             fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/addresses/${user.id}`)
@@ -188,7 +197,7 @@ const EditApprenticeship = ({ open, handleClose, apprenticeship, setApprenticesh
     };
     return (
         <Modal open={open} onClose={handleClose}>
-            <Box className={windowWidth > 768 ? 'center-modal landscape-app' : 'container p-3 add-app-mobile scroll-add-app'} sx={{ background: 'white', borderRadius: '8px' }}>
+            <Box className={windowWidth > 768 ? `center-modal ${landscape}` : 'container p-3 add-app-mobile scroll-add-app'} sx={{ background: 'white', borderRadius: '8px' }}>
                 <Typography variant="h4" className="text-center mb-3 mt-2 ps-2 pe-2">Edit Apprenticeship</Typography>
                 <div className={windowWidth > 990 ? 'row' : ''}>
                     <div className="col">

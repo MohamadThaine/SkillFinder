@@ -46,7 +46,7 @@ const OwnerApprenticeship = ({ app, setSnackBarInfo, setAppList }) => {
     return (
         <>
             {app !== null && <ListItemButton onClick={() => setOpen(!open)} className={"me-2 ms-2 mt-3 app-owner-home border-bottom " + (isDeleting ? 'is-deleting' : '')}>
-                <ListItemText primary={app.Name} sx={{ width: '20%' }} />
+                <ListItemText primary={app.Name} sx={{ width: '25%'}} />
                 <ListItemText primary={"Student: " + app.enrolledStudentsCount} />
                 {open ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>}

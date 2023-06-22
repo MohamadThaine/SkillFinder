@@ -6,6 +6,8 @@ import draftToHtml from 'draftjs-to-html';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import '../Assets/Styles/AddApprenticeship.css';
 import { ActionSuccessfully, UtilApprenticeshipDescription, UtilApprenticeshipPicture } from "./ApprenticeshipUtils";
+import { isMobile } from 'react-device-detect';
+
 const AddApprenticeship = ({ open, handleClose, setSnackBarInfo, setAppList }) => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -27,6 +29,12 @@ const AddApprenticeship = ({ open, handleClose, setSnackBarInfo, setAppList }) =
     const [addresses, setAddresses] = useState([]);
     const [selectedAddress, setSelectedAddress] = useState(null);
     const [id, setId] = useState(null);
+    const [landscape, setLandscape] = useState(() => {
+        if(isMobile)
+            return 'landscape-app';
+        else
+            return '';
+    });
     useEffect(() => {
         fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/categories`)
             .then(res => res.json())
@@ -194,7 +202,7 @@ const AddApprenticeship = ({ open, handleClose, setSnackBarInfo, setAppList }) =
 
     return (
         <Modal open={open} onClose={modalClosed}>
-            <Box className={windowWidth > 768 ? 'center-modal landscape-app' : 'container p-3 add-app-mobile scroll-add-app'} sx={{ background: 'white', borderRadius: '8px' }}>
+            <Box className={windowWidth > 768 ? `center-modal ${landscape}` : 'container p-3 add-app-mobile scroll-add-app'} sx={{ background: 'white', borderRadius: '8px' }}>
                 <Typography variant="h4" className="text-center mb-3 mt-2 ps-2 pe-2">Add Apprenticeship</Typography>
                 <div className={windowWidth > 990 ? 'row' : ''}>
                     <div className="col">
