@@ -50,6 +50,7 @@ const getApprenticeshipContent = require('./api/get/getApprenticeshipContent');
 const getLastWeekReviews = require('./api/get/getLastWeekReviews');
 const getStudentNotifications = require('./api/get/getStudentNotifications');
 const signFreeTrial = require('./api/post/signFreeTrail');
+const getCategoryApprenticeships = require('./api/get/getCategoryApprenticeships');
 const app = express();
 
 app.use(express.static('public'));
@@ -212,6 +213,7 @@ app.get('/apprenticeship/:id/:userID', getApprinticeshipInfo);
 app.get('/apprenticeship-pics/:id', getApprenticeshipPics);
 app.get('/apprenticeships/:isApproved/:id', getAllApprenticeship);
 app.get('/categories', getAllCategories);
+app.get('/getCategoryApprenticeships/:Name', getCategoryApprenticeships);
 app.get('/users/:isApproved', getAllUsers);
 app.get('/addresses/:id', getAddresses);
 app.get('/enrollRequests/:apprenticeshipId/:userID/:isApproved', getEnrollRequests);

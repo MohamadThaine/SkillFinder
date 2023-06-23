@@ -30,6 +30,7 @@ import './Assets/Styles/loader.css'
 import Profile from './Pages/Profile';
 import UserApprenticeships from './Pages/UserApprenticeships';
 import { io } from "socket.io-client"
+import Category from './Pages/Category';
 
 function App() {
   const navigate = useNavigate();
@@ -115,6 +116,7 @@ function App() {
         <Route path='/Owner' element={<OwnerHome user={user} ownerInfo={otherUserInfo} setOwnerInfo={setOtherUserInfo} setSnackBarInfo={setSnackBarInfo} />} />
         <Route path='/Profile' element={<Profile user={user} setUser={setUser} otherInfo={otherUserInfo} setOtherInfo={setOtherUserInfo} setSnackBarInfo={setSnackBarInfo} />} />
         <Route path='/MyApprenticeships' element={<UserApprenticeships user={user} />} />
+        <Route path='/Category/:Name' element={<Category />} />
         <Route path='/Admin/Apprenticeship' element={<AdminApprenticeshipList isAdmin={isAdmin} setSnackBarInfo={setSnackBarInfo} />} />
         <Route path='/Admin/Approve' element={<AdminApproveList isAdmin={isAdmin} setSnackBarInfo={setSnackBarInfo} />} />
         <Route path='/Admin/User' element={<AdminUserList isAdmin={isAdmin} setSnackBarInfo={setSnackBarInfo} />} />

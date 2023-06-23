@@ -20,12 +20,6 @@
     display: none !important;
 }
 
-.filter-section{
-    border-right: 1px solid rgba(0, 0, 0, 0.274);
-    width: fit-content !important;
-    display: flex;
-}
-
 .result{
     cursor: pointer;
     margin-top: 1rem;
@@ -83,20 +77,13 @@
 }
 
 @media screen and (max-width: 990px){
-
     .searchHeader, .searchPageInput{
         display: flex !important;
-    }
-
-    
-    .filter-section{
-        display: none !important;
     }
 }
 
 @media screen and (max-width: 600px){
     .result{
         width: 100% !important;
-        margin-left: -10px !important;
     }
 }

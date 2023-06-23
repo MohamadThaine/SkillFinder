@@ -55,29 +55,29 @@ function Home(){
             <div className='container'>  
                 <h2 className='text-center top'>Top Categories</h2>
                 <div className='row justify-content-between mt-4'>
-                    <div className='col-sm-3 d-flex justify-content-center category'>
+                    <div className='col-sm-3 d-flex justify-content-center category' onClick={() => navigate('/Category/Carpentering')}>
                         <img className='ms-3' src={Carpentering}/>
                         <h4 className='col-md-4 me-5'>Carpentering</h4>
                     </div>
-                    <div className='col-sm-3 d-flex justify-content-center category'>
+                    <div className='col-sm-3 d-flex justify-content-center category' onClick={() => navigate('/Category/Design')}>
                         <img className='ms-3' src={GraphicDesign}/>
                         <h4 className='col-md-4 me-5'>Graphic Design</h4>
                     </div>
-                    <div className='col-sm-3 d-flex justify-content-center category'>
+                    <div className='col-sm-3 d-flex justify-content-center category' onClick={() => navigate('/Category/Agriculture')}>
                         <img className='ms-3' src={Agriculture}/>
                         <h4 className='col-md-4 me-5'>Agriculture</h4>
                     </div>
                 </div>
                 <div className='row justify-content-between mt-4 pb-3'>
-                    <div className='col-sm-3 d-flex justify-content-center category'>
+                    <div className='col-sm-3 d-flex justify-content-center category' onClick={() => navigate('/Category/Networking')}>
                         <img className='ms-3' src={Networking}/>
                         <h4 className='col-md-4 me-5'>Networking</h4>
                     </div>
-                    <div className='col-sm-3 d-flex justify-content-center category'>
+                    <div className='col-sm-3 d-flex justify-content-center category' onClick={() => navigate('/Category/Electricity')}>
                         <img className='ms-3' src={Electricity}/>
                         <h4 className='col-md-4 me-5'>Electricity</h4>
                     </div>
-                    <div className='col-sm-3 d-flex justify-content-center category'>
+                    <div className='col-sm-3 d-flex justify-content-center category' onClick={() => navigate('/Category/Fashion Design')}>
                          <img className='ms-3' src={Fashion}/>
                         <h4 className='col-md-4 me-5'>Fashion Design</h4> 
                     </div>

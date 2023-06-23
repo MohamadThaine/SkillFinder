@@ -288,8 +288,7 @@ const PicturesModal = ({ handleClose, open, pictures }) => {
         img.className = 'main-pic fade-img';
         setTimeout(() => {
             img.className = 'main-pic';
-        }
-            , 1000);
+        } , 1000);
     }
 
     if (pictures.length === 0) return null;

@@ -54,7 +54,7 @@ function Search() {
                 <input className="defultInput searchPageInput ms-auto me-auto" placeholder="Search..." value={searchKeyWords} onChange={e => setSearchKeyWords(e.target.value)} />
             </div>
             <div className="row mt-3">
-                <div className="col ms-3">
+                <div className="col">
                     {!searchResults && <h3 className="text-center">There was an error pelase try again later or contact us </h3>}{/*In case error occurs in the server, display this message*/}
                     {searchResults && searchResults.length === 0 && <h3 className="text-center">No result found for {decodeURIComponent(keyWords.replace('%', ' '))}</h3>} {/*In case no result found, display this message*/}
                     {searchResults && searchResults.length > 0 && <>
@@ -68,11 +68,11 @@ function Search() {
 
 }
 
-const SearchResult = ({ resultList }) => {
+export const SearchResult = ({ resultList }) => {
     const rowLength = range(1, Math.ceil(resultList.length / 4));
     return (
         rowLength.map((row) => (
-            <div key={randomstring.generate(5)} className="row result-row">
+            <div key={randomstring.generate(5)} className="row">
                 {resultList.slice((row - 1) * 4, row * 4).map((result) => (
                     <Apprenticeship key={result.ID} app={result} page='search' />
                 ))}
