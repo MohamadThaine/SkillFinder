@@ -5,6 +5,7 @@ import EditApprenticeship from "./EditApprenticeship";
 import DeleteApprenticeship from "./DeleteApprenticeship";
 import '../Assets/Styles/DeleteApprenticeship.css';
 import ContactApprentice from "./ContactApprentice";
+import StudentTable from "./StudentTable";
 const OwnerList = ({ title, list, setList, listType, setSnackBarInfo, headerClassName, listOpen, setListOpen, listClassName, windowWidth }) => {
     return (
         <List className={listClassName}
@@ -36,7 +37,7 @@ const OwnerApprenticeship = ({ app, setSnackBarInfo, setAppList }) => {
     const [editOpen, setEditOpen] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
-
+    const [studentTableOpen, setStudentTableOpen] = useState(false);
     useEffect(() => {
         if (isDeleting) {
             open && setOpen(false);
@@ -55,13 +56,14 @@ const OwnerApprenticeship = ({ app, setSnackBarInfo, setAppList }) => {
                     <Button variant="contained" color="success" className="mt-1" onClick={() => {
                         window.open('/Apprenticeship/' + app.ID, "_blank");
                     }}>View</Button>
-                    <Button variant="contained" color="warning" className="ms-3 mt-1">View Students</Button>
+                    <Button variant="contained" color="warning" className="ms-3 mt-1" onClick={() => setStudentTableOpen(true)}>View Students</Button>
                     <Button variant="contained" className="ms-3 mt-1" onClick={() => setEditOpen(true)}>Edit</Button>
                     <Button variant="contained" color="error" className="ms-3 mt-1" onClick={() => setDeleteOpen(true)}>Delete</Button>
                 </List>
             </Collapse>}
             {app !== null && editOpen && <EditApprenticeship open={editOpen} handleClose={() => setEditOpen(false)} setSnackBarInfo={setSnackBarInfo} setApprenticeshipList={setAppList} apprenticeship={app} />}
             {app !== null && deleteOpen && <DeleteApprenticeship open={deleteOpen} handleClose={() => setDeleteOpen(false)} apprenticeship={app} setAppList={setAppList} setSnackBarInfo={setSnackBarInfo} setIsDeleting={setIsDeleting} />}
+            {app !== null && studentTableOpen && <StudentTable open={studentTableOpen} handleClose={() => setStudentTableOpen(false)} appID={app.ID} />}
         </>
     )
 }

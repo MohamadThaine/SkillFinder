@@ -51,6 +51,7 @@ const getLastWeekReviews = require('./api/get/getLastWeekReviews');
 const getStudentNotifications = require('./api/get/getStudentNotifications');
 const signFreeTrial = require('./api/post/signFreeTrail');
 const getCategoryApprenticeships = require('./api/get/getCategoryApprenticeships');
+const getApprenticeshipStudents = require('./api/get/getApprenticeshipStudents');
 const app = express();
 
 app.use(express.static('public'));
@@ -227,6 +228,7 @@ app.get('/getAnnouncements/:id', getAnnouncements);
 app.get('/getResources/:id', getApprenticeshipContent);
 app.get('/getLastWeekReviews/:id', getLastWeekReviews);
 app.get('/getStudentNotifications/:id', getStudentNotifications);
+app.get('/getAppStudents/:id', getApprenticeshipStudents);
 app.delete('/deleteApprenticeship/:id', deleteApprenticeship);
 app.delete('/rejectOwner/:id', rejectOwner);
 app.delete('/deactiveUser/:id', deactiveUser);
