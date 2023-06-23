@@ -27,6 +27,8 @@ const getApprenticeshipStudents = async (req, res) => {
                 },
             ],
         });
+        if(!apprenticeship) return res.status(404).json({ error: 'Apprenticeship not found!' });
+        if(req.user.id !== apprenticeship.Owner_ID) return res.status(403).json({ error: 'You are not authorized to view this apprenticeship!' });
         res.json({ success: true, students: apprenticeship.apprenticeship_apprentices });
     } catch (error) {
         res.status(500).json({ error: error.message });

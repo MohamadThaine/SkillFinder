@@ -1,4 +1,4 @@
-import { Box, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow  } from "@mui/material"
+import { Box, Button, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow  } from "@mui/material"
 import { useEffect, useState } from "react";
 
 const StudentTable = ({ open, handleClose, appID }) => {
@@ -13,7 +13,6 @@ const StudentTable = ({ open, handleClose, appID }) => {
         }).then(res => res.json()).then(data => {
             if (data.success) {
                 setStudents(data.students);
-                console.log(data.students);
             } else {
                 console.log(data);
             }
@@ -24,9 +23,10 @@ const StudentTable = ({ open, handleClose, appID }) => {
 
     return (
         <Modal open={open} onClose={handleClose}>
-            <Box className='center-modal' sx={{ background: 'white' }}>
+            <Box className='center-modal text-center' sx={{ background: 'white' }}>
+                <h1>Students</h1>
                 <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }}>
+                    <Table sx={{ minWidth: 400 }}>
                         <TableHead>
                             <TableRow>
                                 <TableCell align="center">Name</TableCell>
@@ -51,6 +51,7 @@ const StudentTable = ({ open, handleClose, appID }) => {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <Button variant="contained" className="mt-3" onClick={handleClose}>Close</Button>
             </Box>
         </Modal>
     )
