@@ -9,7 +9,7 @@ const AddAnnoucment = ({ open, handleClose, appList, setSnackBarInfo, appID, app
     const [content, setContent] = useState(() => EditorState.createEmpty());
     const [subject, setSubject] = useState('');
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-    const [apprenticeship, setApprenticeship] = useState(appID === null? appList[0].ID : appID);
+    const [apprenticeship, setApprenticeship] = useState(appID === null? appList.length > 0 ? appList[0].ID: null : appID);
     const [annoucmentContantOpen, setAnnoucmentContantOpen] = useState(false);
 
     useEffect(() => {
