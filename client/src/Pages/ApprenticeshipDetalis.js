@@ -17,6 +17,7 @@ import ContactOwner from '../Component/ContactOwner';
 import ApprenticeshipReviews from '../Component/ApprenticeshipReviews';
 import ApprenticeshipContent from '../Component/ApprenticeshipContent';
 import AddContent from '../Component/AddContent';
+import SignFreeTrail from '../Component/SignFreeTrail';
 
 function ApprenticeshipDetalis({ setSnackBarInfo, socket }) {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
@@ -35,6 +36,7 @@ function ApprenticeshipDetalis({ setSnackBarInfo, socket }) {
     const [endDate, setEndDate] = useState('');
     const [reviewsList, setReviewsList] = useState([]);
     const [freeTrail, setFreeTrail] = useState('');
+    const [freeTrailStudent, setFreeTrailStudent] = useState('');
     const [authorName, setAuthorName] = useState('');
     const [authorPic, setAuthorPic] = useState();
     const [authorID, setAuthorID] = useState('');
@@ -50,6 +52,7 @@ function ApprenticeshipDetalis({ setSnackBarInfo, socket }) {
     const [openEnroll, setOpenEnroll] = useState(false);
     const [openContact, setOpenContact] = useState(false);
     const [openReviews, setOpenReviews] = useState(false);
+    const [openFreeTrail, setOpenFreeTrail] = useState(false);
     const [resources, setResources] = useState([]);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const navigate = useNavigate();
@@ -80,6 +83,7 @@ function ApprenticeshipDetalis({ setSnackBarInfo, socket }) {
                 setStartDate(new Date(data.apprenticeship.Start_Date).toLocaleDateString());
                 setEndDate(new Date(data.apprenticeship.End_Date).toLocaleDateString());
                 setFreeTrail(data.apprenticeship.FreeTrial);
+                setFreeTrailStudent(data.FreeTrailStudent);
                 setAuthorName(data.author.Name);
                 if (data.authorPic != null) setAuthorPic(data.authorPic);
                 else setAuthorPic(defalutMalePic);
@@ -90,6 +94,7 @@ function ApprenticeshipDetalis({ setSnackBarInfo, socket }) {
                 setApprenticeshipMainInfo({
                     ID: data.apprenticeship.ID,
                     name: data.apprenticeship.Name,
+                    freeTrailDuration: data.apprenticeship.FreeTrial,
                 });
                 setAddress(data.address);
                 setReviewsList(data.reviews);
@@ -204,7 +209,7 @@ function ApprenticeshipDetalis({ setSnackBarInfo, socket }) {
                                 <button className='app-btn' onClick={() => handleModal(setOpenContact, openContact)}>Contact</button>
                             </div>
                             <div className='row app-btn-container'>
-                                {freeTrail > 0 && <button className='app-btn'>Free Trail</button>}
+                                {freeTrail > 0 && !student && <button className='app-btn' onClick={() => setOpenFreeTrail(true)}>Free Trail</button>}
                             </div>
                         </div>
                     </div>
@@ -217,8 +222,9 @@ function ApprenticeshipDetalis({ setSnackBarInfo, socket }) {
             {openContact && <ContactOwner open={openContact} handleClose={() => handleModal(setOpenContact, openContact)} owner={owner} setSnackBarInfo={setSnackBarInfo} />}
             {openReviews && <ApprenticeshipReviews open={openReviews} handleClose={() => handleModal(setOpenReviews, openReviews)} apprenticeship={apprenticeshipMainInfo} owner={owner} setSnackBarInfo={setSnackBarInfo}
                 reviewsList={reviewsList} setReviewsList={setReviewsList} windowWidth={windowWidth} student={student} />}
-            {((student && student.isApproved === 1) || (user && authorID === user.id)) && <ApprenticeshipContent app={apprenticeshipMainInfo} setSnackBarInfo={setSnackBarInfo} setResources={setResources} resources={resources} socket={socket} />}
-            {user && authorID === user.id && isApproved && <AddContent setSnackBarInfo={setSnackBarInfo} appID={ID} appName={name} setResourceList={setResources} socket={socket} enrolledStudents={enrolledStudentsList} />}
+            {openFreeTrail && <SignFreeTrail open={openFreeTrail} handleClose={() => handleModal(setOpenFreeTrail, openFreeTrail)} setSnackBarInfo={setSnackBarInfo} app={apprenticeshipMainInfo} owner={owner} freeTrailStudent={freeTrailStudent} />}
+            {((student && student.isApproved === 1) || (user && authorID === user.id) || (freeTrailStudent)) && <ApprenticeshipContent app={apprenticeshipMainInfo} setSnackBarInfo={setSnackBarInfo} setResources={setResources} resources={resources} socket={socket} />}
+            {user && authorID === user.id && isApproved && <AddContent setSnackBarInfo={setSnackBarInfo} appID={ID} appName={name} setResourceList={setResources} socket={socket} enrolledStudents={enrolledStudentsList} freeTrail={freeTrail} />}
         </>
     )
 }

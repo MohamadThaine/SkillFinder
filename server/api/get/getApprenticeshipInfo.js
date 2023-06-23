@@ -17,15 +17,16 @@ const getApprenticeshipInfo = async (req, res) => {
       );
     });
 
-    const [address, category, author, authorPic, enrolledStudents, enrolledStudentsList, student, reviews] = await Promise.all([
+    const [address, category, author, authorPic, enrolledStudents, enrolledStudentsList, FreeTrailStudent, student, reviews] = await Promise.all([
       apprenticeshipResult.Address_ID !== null ? getAddress(apprenticeshipResult.Address_ID) : null,
       getCategory(apprenticeshipResult.Category_ID),
       getAuthor(apprenticeshipResult.Owner_ID),
       getAuthorPic(req, apprenticeshipResult.Owner_ID),
       getEntrolledStudentCount(apprenticeshipResult.ID),
       getEnrolledStudentIDs(apprenticeshipResult.ID),
+      getStudentFreeTrial(apprenticeshipResult.ID, userID),
       userID !== 'guest' ? getStudent(apprenticeshipResult.ID, userID) : null,
-      getReviews(apprenticeshipResult.ID)
+      getReviews(apprenticeshipResult.ID),
     ]);
 
     const data = {
@@ -37,7 +38,8 @@ const getApprenticeshipInfo = async (req, res) => {
       enrolledStudents,
       student,
       reviews,
-      enrolledStudentsList
+      enrolledStudentsList,
+      FreeTrailStudent
     };
     res.send(data);
   } catch (err) {
@@ -150,6 +152,24 @@ const getStudent = (appID, studentID) => {
     );
   });
 }
+
+const getStudentFreeTrial = (appID, studentID) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      'SELECT * FROM free_trial WHERE Apprenticeship_ID = ? AND Apprentice_ID = ?',
+      [appID, studentID],
+      (err, result) => {
+        if (err) {
+          reject(err);
+          console.log(err);
+        } else {
+          resolve(result[0]);
+        }
+      }
+    );
+  });
+}
+
 
 const getAddress = (ID) => {
   return new Promise((resolve, reject) => {

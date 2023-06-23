@@ -3,7 +3,7 @@ const verifyToken = require('../../../utils/verifyToken');
 const addResource = async (req, res) => {
     if (!verifyToken(req)) return res.status(401).send({ message: 'Unauthorized' });
     try {
-        const { Name, Apprenticeship_ID, Type } = req.body;
+        const { Name, Apprenticeship_ID, Type, FreeTrailAvailable } = req.body;
         const apprenticeship = await Apprenticeship.findByPk(Apprenticeship_ID);
         if (apprenticeship) {
             if (apprenticeship.Owner_ID !== req.user.id) return res.status(401).send({ message: 'Unauthorized' });
@@ -14,14 +14,16 @@ const addResource = async (req, res) => {
                 Apprenticeship_ID,
                 Name,
                 Resource: path,
-                Type
+                Type,
+                FreeTrailAvailable
             });
             res.status(200).send({ success: true, data: {
                 ID: apprenticeshipResource.ID,
                 Name: apprenticeshipResource.Name,
                 Resource: `${req.protocol}://${req.get('host')}/${apprenticeshipResource.Resource}`,
                 Type: apprenticeshipResource.Type,
-                Date_Of_Creation: apprenticeshipResource.Date_Of_Creation
+                Date_Of_Creation: apprenticeshipResource.Date_Of_Creation,
+                FreeTrailAvailable: apprenticeshipResource.FreeTrailAvailable
             } });
         } else {
             res.status(404).send({ message: 'Apprenticeship not found' });

@@ -1,14 +1,16 @@
-import { Box, Modal, Button } from '@mui/material';
+import { Box, Modal, Button, Checkbox } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { EditorState, convertToRaw } from "draft-js";
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 
-const AddText = ({ open, handleClose, setSnackBarInfo, appID, setResourceList, socket,  enrolledStudents }) => {
+const AddText = ({ open, handleClose, setSnackBarInfo, appID, setResourceList, socket, enrolledStudents, freeTrail }) => {
     const [content, setContent] = useState(() => EditorState.createEmpty());
     const [title, setTitle] = useState('');
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const [openTextEditor, setOpenTextEditor] = useState(false);
+    const [freeTrailAvailable, setFreeTrailAvailable] = useState(false);
+
     useEffect(() => {
         window.addEventListener('resize', () => {
             setWindowWidth(window.innerWidth);
@@ -23,7 +25,7 @@ const AddText = ({ open, handleClose, setSnackBarInfo, appID, setResourceList, s
             setSnackBarInfo({ severity: 'error', message: 'Please enter content', open });
             return false;
         }
-        if(title === ''){
+        if (title === '') {
             setSnackBarInfo({ severity: 'error', message: 'Please enter title', open });
             return false;
         }
@@ -36,7 +38,8 @@ const AddText = ({ open, handleClose, setSnackBarInfo, appID, setResourceList, s
         const data = {
             Name: title,
             Content: draftToHtml(convertToRaw(content.getCurrentContent())),
-            Apprenticeship_ID: appID
+            Apprenticeship_ID: appID,
+            FreeTrailAvailable: freeTrailAvailable
         }
         fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/addText`, {
             method: 'POST',
@@ -88,6 +91,10 @@ const AddText = ({ open, handleClose, setSnackBarInfo, appID, setResourceList, s
                         />
                         {windowWidth < 990 && <button type="button" className="btn btn-primary mt-3 mb-3 text-center ms-5 me-5" onClick={() => setOpenTextEditor(true)}>Add Content</button>}
                     </div>
+                    {freeTrail != 0 && <div>
+                        <Checkbox color="primary" id='freeTrail' onChange={e => setFreeTrailAvailable(e.target.checked)} />
+                        <label htmlFor="freeTrail" className="form-label">Free Trail Available</label>
+                    </div>}
                     <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Submit</button>
                     <button type="button" className="btn btn-secondary ms-2" onClick={handleClose}>Cancel</button>
                 </form>

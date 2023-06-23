@@ -1,10 +1,10 @@
-import { Alert, Box, Modal } from '@mui/material';
+import { Alert, Box, Checkbox, Modal } from '@mui/material';
 import React, {useState} from 'react';
 
-const AddFile = ({open, handleClose, setSnackBarInfo, appID, submitResource}) => {
+const AddFile = ({open, handleClose, setSnackBarInfo, appID, submitResource, freeTrail}) => {
     const [file, setFile] = useState(null);
     const [fileName, setFileName] = useState('');
-
+    const [freeTrailAvailable, setFreeTrailAvailable] = useState(false);
     const verifyInput = () => {
         if (file === null) {
             setSnackBarInfo({severity: 'error', message: 'Please select file', open});
@@ -30,6 +30,7 @@ const AddFile = ({open, handleClose, setSnackBarInfo, appID, submitResource}) =>
         data.append('Name', fileName);
         data.append('Apprenticeship_ID', appID);
         data.append('Type', 'file');
+        data.append('FreeTrailAvailable', freeTrailAvailable);
         submitResource(data, 'File', handleClose);
     }
 
@@ -46,6 +47,8 @@ const AddFile = ({open, handleClose, setSnackBarInfo, appID, submitResource}) =>
                         <label htmlFor="fileName" className="form-label">File Name</label>
                         <input type="text" className="form-control" id="fileName" onChange={e => setFileName(e.target.value)} />
                     </div>
+                    {freeTrail != 0 && <Checkbox color="primary" id='freeTrail' onChange={e => setFreeTrailAvailable(e.target.checked)} />}
+                    {freeTrail != 0 && <label htmlFor="freeTrail" className="form-label">Free Trail Available</label>}
                     <Alert severity="info">Maxmimum File Size is 1GB</Alert>
                     <button type="submit" className="btn btn-primary mt-3" onSubmit={handleSubmit}>Submit</button>
                     <button type="button" className="btn btn-secondary ms-2 mt-3" onClick={handleClose}>Cancel</button>

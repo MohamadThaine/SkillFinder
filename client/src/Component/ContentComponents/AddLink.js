@@ -1,10 +1,10 @@
-import { Box, Modal } from '@mui/material';
+import { Box, Checkbox, Modal } from '@mui/material';
 import {useState} from 'react';
 
-const AddLink = ({open, handleClose, setSnackBarInfo, appID, setResourceList, socket, enrolledStudents}) => {
+const AddLink = ({open, handleClose, setSnackBarInfo, appID, setResourceList, socket, enrolledStudents, freeTrail}) => {
     const [link, setLink] = useState('');
     const [linkName, setLinkName] = useState('');
-
+    const [freeTrailAvailable, setFreeTrailAvailable] = useState(false);
     const verifyInput = () => {
         if (link === '') {
             setSnackBarInfo({ severity: 'error', message: 'Please enter link', open });
@@ -28,7 +28,8 @@ const AddLink = ({open, handleClose, setSnackBarInfo, appID, setResourceList, so
         const data = {
             Name: linkName,
             Link: link,
-            Apprenticeship_ID: appID
+            Apprenticeship_ID: appID,
+            FreeTrailAvailable: freeTrailAvailable
         }
         fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/addLink`, {
             method: 'POST',
@@ -72,6 +73,10 @@ const AddLink = ({open, handleClose, setSnackBarInfo, appID, setResourceList, so
                         <label htmlFor="linkName" className="form-label">Link Name</label>
                         <input type="text" className="form-control" id="linkName" onChange={e => setLinkName(e.target.value)} />
                     </div>
+                    {freeTrail != 0 && <div>
+                        <Checkbox color="primary" id='freeTrail' onChange={e => setFreeTrailAvailable(e.target.checked)} />
+                        <label htmlFor="freeTrail" className="form-label">Free Trail Available</label>
+                    </div>}
                     <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Submit</button>
                     <button type="button" className="btn btn-secondary ms-2" onClick={handleClose}>Cancel</button>
                 </form>

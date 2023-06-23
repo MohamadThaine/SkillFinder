@@ -3,7 +3,7 @@ const verifyToken = require('../../../utils/verifyToken');
 const addLink = async (req, res) => {
     if (!verifyToken(req)) return res.status(401).send({ message: 'Unauthorized' });
     try {
-        const { Name, Link, Apprenticeship_ID } = req.body;
+        const { Name, Link, Apprenticeship_ID, FreeTrailAvailable } = req.body;
         const apprenticeship = await Apprenticeship.findByPk(Apprenticeship_ID);
         if (apprenticeship) {
             if (apprenticeship.Owner_ID !== req.user.id) return res.status(401).send({ message: 'Unauthorized' });
@@ -12,7 +12,8 @@ const addLink = async (req, res) => {
                 Apprenticeship_ID,
                 Name,
                 Resource: Link,
-                Type: 'link'
+                Type: 'link',
+                FreeTrailAvailable
             });
             res.status(200).send({ success: true, apprenticeshipResource });
         } else {

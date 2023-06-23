@@ -14,7 +14,7 @@ import AddPicture from './ContentComponents/AddPicture';
 import AddFile from './ContentComponents/AddFile';
 import AddText from './ContentComponents/AddText';
 
-const AddContent = ({ setSnackBarInfo, appID, appName, setResourceList, socket, enrolledStudents }) => {
+const AddContent = ({ setSnackBarInfo, appID, appName, setResourceList, socket, enrolledStudents, freeTrail }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const [openAddAnnouncement, setOpenAddAnnouncement] = useState(false);
@@ -137,14 +137,14 @@ const AddContent = ({ setSnackBarInfo, appID, appName, setResourceList, socket, 
             </Menu>
             {openAddAnnouncement && <AddAnnoucment open={openAddAnnouncement} handleClose={() => setOpenAddAnnouncement(false)} setSnackBarInfo={setSnackBarInfo}
                 appID={appID} appName={appName} />}
-            {openAddLink && <AddLink open={openAddLink} handleClose={() => setOpenAddLink(false)} setSnackBarInfo={setSnackBarInfo} appID={appID} setResourceList={setResourceList} socket={socket} enrolledStudents={enrolledStudents} />}
+            {openAddLink && <AddLink open={openAddLink} handleClose={() => setOpenAddLink(false)} setSnackBarInfo={setSnackBarInfo} appID={appID} setResourceList={setResourceList} socket={socket} enrolledStudents={enrolledStudents} freeTrail={freeTrail} />}
             {openAddVideo && <AddVideo open={openAddVideo} handleClose={() => setOpenAddVideo(false)} setSnackBarInfo={setSnackBarInfo} appID={appID}
-                submitResource={handleSubmitResource} />}
+                submitResource={handleSubmitResource} freeTrail={freeTrail} />}
             {openAddPicture && <AddPicture open={openAddPicture} handleClose={() => setOpenAddPicture(false)} setSnackBarInfo={setSnackBarInfo} appID={appID}
-                submitResource={handleSubmitResource} />}
+                submitResource={handleSubmitResource} freeTrail={freeTrail} />}
             {openAddFile && <AddFile open={openAddFile} handleClose={() => setOpenAddFile(false)} setSnackBarInfo={setSnackBarInfo} appID={appID}
-                submitResource={handleSubmitResource} />}
-            {openAddText && <AddText open={openAddText} handleClose={() => setOpenAddText(false)} setSnackBarInfo={setSnackBarInfo} appID={appID} setResourceList={setResourceList} socket={socket} enrolledStudents={enrolledStudents} />}
+                submitResource={handleSubmitResource} freeTrail={freeTrail} />}
+            {openAddText && <AddText open={openAddText} handleClose={() => setOpenAddText(false)} setSnackBarInfo={setSnackBarInfo} appID={appID} setResourceList={setResourceList} socket={socket} enrolledStudents={enrolledStudents} freeTrail={freeTrail} />}
             {isUplaoding && <CircularProgress
                 variant='determinate' className='ms-3' value={progress} style={{ background: 'lightGray', borderRadius: '90px', width: '5rem', height: '5rem' }} />}
         </div>

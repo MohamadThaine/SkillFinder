@@ -3,7 +3,7 @@ const verifyToken = require('../../../utils/verifyToken');
 const addText = async (req, res) => {
     if (!verifyToken(req)) return res.status(401).send({ message: 'Unauthorized' });
     try {
-        const { Name, Content, Apprenticeship_ID } = req.body;
+        const { Name, Content, Apprenticeship_ID, FreeTrailAvailable } = req.body;
         const apprenticeship = await Apprenticeship.findByPk(Apprenticeship_ID);
         if (apprenticeship) {
             console.log(apprenticeship.Owner_ID, req.user.id);
@@ -13,7 +13,8 @@ const addText = async (req, res) => {
                 Apprenticeship_ID,
                 Name,
                 Resource: Content,
-                Type: 'text'
+                Type: 'text',
+                FreeTrailAvailable
             });
             res.status(200).send({ success: true, apprenticeshipResource });
         } else {

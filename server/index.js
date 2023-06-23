@@ -49,6 +49,7 @@ const addResource = require('./api/post/addContent/addResource');
 const getApprenticeshipContent = require('./api/get/getApprenticeshipContent');
 const getLastWeekReviews = require('./api/get/getLastWeekReviews');
 const getStudentNotifications = require('./api/get/getStudentNotifications');
+const signFreeTrial = require('./api/post/signFreeTrail');
 const app = express();
 
 app.use(express.static('public'));
@@ -195,6 +196,7 @@ app.post('/addAnnouncement', addAnnouncement);
 app.post('/addText', addText)
 app.post('/addLink', addLink);
 app.post('/addResource', uploadAppResource, addResource);
+app.post('/signFreeTrial', signFreeTrial);
 app.put('/verify-email', verifyEmail);
 app.put('/approve/apprenticeship/:id', approve.approveApprenticeship);
 app.put('/approve/owner/:id', approve.approveOwner);

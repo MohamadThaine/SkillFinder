@@ -20,6 +20,7 @@ const ApprenticeshipContent = ({ app, setSnackBarInfo, resources, setResources, 
                         r[date] = [...r[date] || [], resource];
                         return r;
                     }, {}));
+                    console.log(data.proccessedResources);
                 }
                 else {
                     setSnackBarInfo({ severity: 'error', message: data.message, open: true });

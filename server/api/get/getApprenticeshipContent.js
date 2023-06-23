@@ -1,4 +1,4 @@
-const { ApprenticeshipApprentice, ApprenticeshipResources, Apprenticeship } = require('../../models/Apprenticeship');
+const { ApprenticeshipApprentice, ApprenticeshipResources, Apprenticeship, FreeTrial } = require('../../models/Apprenticeship');
 const verifyToken = require('../../utils/verifyToken');
 const getApprenticeshipContent = async (req, res) => {
     if (!verifyToken(req)) return res.status(401).json({ message: 'Unauthorized' });
@@ -11,10 +11,20 @@ const getApprenticeshipContent = async (req, res) => {
                 Apperntice_ID: req.user.id
             },
         });
-        if (checkStudent.length === 0 && apprenticeship.Owner_ID !== req.user.id) return res.status(401).json({ message: 'Unauthorized' });
-        const apprenticeshipResources = await ApprenticeshipResources.findAll({
+        const checkFreeTrial = await FreeTrial.findAll({
             where:
+            {
+                Apprenticeship_ID: req.params.id,
+                Apprentice_ID: req.user.id
+            },
+        });
+        if (checkStudent.length === 0 && apprenticeship.Owner_ID !== req.user.id && checkFreeTrial.length === 0) return res.status(401).json({ message: 'Unauthorized' });
+        const freeTrailStudent = checkStudent.length === 0 && checkFreeTrial.length !== 0;
+        const apprenticeshipResources = await ApprenticeshipResources.findAll({
+            where:[
                 { Apprenticeship_ID: req.params.id },
+                { FreeTrailAvailable: freeTrailStudent? 1 : [0,1]}
+            ],
             order: [
                 ['Date_Of_Creation', 'ASC']
             ]

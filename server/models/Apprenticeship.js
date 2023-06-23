@@ -178,11 +178,57 @@ const ApprenticeshipResources = sequelize.define('apprenticeship_resources', {
     type: DataTypes.DATE,
     allowNull: false,
     defaultValue: DataTypes.NOW
-  }
+  },
+  FreeTrailAvailable: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
+  },
 }, {
   tableName: 'apprenticeship_resources',
   timestamps: false
 });
+
+const FreeTrial = sequelize.define('free_trial', {
+  ID : {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  Apprentice_ID: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: Apprentice,
+      key: 'User_ID'
+    },
+  },
+  Apprenticeship_ID: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: Apprenticeship,
+      key: 'ID'
+    },
+  },
+  Start_Date: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW
+  },
+  End_Date: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    validator: {
+      isAfter: DataTypes.NOW,
+    }
+  },
+}, {
+  tableName: 'free_trial',
+  timestamps: false
+});
+  
 
 
 Apprenticeship.belongsTo(Category, { foreignKey: 'Category_ID' });
@@ -203,5 +249,6 @@ module.exports = {
   Apprenticeship,
   ApprenticeshipPicture,
   ApprenticeshipApprentice,
-  ApprenticeshipResources
+  ApprenticeshipResources,
+  FreeTrial
 };
