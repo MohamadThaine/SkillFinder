@@ -63,7 +63,7 @@ const OwnerApprenticeship = ({ app, setSnackBarInfo, setAppList }) => {
             </Collapse>}
             {app !== null && editOpen && <EditApprenticeship open={editOpen} handleClose={() => setEditOpen(false)} setSnackBarInfo={setSnackBarInfo} setApprenticeshipList={setAppList} apprenticeship={app} />}
             {app !== null && deleteOpen && <DeleteApprenticeship open={deleteOpen} handleClose={() => setDeleteOpen(false)} apprenticeship={app} setAppList={setAppList} setSnackBarInfo={setSnackBarInfo} setIsDeleting={setIsDeleting} />}
-            {app !== null && studentTableOpen && <StudentTable open={studentTableOpen} handleClose={() => setStudentTableOpen(false)} appID={app.ID} />}
+            {app !== null && studentTableOpen && <StudentTable open={studentTableOpen} handleClose={() => setStudentTableOpen(false)} appID={app.ID} setSnackBarInfo={setSnackBarInfo} />}
         </>
     )
 }

@@ -2,7 +2,7 @@ import { Box, Button, Modal, Paper, Table, TableBody, TableCell, TableContainer,
 import { useEffect, useState } from "react";
 import ContactApprentice from "./ContactApprentice";
 
-const StudentTable = ({ open, handleClose, appID }) => {
+const StudentTable = ({ open, handleClose, appID, setSnackBarInfo }) => {
     const [students, setStudents] = useState([]);
     const [choosedStudent, setChoosedStudent] = useState(null);
     const [openSendMessage, setOpenSendMessage] = useState(false);
@@ -64,7 +64,7 @@ const StudentTable = ({ open, handleClose, appID }) => {
                     </Table>
                 </TableContainer>
                 <Button variant="contained" className="mt-3" onClick={handleClose}>Close</Button>
-                {choosedStudent && <ContactApprentice open={openSendMessage} handleClose={() => setOpenSendMessage(false)} user={choosedStudent} />}
+                {choosedStudent && <ContactApprentice open={openSendMessage} handleClose={() => setOpenSendMessage(false)} user={choosedStudent} setSnackBarInfo={setSnackBarInfo} />}
             </Box>
         </Modal>
     )
