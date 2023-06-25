@@ -5,6 +5,7 @@ import userIcon from '../Assets/Images/user-solid.svg';
 import approveIcon from '../Assets/Images/check-solid.svg';
 import addIcon from '../Assets/Images/plus-solid.svg';
 import schoolIcom from '../Assets/Images/school-solid.svg';
+import simulationIcon from '../Assets/Images/laptop-solid.svg';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 function AdminNavBar({isAdmin, handleLogout}){
@@ -43,6 +44,12 @@ function AdminNavBar({isAdmin, handleLogout}){
         <Link to="/Admin/Edit" className={"nav-link " + (currentPath === '/Admin/Edit'? 'active': 'link-dark')}>
             <img src={addIcon} alt="add" className="admin-nav-bar-icons"/>
             Edit Categories
+        </Link>
+      </li>
+      <li className="nav-item">
+        <Link to="/Admin/Simulations" className={"nav-link " + (currentPath === '/Admin/Simulations'? 'active': 'link-dark')}>
+            <img src={simulationIcon} alt="simulation" className="admin-nav-bar-icons"/>
+            Simulations
         </Link>
       </li>
     </ul>

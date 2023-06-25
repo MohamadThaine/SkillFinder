@@ -16,7 +16,7 @@ const Notifications = ({ socket }) => {
         if (user.User_Type === 1) {
             getStudentNotifications();
         }
-        else {
+        else if(user.User_Type === 2) {
             getOwnerNotifications();
         }
     }, [user]);

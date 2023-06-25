@@ -17,6 +17,7 @@ const EditApprenticeship = ({ open, handleClose, apprenticeship, setApprenticesh
     const [appPictures, setAppPictures] = useState([]);
     const [categoryList, setCategoryList] = useState([]);
     const [freeTrial, setFreeTrial] = useState(apprenticeship.FreeTrial > 0 ? true : false);
+    const [categoryInfo, setCategoryInfo] = useState();
     const [success, setSuccess] = useState(false);
     const [appDescriptionModalOpen, setAppDescriptionModalOpen] = useState(false);
     const [folderName, setFolderName] = useState('');
@@ -51,6 +52,7 @@ const EditApprenticeship = ({ open, handleClose, apprenticeship, setApprenticesh
             .then(res => res.json())
             .then(data => {
                 setCategoryList(data);
+                setCategoryInfo(data.find(category => category.ID === apprenticeshipCopy.Category_ID));
             }).catch(err => console.log(err));
     }, [])
 
@@ -328,8 +330,11 @@ const EditApprenticeship = ({ open, handleClose, apprenticeship, setApprenticesh
                                 <select
                                     id="category"
                                     className="form-control mb-3"
-                                    onChange={(e) => handleInputChange('Category_ID', e.target.value)}
                                     value={apprenticeshipCopy.Category_ID === null ? '' : apprenticeshipCopy.Category_ID}
+                                    onChange={e => {
+                                        setApprenticeshipCopy({ ...apprenticeshipCopy, Category_ID: e.target.value, isSimulation: false });
+                                        setCategoryInfo(categoryList.find(category => String(category.ID) === e.target.value));
+                                    }}
                                 >
                                     <option value="">Select Category</option>
                                     {categoryList.map((category) => (
@@ -338,6 +343,14 @@ const EditApprenticeship = ({ open, handleClose, apprenticeship, setApprenticesh
                                         </option>
                                     ))}
                                 </select>
+                                {apprenticeshipCopy.Category_ID && categoryInfo && categoryInfo.AvailableSimulation  && 
+                                    <FormControl>
+                                        <FormControlLabel
+                                            control={<Checkbox checked={apprenticeshipCopy.isSimulation} onChange={e => handleInputChange('isSimulation', e.target.checked)} />}
+                                            label="Would you like to have simulation?"
+                                            className="mb-1"
+                                        />
+                                    </FormControl>}
                             </div>
                         </div>
                         <label htmlFor="appPicturesUploaded" className="form-label">

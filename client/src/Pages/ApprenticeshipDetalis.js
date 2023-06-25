@@ -48,6 +48,7 @@ function ApprenticeshipDetalis({ setSnackBarInfo, socket }) {
     const [pictures, setPictures] = useState([]);
     const [mainPicture, setMainPicture] = useState('');
     const [address, setAddress] = useState({});
+    const [simulation, setSimulation] = useState();
     const [openAddress, setOpenAddress] = useState(false);
     const [openEnroll, setOpenEnroll] = useState(false);
     const [openContact, setOpenContact] = useState(false);
@@ -99,6 +100,7 @@ function ApprenticeshipDetalis({ setSnackBarInfo, socket }) {
                 setAddress(data.address);
                 setReviewsList(data.reviews);
                 setEnrolledStudentsList(data.enrolledStudentsList);
+                setSimulation(data.simulation);
             })
     }, [ID])
 
@@ -223,8 +225,10 @@ function ApprenticeshipDetalis({ setSnackBarInfo, socket }) {
             {openReviews && <ApprenticeshipReviews open={openReviews} handleClose={() => handleModal(setOpenReviews, openReviews)} apprenticeship={apprenticeshipMainInfo} owner={owner} setSnackBarInfo={setSnackBarInfo}
                 reviewsList={reviewsList} setReviewsList={setReviewsList} windowWidth={windowWidth} student={student} />}
             {openFreeTrail && <SignFreeTrail open={openFreeTrail} handleClose={() => handleModal(setOpenFreeTrail, openFreeTrail)} setSnackBarInfo={setSnackBarInfo} app={apprenticeshipMainInfo} owner={owner} freeTrailStudent={freeTrailStudent} />}
-            {((student && student.isApproved === 1) || (user && authorID === user.id) || (freeTrailStudent)) && <ApprenticeshipContent app={apprenticeshipMainInfo} setSnackBarInfo={setSnackBarInfo} setResources={setResources} resources={resources} socket={socket} />}
+            {((student && student.isApproved === 1) || (user && authorID === user.id) || (freeTrailStudent)) && <ApprenticeshipContent app={apprenticeshipMainInfo} setSnackBarInfo={setSnackBarInfo} 
+            setResources={setResources} resources={resources} socket={socket} simulation={simulation} />}
             {user && authorID === user.id && isApproved && <AddContent setSnackBarInfo={setSnackBarInfo} appID={ID} appName={name} setResourceList={setResources} socket={socket} enrolledStudents={enrolledStudentsList} freeTrail={freeTrail} />}
+            
         </>
     )
 }

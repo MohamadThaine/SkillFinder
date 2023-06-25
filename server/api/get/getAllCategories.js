@@ -10,7 +10,7 @@ const getAllCategories = async (req, res) => {
           model: Apprenticeship,
           attributes: [],
         },
-        attributes: ['ID', 'Name', [sequelize.fn('COUNT', sequelize.literal('apprenticeships.Category_ID')), 'apprenticeshipCount']],
+        attributes: ['ID', 'Name', [sequelize.fn('COUNT', sequelize.literal('apprenticeships.Category_ID')), 'apprenticeshipCount'], 'AvailableSimulation'],
         group: ['Category.ID'],
         where: {
           [Op.not]: [

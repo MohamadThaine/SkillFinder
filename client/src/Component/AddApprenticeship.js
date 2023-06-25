@@ -23,6 +23,8 @@ const AddApprenticeship = ({ open, handleClose, setSnackBarInfo, setAppList }) =
     const [learningMethod, setLearningMethod] = useState('');
     const [categoryList, setCategoryList] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
+    const [selectedCategoryInfo, setSelectedCategoryInfo] = useState(null);
+    const [isSimulation, setIsSimulation] = useState(false);
     const [appPictures, setAppPictures] = useState([]);
     const [appDescriptionModalOpen, setAppDescriptionModalOpen] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -144,7 +146,7 @@ const AddApprenticeship = ({ open, handleClose, setSnackBarInfo, setAppList }) =
             Duration: appDuration,
             DurationType: appDurationType,
             LearningMethod: Method,
-            isSimulation: false,
+            isSimulation: isSimulation,
             Owner_ID: user.id,
             Category_ID: selectedCategory,
             Address_ID: learningMethod === 'Online' ? null : selectedAddress,
@@ -253,10 +255,17 @@ const AddApprenticeship = ({ open, handleClose, setSnackBarInfo, setAppList }) =
                         <div className="row">
                             <div className="col">
                                 <label htmlFor="category" className="mb-1">Category</label>
-                                <select id="category" className="form-control mb-3" onChange={(e) => setSelectedCategory(e.target.value)}>
+                                <select id="category" className="form-control mb-3" onChange={(e) => {
+                                    setSelectedCategory(e.target.value);
+                                    setIsSimulation(false);
+                                    setSelectedCategoryInfo(categoryList.find(category => String(category.ID) === e.target.value));
+                                }}>
                                     <option value="">Select Category</option>
                                     {categoryList.map(category => <option key={category.ID} value={category.ID}>{category.Name}</option>)}
                                 </select>
+                                {selectedCategory && selectedCategoryInfo &&  selectedCategoryInfo.AvailableSimulation && <FormControl>
+                                    <FormControlLabel control={<Checkbox checked={isSimulation} onChange={(e) => setIsSimulation(e.target.checked)} />} label="Would you like to have simulation?" className="mb-1" />
+                                </FormControl>}
                             </div>
                         </div>
                         <label htmlFor="appPicturesUploaded" className="form-label">Upload Apprenticeship Picture</label>

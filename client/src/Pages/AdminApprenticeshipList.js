@@ -79,6 +79,9 @@ function AdminApprenticeshipList({isAdmin, setSnackBarInfo}){
           );
         fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/deleteApprenticeship/${deletedApprenticeshipID ? deletedApprenticeshipID : apprenticeship.ID}`, {
             method: 'DELETE',
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
         }).then(res => res.json())
         .then(data => {
             confirmDialogClose();

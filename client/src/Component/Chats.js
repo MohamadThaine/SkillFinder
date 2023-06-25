@@ -12,9 +12,7 @@ const Chats = ({ socket }) => {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const [showChat, setShowChat] = useState(false);
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
-    const [ownerInfo, setOtherInfo] = useState(JSON.parse(localStorage.getItem('otherInfo')));
-    const [userTry, setUserTry] = useState({ Name: "Ahmad", Gender: "Female" });
-    const [otherInfoTry, setOtherInfoTry] = useState({ Study_Leve: "idk" });
+    const [otherInfo, setOtherInfo] = useState(JSON.parse(localStorage.getItem('otherInfo')));
     const [openedChat, setOpenedChat] = useState(null);
     const [chats, setChats] = useState([]);
     const touchStartX = useRef(0);
@@ -43,6 +41,7 @@ const Chats = ({ socket }) => {
     }, [])
 
     const getChats = async () => {
+        if(otherInfo.isAdmin) return;
         const response = await fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/getChats/${user.id}/${user.User_Type === 2}`, {
             method: 'GET',
             headers: {
@@ -107,7 +106,7 @@ const Chats = ({ socket }) => {
                         <input type="text" className="form-control mt-3" placeholder="Search" />
                     </div>
                     <div className="row chat pb-3 desc mt-3 ms-4 me-4">
-                        <img src={user && ownerInfo && ownerInfo.Picture ? ownerInfo.Picture : user.Gender === "Male" ? defalutMaleIcon : defalutFemaleIcon} alt="profile" className="chat-img mt-1 mb-auto" />
+                        <img src={user && otherInfo && otherInfo.Picture ? otherInfo.Picture : user.Gender === "Male" ? defalutMaleIcon : defalutFemaleIcon} alt="profile" className="chat-img mt-1 mb-auto" />
                         <Typography variant="p" className="col mt-auto mb-auto">{user.Name}</Typography>
                     </div>
                     <Typography variant="h6" className="row desc mt-3">Chats</Typography>

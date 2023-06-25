@@ -31,6 +31,7 @@ import Profile from './Pages/Profile';
 import UserApprenticeships from './Pages/UserApprenticeships';
 import { io } from "socket.io-client"
 import Category from './Pages/Category';
+import AdminSimulationList from './Pages/AdminSimulationList';
 
 function App() {
   const navigate = useNavigate();
@@ -121,6 +122,7 @@ function App() {
         <Route path='/Admin/Approve' element={<AdminApproveList isAdmin={isAdmin} setSnackBarInfo={setSnackBarInfo} />} />
         <Route path='/Admin/User' element={<AdminUserList isAdmin={isAdmin} setSnackBarInfo={setSnackBarInfo} />} />
         <Route path='/Admin/Edit' element={<AdminCategoryEdit isAdmin={isAdmin} setSnackBarInfo={setSnackBarInfo} />} />
+        <Route path='/Admin/Simulations' element={<AdminSimulationList isAdmin={isAdmin} setSnackBarInfo={setSnackBarInfo} />} />
         <Route path='/Admin' element={<AdminHome isAdmin={isAdmin} />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>

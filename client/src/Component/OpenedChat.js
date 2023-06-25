@@ -23,6 +23,8 @@ const OpenedChat = ({ chat, pic, setOpenedChat, socket }) => {
 
     const sendMessage = async () => {
         if (!message) return;
+        const checkSpaces = message.split(' ').filter(word => word !== '');
+        if (checkSpaces.length === 0) return;
         const newMessage = {
             Chat_ID: chat.ID,
             Sender_ID: loggedUser.id,

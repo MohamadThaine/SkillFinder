@@ -52,6 +52,10 @@ const getStudentNotifications = require('./api/get/getStudentNotifications');
 const signFreeTrial = require('./api/post/signFreeTrail');
 const getCategoryApprenticeships = require('./api/get/getCategoryApprenticeships');
 const getApprenticeshipStudents = require('./api/get/getApprenticeshipStudents');
+const getSimulations = require('./api/get/getSimulations');
+const addSimulation = require('./api/post/addSimulation');
+const editSimulation = require('./api/put/editSimulation');
+const deleteSimulation = require('./api/delete/deleteSimulation');
 const app = express();
 
 app.use(express.static('public'));
@@ -199,17 +203,19 @@ app.post('/addText', addText)
 app.post('/addLink', addLink);
 app.post('/addResource', uploadAppResource, addResource);
 app.post('/signFreeTrial', signFreeTrial);
+app.post('/addSimulation', addSimulation);
 app.put('/verify-email', verifyEmail);
 app.put('/approve/apprenticeship/:id', approve.approveApprenticeship);
 app.put('/approve/owner/:id', approve.approveOwner);
-app.put('/resetPassword', resetPassword.resetPassword)
+app.put('/resetPassword', resetPassword.resetPassword);
 app.put('/editCategory/:id', editCategory);
 app.put('/uploadProfilePicture/:ID', uploadOwnerImgs, uploadProfilePicture);
 app.put('/editApprenticeship/:id', uploadAppImgs, editApprenticeship);
 app.put('/acceptRequest/:id/:appID', acceptEnrollRequest);
 app.put('/rejectRequest/:id/:appID', rejectEnrollRequest);
-app.put('/updateUser/:id', updateUserData)
-app.put('/updateUserPassword/:id', updateUserPassword)
+app.put('/updateUser/:id', updateUserData);
+app.put('/updateUserPassword/:id', updateUserPassword);
+app.put('/updateSimulation/:id', editSimulation);
 app.get('/apprenticeship/:id/:userID', getApprinticeshipInfo);
 app.get('/apprenticeship-pics/:id', getApprenticeshipPics);
 app.get('/apprenticeships/:isApproved/:id', getAllApprenticeship);
@@ -229,7 +235,9 @@ app.get('/getResources/:id', getApprenticeshipContent);
 app.get('/getLastWeekReviews/:id', getLastWeekReviews);
 app.get('/getStudentNotifications/:id', getStudentNotifications);
 app.get('/getAppStudents/:id', getApprenticeshipStudents);
+app.get('/getSimulations', getSimulations);
 app.delete('/deleteApprenticeship/:id', deleteApprenticeship);
 app.delete('/rejectOwner/:id', rejectOwner);
 app.delete('/deactiveUser/:id', deactiveUser);
 app.delete('/deleteCategory/:id', deleteCatogry);
+app.delete('/deleteSimulation/:id', deleteSimulation);

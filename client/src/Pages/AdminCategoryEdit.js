@@ -42,8 +42,7 @@ function AdminCategoryEdit({ isAdmin, setSnackBarInfo }) {
                     return category.Name.toLowerCase().includes(searchValue) || category.ID.toString().includes(searchValue);
                 }));
             }
-        }
-            , 500);
+        } , 500);
     }
 
     const deleteCategory = (e, Category) => {
@@ -84,7 +83,7 @@ function AdminCategoryEdit({ isAdmin, setSnackBarInfo }) {
             <input type="text" placeholder="Search" className="form-control mt-3 mb-3" onChange={handleSearch} />
             <AdminTable columns={columns} data={categoryList} rowButtons={buttons} onRowClick={openModal} />
             <EditCategoryModal open={open} handleClose={handleClose} category={selectedCategory} deleteCategory={deleteCategory} />
-            <AddCategoryModal open={openAdd} handleClose={() => setOpenAdd(false)} setCategoryList={setCategoryList} setSnackBarInfo={setSnackBarInfo} />
+            {openAdd && <AddCategoryModal open={openAdd} handleClose={() => setOpenAdd(false)} setCategoryList={setCategoryList} setSnackBarInfo={setSnackBarInfo} />}
         </div>
     )
 }

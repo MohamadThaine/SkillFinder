@@ -1,4 +1,5 @@
 const Category = require("../../models/Category");
+const Simulation = require("../../models/Simulation");
 const { Apprenticeship } = require("../../models/Apprenticeship");
 const verifyToken = require("../../utils/verifyToken");
 const deleteCatogry = async (req, res) => {
@@ -17,7 +18,8 @@ const deleteCatogry = async (req, res) => {
             apprenticeship.Category_ID = 3;
             apprenticeship.save();
         });
-
+        const simulations = await Simulation.findByPk(id);
+        if(simulations) await simulations.destroy();
         await category.destroy();
         res.json({message: 'Category deleted successfully!'});
     } catch (error) {

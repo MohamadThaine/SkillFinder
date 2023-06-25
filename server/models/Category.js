@@ -19,6 +19,11 @@ const Category = sequelize.define('Category', {
                 msg: 'Please enter a name'
             }
         }
+    },
+    AvailableSimulation: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
     }
 }, {
     tableName: 'category',

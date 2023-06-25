@@ -1,4 +1,5 @@
 const db = require('../../dbConnection');
+require('dotenv').config();
 
 const getApprenticeshipInfo = async (req, res) => {
   const { id, userID } = req.params;
@@ -17,7 +18,7 @@ const getApprenticeshipInfo = async (req, res) => {
       );
     });
 
-    const [address, category, author, authorPic, enrolledStudents, enrolledStudentsList, FreeTrailStudent, student, reviews] = await Promise.all([
+    const [address, category, author, authorPic, enrolledStudents, enrolledStudentsList, FreeTrailStudent, student, reviews, simulation] = await Promise.all([
       apprenticeshipResult.Address_ID !== null ? getAddress(apprenticeshipResult.Address_ID) : null,
       getCategory(apprenticeshipResult.Category_ID),
       getAuthor(apprenticeshipResult.Owner_ID),
@@ -27,6 +28,7 @@ const getApprenticeshipInfo = async (req, res) => {
       getStudentFreeTrial(apprenticeshipResult.ID, userID),
       userID !== 'guest' ? getStudent(apprenticeshipResult.ID, userID) : null,
       getReviews(apprenticeshipResult.ID),
+      apprenticeshipResult.isSimulation? getSimulation(apprenticeshipResult.Category_ID) : null
     ]);
 
     const data = {
@@ -39,7 +41,8 @@ const getApprenticeshipInfo = async (req, res) => {
       student,
       reviews,
       enrolledStudentsList,
-      FreeTrailStudent
+      FreeTrailStudent,
+      simulation
     };
     res.send(data);
   } catch (err) {
@@ -203,6 +206,24 @@ const getReviews = (ID) => {
       }
     );
     });
+}
+
+const getSimulation = (Category_ID) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      'SELECT * FROM category_simulation WHERE Category_ID = ?',
+      [Category_ID],
+      (err, result) => {
+        if (err) {
+          reject(err);
+          console.log(err);
+        } else {
+          result[0].Simulation = `${process.env.Simulations_Server}/${result[0].Path}`;
+          resolve(result[0]);
+        }
+      }
+    );
+  });
 }
 
 
