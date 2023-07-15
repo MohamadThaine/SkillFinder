@@ -157,10 +157,11 @@ const getStudent = (appID, studentID) => {
 }
 
 const getStudentFreeTrial = (appID, studentID) => {
+  const today = new Date();
   return new Promise((resolve, reject) => {
     db.query(
-      'SELECT * FROM free_trial WHERE Apprenticeship_ID = ? AND Apprentice_ID = ?',
-      [appID, studentID],
+      'SELECT * FROM free_trial WHERE Apprenticeship_ID = ? AND Apprentice_ID = ? AND End_Date >= ?',
+      [appID, studentID, today],
       (err, result) => {
         if (err) {
           reject(err);
