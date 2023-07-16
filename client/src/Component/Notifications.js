@@ -28,10 +28,12 @@ const Notifications = ({ socket }) => {
                 authorization: localStorage.getItem('token')
             },
         }).then(res => res.json()).then(data => {
+            console.log(data);
             if (data.notifications) {
                 setNotifications(data.notifications);
             }
         }).catch(err => {
+            console.log(err);
             console.log(err);
         });
     }

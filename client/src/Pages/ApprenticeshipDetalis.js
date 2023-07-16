@@ -56,6 +56,7 @@ function ApprenticeshipDetalis({ setSnackBarInfo, socket }) {
     const [openFreeTrail, setOpenFreeTrail] = useState(false);
     const [resources, setResources] = useState([]);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const [enrollText, setEnrollText] = useState(windowWidth > 768 ? 'Enroll Now' : 'Enroll');
     const navigate = useNavigate();
     useEffect(() => {
         fetch(`http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/apprenticeship/` + ID + `/${user === null ? 'guest' : user.id}`)
@@ -120,6 +121,7 @@ function ApprenticeshipDetalis({ setSnackBarInfo, socket }) {
     useEffect(() => {
         const handleResize = () => {
             setWindowWidth(window.innerWidth);
+            setEnrollText(window.innerWidth > 768 ? 'Enroll Now' : 'Enroll')
         }
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
@@ -201,7 +203,7 @@ function ApprenticeshipDetalis({ setSnackBarInfo, socket }) {
                     <div className='col'>
                         <div className='row mt-5'>
                             <div className='row app-btn-container'>
-                                {student === undefined && <button className='app-btn' onClick={() => handleModal(setOpenEnroll, openEnroll)}>Enroll Now</button>}
+                                {student === undefined && <button className='app-btn' onClick={() => handleModal(setOpenEnroll, openEnroll)}>{enrollText}</button>}
                                 {student && student.isApproved === 0 && <button className='app-btn' disabled>Request Sent</button>}
                                 {student && student.isApproved === 1 && <button className='app-btn' disabled>Enrolled</button>}
                                 <button className='app-btn' onClick={() => handleModal(setOpenReviews, openReviews)}>Reviews</button>

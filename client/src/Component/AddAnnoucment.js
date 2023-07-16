@@ -61,7 +61,6 @@ const AddAnnoucment = ({ open, handleClose, appList, setSnackBarInfo, appID, app
                 setSnackBarInfo({ severity: 'success', message: 'Annoucment added successfully', open });
                 handleClose();
             } else {
-                console.log(data);
                 setSnackBarInfo({ severity: 'error', message: 'Failed to add annoucment', open });
             }
         }).catch(err => {

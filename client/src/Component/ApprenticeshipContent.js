@@ -28,7 +28,6 @@ const ApprenticeshipContent = ({ app, setSnackBarInfo, resources, setResources, 
                 }
             })
             .catch(err => {
-                console.log(err);
                 setSnackBarInfo({ severity: 'error', message: 'Error while getting resources', open: true });
             });
     }, []);
@@ -86,6 +85,7 @@ const ApprenticeshipContent = ({ app, setSnackBarInfo, resources, setResources, 
                             </div>
                         );
                     })}
+                    {Object.keys(resources).length === 0 && <h5 className='text-center'>No Resources has been added yet!</h5>}
                 </div>
             </div>
         </div>

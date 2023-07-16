@@ -25,7 +25,6 @@ const ChangePassowrd = ({ open, handleClose, setSnackBarInfo, windowWidth, user 
             handleClose();
         })
         .catch(err => {
-            console.log(err);
             setSnackBarInfo({ severity: 'error', message: err.error, open: true });
         });
     };

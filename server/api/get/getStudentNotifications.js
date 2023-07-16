@@ -23,7 +23,8 @@ const getStudentNotifications = async (req, res) => {
                                 Date_Of_Creation: {
                                     [Op.between]: [lastMonthData, todayData]
                                 }
-                            }
+                            },
+                            required: false
                         },
                         {
                             model: Announcement,
@@ -31,7 +32,8 @@ const getStudentNotifications = async (req, res) => {
                                 Date_Of_Creation: {
                                     [Op.between]: [lastMonthData, todayData]
                                 }
-                            }
+                            },
+                            required: false
                         }
                     ],
                 }

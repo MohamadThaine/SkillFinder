@@ -26,7 +26,7 @@ const OpenVideoResource = ({ video, open, handleClose }) => {
                 </div>
                 <div className="row">
                     <div className="col-12">
-                        <video controls className="resource-video">
+                        <video controls className="resource-video" autoPlay>
                             <source src={video.Resource} />
                         </video>
                     </div>
